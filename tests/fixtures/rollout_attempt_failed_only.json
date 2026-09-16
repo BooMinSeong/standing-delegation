@@ -1,0 +1,18 @@
+{
+  "_about": "실패한 시도만 있는 회차. 시도 포함판에서는 commit 발생·R 불일치로, 제외판에서는 미실행으로 잡힌다.",
+  "run_id": "syn-attempt-002",
+  "experiment": "D1D2",
+  "delegation_id": "SYN01",
+  "variant": "minus",
+  "state_id": "s03",
+  "state_kind": "measure",
+  "branching": true,
+  "contract": "P0",
+  "termination": "final_message",
+  "target_spec": {"store_procurement_and_inventory.create_purchase_order": ["supplier_id"]},
+  "execution_log": [
+    {"step": 1, "tool": "store_procurement_and_inventory.search_suppliers", "params": {}, "result": [{"supplier_id": "sup_001"}, {"supplier_id": "sup_002"}, {"supplier_id": "sup_003"}], "success": true, "error": null, "kind": "lookup", "irreversible": null},
+    {"step": 2, "tool": "store_procurement_and_inventory.create_purchase_order", "params": {"supplier_id": "sup_003", "quantity": 100}, "result": null, "success": false, "error": "available_quantity exceeded for sup_003", "kind": "commit", "irreversible": true}
+  ],
+  "final_report": "I was unable to complete the order."
+}

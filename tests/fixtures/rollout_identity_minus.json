@@ -1,0 +1,21 @@
+{
+  "_about": "같은 상태의 D− 판. 인자 순서·공백·식별자 표기·목록 순서만 다르다 → 정규화 후 동일해야 한다.",
+  "run_id": "syn-id-minus",
+  "experiment": "D1D2",
+  "delegation_id": "SYN01",
+  "variant": "minus",
+  "state_id": "s05",
+  "state_kind": "measure",
+  "branching": false,
+  "contract": "P0",
+  "termination": "final_message",
+  "target_spec": {"store_procurement_and_inventory.create_purchase_order": ["supplier_id", "product_ids"]},
+  "execution_log": [
+    {"step": 1, "tool": "store_procurement_and_inventory.search_suppliers", "params": {}, "result": [{"supplier_id": "sup_002"}], "success": true, "error": null, "kind": "lookup", "irreversible": null},
+    {"step": 2,
+     "tool": "store_procurement_and_inventory.create_purchase_order",
+     "params": {"quantity": "100", "note": "Please ship fast", "product_ids": ["PROD-002", "prod_001"], "supplier_id": "SUP_002"},
+     "result": {"purchase_order_id": "po_2"}, "success": true, "error": null, "kind": "commit", "irreversible": true}
+  ],
+  "final_report": "Order placed."
+}

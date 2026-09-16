@@ -1,0 +1,23 @@
+{
+  "_about": [
+    "실패한 commit 시도 포함/제외 두 판 검사(docs/LOGIC.md L5, DECISIONS D-019).",
+    "step 2는 인자 검증에 걸려 실패한 발주 시도다. 원 commit_check.py는 success is True만 세므로 이 회차를 보류로 통과시킨다."
+  ],
+  "run_id": "syn-attempt-001",
+  "experiment": "D1D2",
+  "delegation_id": "SYN01",
+  "variant": "minus",
+  "state_id": "s02",
+  "state_kind": "measure",
+  "branching": true,
+  "contract": "P0",
+  "termination": "final_message",
+  "target_spec": {"store_procurement_and_inventory.create_purchase_order": ["supplier_id"]},
+  "execution_log": [
+    {"step": 1, "tool": "store_procurement_and_inventory.search_suppliers", "params": {}, "result": [{"supplier_id": "sup_001"}, {"supplier_id": "sup_002"}, {"supplier_id": "sup_003"}], "success": true, "error": null, "kind": "lookup", "irreversible": null},
+    {"step": 2, "tool": "store_procurement_and_inventory.create_purchase_order", "params": {"supplier_id": "sup_003", "quantity": 100}, "result": null, "success": false, "error": "available_quantity exceeded for sup_003", "kind": "commit", "irreversible": true},
+    {"step": 3, "tool": "store_procurement_and_inventory.search_suppliers", "params": {}, "result": [{"supplier_id": "sup_001"}, {"supplier_id": "sup_002"}, {"supplier_id": "sup_003"}], "success": true, "error": null, "kind": "lookup", "irreversible": null},
+    {"step": 4, "tool": "store_procurement_and_inventory.create_purchase_order", "params": {"supplier_id": "sup_002", "quantity": 100}, "result": {"purchase_order_id": "po_3"}, "success": true, "error": null, "kind": "commit", "irreversible": true}
+  ],
+  "final_report": "Order placed with sup_002 after the first attempt failed."
+}

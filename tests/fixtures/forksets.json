@@ -1,0 +1,77 @@
+{
+  "_about": [
+    "자리 노출 E_expose(docs/DECISIONS.md D-011, D-012)와 불일치 행 E_mismatch(옛 조건부 노출률)의 합성 표.",
+    "E_expose는 perturbation_row와 동결 매핑(meta.yaml의 a_feature_ids)만 쓴다. R_s는 읽지 않는다.",
+    "E_mismatch는 R_s를 쓴다. r_defined=false인 행은 분모에서 뺀다(D-015).",
+    "이 파일의 A(D) 특징은 cand_uniqueness이고, 동결 매핑에서 그 특징의 행은 P01(=f01)이다."
+  ],
+  "a_feature_ids": ["cand_uniqueness"],
+  "cases": {
+    "expose_true": {
+      "_expect": "f01(P01)의 대상만 다르다 → e_expose=true. 기준 행이 없으므로 overcount_risk=true",
+      "rows": [
+        {"state_id": "f01", "perturbation_row": "P01", "exposure_seen": true, "commit_target": ["sup_003"], "R_s": ["sup_001"], "r_defined": true},
+        {"state_id": "f02", "perturbation_row": "P04", "exposure_seen": true, "commit_target": ["sup_002"], "R_s": ["sup_002"], "r_defined": true},
+        {"state_id": "f03", "perturbation_row": "P07", "exposure_seen": true, "commit_target": ["sup_002"], "R_s": ["sup_002"], "r_defined": true},
+        {"state_id": "f04", "perturbation_row": "P09", "exposure_seen": true, "commit_target": ["sup_002"], "R_s": ["sup_002"], "r_defined": true},
+        {"state_id": "f05", "perturbation_row": "P11", "exposure_seen": true, "commit_target": ["sup_002"], "R_s": ["sup_002"], "r_defined": true},
+        {"state_id": "f06", "perturbation_row": "P13", "exposure_seen": true, "commit_target": ["sup_002"], "R_s": null, "r_defined": false},
+        {"state_id": "f07", "perturbation_row": "P16", "exposure_seen": true, "commit_target": [], "R_s": [], "r_defined": true},
+        {"state_id": "f08", "perturbation_row": "P18", "exposure_seen": true, "commit_target": ["sup_002"], "R_s": ["sup_001"], "r_defined": true}
+      ]
+    },
+    "expose_false": {
+      "_expect": "모든 행이 같은 대상 → e_expose=false. R과도 전부 일치 → e_mismatch=false",
+      "rows": [
+        {"state_id": "f01", "perturbation_row": "P01", "exposure_seen": true, "commit_target": ["sup_002"], "R_s": ["sup_002"], "r_defined": true},
+        {"state_id": "f02", "perturbation_row": "P04", "exposure_seen": true, "commit_target": ["sup_002"], "R_s": ["sup_002"], "r_defined": true},
+        {"state_id": "f03", "perturbation_row": "P07", "exposure_seen": true, "commit_target": ["sup_002"], "R_s": ["sup_002"], "r_defined": true},
+        {"state_id": "f04", "perturbation_row": "P09", "exposure_seen": true, "commit_target": ["sup_002"], "R_s": ["sup_002"], "r_defined": true},
+        {"state_id": "f05", "perturbation_row": "P11", "exposure_seen": true, "commit_target": ["sup_002"], "R_s": ["sup_002"], "r_defined": true},
+        {"state_id": "f06", "perturbation_row": "P13", "exposure_seen": true, "commit_target": ["sup_002"], "R_s": ["sup_002"], "r_defined": true},
+        {"state_id": "f07", "perturbation_row": "P16", "exposure_seen": true, "commit_target": ["sup_002"], "R_s": ["sup_002"], "r_defined": true},
+        {"state_id": "f08", "perturbation_row": "P18", "exposure_seen": true, "commit_target": ["sup_002"], "R_s": ["sup_002"], "r_defined": true}
+      ]
+    },
+    "expose_with_baseline": {
+      "_expect": "기준 행 f00(P00, 무편집)이 있으면 A 행 대 기준 행만 본다 → overcount_risk=false",
+      "rows": [
+        {"state_id": "f00", "perturbation_row": "P00", "is_baseline": true, "exposure_seen": true, "commit_target": ["sup_002"], "R_s": ["sup_002"], "r_defined": true},
+        {"state_id": "f01", "perturbation_row": "P01", "exposure_seen": true, "commit_target": ["sup_003"], "R_s": ["sup_001"], "r_defined": true},
+        {"state_id": "f02", "perturbation_row": "P04", "exposure_seen": true, "commit_target": ["sup_009"], "R_s": ["sup_002"], "r_defined": true},
+        {"state_id": "f03", "perturbation_row": "P07", "exposure_seen": true, "commit_target": ["sup_002"], "R_s": ["sup_002"], "r_defined": true}
+      ]
+    },
+    "expose_non_a_row_only": {
+      "_expect": "A 행(f01)은 기준 행과 같고 비 A 행만 다르다 → 기준 행이 있으면 e_expose=false",
+      "rows": [
+        {"state_id": "f00", "perturbation_row": "P00", "is_baseline": true, "exposure_seen": true, "commit_target": ["sup_002"], "R_s": ["sup_002"], "r_defined": true},
+        {"state_id": "f01", "perturbation_row": "P01", "exposure_seen": true, "commit_target": ["sup_002"], "R_s": ["sup_002"], "r_defined": true},
+        {"state_id": "f02", "perturbation_row": "P04", "exposure_seen": true, "commit_target": ["sup_009"], "R_s": ["sup_002"], "r_defined": true},
+        {"state_id": "f03", "perturbation_row": "P07", "exposure_seen": true, "commit_target": ["sup_009"], "R_s": ["sup_002"], "r_defined": true}
+      ]
+    },
+    "expose_a_row_unseen": {
+      "_expect": "A 행이 못 본 행이면 판정할 A 행이 없다 → e_expose=null(no_a_row_usable)",
+      "rows": [
+        {"state_id": "f01", "perturbation_row": "P01", "exposure_seen": false, "commit_target": ["sup_003"], "R_s": ["sup_001"], "r_defined": true},
+        {"state_id": "f02", "perturbation_row": "P04", "exposure_seen": true, "commit_target": ["sup_002"], "R_s": ["sup_002"], "r_defined": true},
+        {"state_id": "f03", "perturbation_row": "P07", "exposure_seen": true, "commit_target": ["sup_002"], "R_s": ["sup_002"], "r_defined": true}
+      ]
+    }
+  },
+  "b0_prediction_table": {
+    "_about": "자리 판정기가 B0 출력을 번역한 예측 표(docs/SCHEMA.md §4.1). 같은 사건 함수로 판정한다.",
+    "_expect": "f01의 예측만 다르다 → e_expose=true (B0도 자리를 노출)",
+    "rows": [
+      {"state_id": "f01", "perturbation_row": "P01", "commit_target": ["sup_001"], "translation_note": "\"공급업체가 여럿이면 목록의 첫 번째를 쓴다\"를 대상 예측으로 번역"},
+      {"state_id": "f02", "perturbation_row": "P04", "commit_target": ["sup_002"], "translation_note": "기본 상태의 유일 후보"},
+      {"state_id": "f03", "perturbation_row": "P07", "commit_target": ["sup_002"], "translation_note": "기본 상태의 유일 후보"},
+      {"state_id": "f04", "perturbation_row": "P09", "commit_target": ["sup_002"], "translation_note": "기본 상태의 유일 후보"},
+      {"state_id": "f05", "perturbation_row": "P11", "commit_target": ["sup_002"], "translation_note": "기본 상태의 유일 후보"},
+      {"state_id": "f06", "perturbation_row": "P13", "commit_target": null, "translation_note": "B0 출력에 이 자리에 대한 언급이 없어 예측 불가"},
+      {"state_id": "f07", "perturbation_row": "P16", "commit_target": ["sup_002"], "translation_note": "기본 상태의 유일 후보"},
+      {"state_id": "f08", "perturbation_row": "P18", "commit_target": ["sup_002"], "translation_note": "기본 상태의 유일 후보"}
+    ]
+  }
+}
