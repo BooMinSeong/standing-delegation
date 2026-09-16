@@ -11,15 +11,72 @@ rule_ids:
 r_rule_id: "max"
 perturbation_table: "docs/derivation/perturbation-v1.md §7.2"
 discriminating_rows:
+  - "f00"
   - "f01"
   - "f02"
   - "f03"
+  - "f04"
   - "f05"
   - "f06"
   - "f08"
 baseline_rows:
+  - "f00"
   - "f04"
+baseline_reference: "f00"
+inapplicable_rows:
+  - "f04"
+accounting: "적용 불가 행도 예측이 갈리면 구분 행에 넣는다 (D-024 L35, policy_reader와 동일)"
 states:
+  -
+    state_id: "f00"
+    kind: "fork"
+    R_s:
+      -
+        supplier_id: "SUP-003"
+        quantity: 358
+    r_defined: true
+    r_reason: "available_quantity 최대"
+    k_set:
+      - "SUP-001"
+      - "SUP-002"
+      - "SUP-003"
+    competing_ids:
+      - "SUP-001"
+      - "SUP-002"
+      - "SUP-003"
+    candidate_count: 3
+    quantity_on_hand: 42
+    predictions:
+      first:
+        -
+          supplier_id: "SUP-001"
+          quantity: 358
+      max:
+        -
+          supplier_id: "SUP-003"
+          quantity: 358
+      recent:
+        -
+          supplier_id: "SUP-003"
+          quantity: 358
+      all:
+        -
+          supplier_id: "SUP-001"
+          quantity: 358
+        -
+          supplier_id: "SUP-002"
+          quantity: 358
+        -
+          supplier_id: "SUP-003"
+          quantity: 358
+      none: []
+    perturbation_row: "P00"
+    applicable: true
+    reason_if_not_applicable: ""
+    is_baseline: true
+    state_canonical_sha256: "43c53fde95d6140320aeeddb5a13c056e8c12d890d35ff976c6503a92e23ec8b"
+    discriminating: true
+    exposure_seen: true
   -
     state_id: "f01"
     kind: "fork"
@@ -67,6 +124,7 @@ states:
     applicable: true
     reason_if_not_applicable: ""
     is_baseline: false
+    state_canonical_sha256: "7ca943c1c7c41f00c7b50a47984531eb952a66d8bb6672b5d2e5e6c4fc1f1ed3"
     discriminating: true
     exposure_seen: true
   -
@@ -126,6 +184,7 @@ states:
     applicable: true
     reason_if_not_applicable: ""
     is_baseline: false
+    state_canonical_sha256: "a400589f58101f33e0bc2ab687a6a94f1eb7d7169e7be84b93440d58bb4ddd56"
     discriminating: true
     exposure_seen: true
   -
@@ -171,6 +230,7 @@ states:
     applicable: true
     reason_if_not_applicable: ""
     is_baseline: false
+    state_canonical_sha256: "837695d17e9298a8962035fa1d378a0e776e3630afcc08d168c8b6a398303efc"
     discriminating: true
     exposure_seen: true
   -
@@ -220,7 +280,8 @@ states:
     applicable: false
     reason_if_not_applicable: "상태에 현재 시각 필드(current_date/current_time)가 없고 q에 상대 시각 표현이 없다 (perturbation-v1 §4 주의 (i))"
     is_baseline: true
-    discriminating: false
+    state_canonical_sha256: "43c53fde95d6140320aeeddb5a13c056e8c12d890d35ff976c6503a92e23ec8b"
+    discriminating: true
     exposure_seen: true
   -
     state_id: "f05"
@@ -269,6 +330,7 @@ states:
     applicable: true
     reason_if_not_applicable: ""
     is_baseline: false
+    state_canonical_sha256: "dbafbf22e680712162484bbe3f4648284903b3f0a4fb627d9b48199d9faa7ea2"
     discriminating: true
     exposure_seen: true
   -
@@ -318,6 +380,7 @@ states:
     applicable: true
     reason_if_not_applicable: ""
     is_baseline: false
+    state_canonical_sha256: "7d4a51d537f2e7179e3eb1b45674d74131d3ceb17f81a4d5844def4ac013a00f"
     discriminating: true
     exposure_seen: true
   -
@@ -340,6 +403,7 @@ states:
     applicable: true
     reason_if_not_applicable: ""
     is_baseline: false
+    state_canonical_sha256: "46502ad14a0f9714ac8221949087c97d7572198d95d2cbe49d65d507a63ecd1d"
     discriminating: false
     exposure_seen: true
   -
@@ -385,5 +449,6 @@ states:
     applicable: true
     reason_if_not_applicable: ""
     is_baseline: false
+    state_canonical_sha256: "4a24ef644c074a8f6bd220c3b3fd7b7f24f2fa81fb591119a72c2d894a4a6548"
     discriminating: true
     exposure_seen: true

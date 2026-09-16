@@ -442,7 +442,14 @@ def row_P18(state, ent, log):
     return True, ""
 
 
+def row_P00(state, ent, log):
+    """P00 무편집 기준 행 (D-022 ③, docs/LOGIC.md §1). 편집이 없다."""
+    log.append("편집 없음 — 상류 기준 상태 그대로. E_expose의 단일 편집 대조 기준이 된다")
+    return True, ""
+
+
 ROWS = [
+    ("P00", "무편집 기준 행. 상류 기준 상태를 그대로 쓴다(단일 편집 대조의 기준)", row_P00),
     ("P01", "지시문의 서술을 똑같이 만족하는 같은 종류의 후보 개체를 1개 → 3개로 늘린다(이름·설명만 다르게)", row_P01),
     ("P04", "조건을 충족하는 레코드를 N개 → N+2개로 늘린다", row_P04),
     ("P07", "대상 레코드의 상태 플래그를 뒤집는다", row_P07),
@@ -478,6 +485,13 @@ def yaml_dump(obj, indent=0) -> str:
     return f"{pad}{json.dumps(obj, ensure_ascii=False)}"
 
 
+def canonical_sha256(state: dict) -> str:
+    """상태 내용의 해시(직렬화 형식과 무관). `is_baseline` 판정의 근거 (D-024 L35)."""
+    return hashlib.sha256(
+        json.dumps(state, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode()
+    ).hexdigest()
+
+
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--out", default=str(OUT_DEFAULT))
@@ -488,6 +502,7 @@ def main(argv=None) -> int:
 
     raw = BASE_STATE.read_bytes()
     base = json.loads(raw.decode())
+    base_canonical = canonical_sha256(base)
     q_text = Q_MINUS.read_text()
     ent = extract_from_q(q_text, base)
 
@@ -497,13 +512,14 @@ def main(argv=None) -> int:
     out_dir = Path(args.out)
     out_dir.mkdir(parents=True, exist_ok=True)
     entries = []
-    for n, (row_id, text, fn) in enumerate(ROWS, start=1):
+    for n, (row_id, text, fn) in enumerate(ROWS):
         state = copy.deepcopy(base)
         log: list[str] = []
         applicable, reason = fn(state, ent, log)
         state_id = f"f{n:02d}"
         path = out_dir / f"{state_id}.json"
         path.write_text(json.dumps(state, indent=4, ensure_ascii=False) + "\n")
+        state_hash = canonical_sha256(state)
         entries.append(
             {
                 "state_id": state_id,
@@ -512,6 +528,8 @@ def main(argv=None) -> int:
                 "edit_text": text,
                 "applicable": applicable,
                 "reason_if_not_applicable": reason,
+                "state_canonical_sha256": state_hash,
+                "equals_base_state": state_hash == base_canonical,
                 "operations": log if applicable else [],
             }
         )
@@ -528,6 +546,7 @@ def main(argv=None) -> int:
         ],
         "forbidden_inputs": ["rule.py", "q_plus.txt", "states/measure/*", "meta.yaml", "policy_preview.md"],
         "base_state_sha256": hashlib.sha256(raw).hexdigest(),
+        "base_state_canonical_sha256": base_canonical,
         "q_minus_sha256": hashlib.sha256(q_text.encode()).hexdigest(),
         "numeric_schedule": f"추가 레코드 i의 수치 필드 = 원본 × (1 + {NUMERIC_SCHEDULE}·i)",
         "source_scale": f"P11의 원본 수치 배율 = ×{SOURCE_SCALE}",

@@ -16,7 +16,8 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parents[2]
 FORKSET = REPO / "src" / "gen" / "forkset.py"
 FORK_DIR = REPO / "data" / "delegations" / "D01" / "states" / "fork"
-SELECTED_ROWS = ["P01", "P04", "P07", "P09", "P11", "P13", "P16", "P18"]
+# 섭동표 v1 §7.2의 8행 + 무편집 기준 행 P00 (D-022 ③ 채택, Plan.md v2.1 §4.3)
+SELECTED_ROWS = ["P00", "P01", "P04", "P07", "P09", "P11", "P13", "P16", "P18"]
 
 # R이 조건을 거는 필드와 그 근처 필드 이름. 생성기 소스에 하나도 없어야 한다
 # (필드는 전부 상태 데이터에서 열거하게 짜여 있다).
@@ -112,13 +113,14 @@ def test_fork_states_are_regenerable(tmp_path) -> None:
         assert (FORK_DIR / name).read_text() == (tmp_path / name).read_text(), f"{name}이 재생성과 다르다"
 
 
-def test_fork_rows_are_the_selected_eight() -> None:
+def test_fork_rows_are_the_selected_nine() -> None:
     rows = [
         json.loads(line.split(":", 1)[1].strip())
         for line in (FORK_DIR / "forkset_log.yaml").read_text().splitlines()
         if line.strip().startswith("perturbation_row:")
     ]
     assert rows == SELECTED_ROWS, rows
+    assert len(rows) == 9
 
 
 def test_fork_states_load_in_environment() -> None:

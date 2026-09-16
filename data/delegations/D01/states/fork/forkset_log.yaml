@@ -13,6 +13,7 @@ forbidden_inputs:
   - "meta.yaml"
   - "policy_preview.md"
 base_state_sha256: "178e9f330baee6e998b61e2c73e16d5f271be8e6883e9a1e73da9d295d87764b"
+base_state_canonical_sha256: "43c53fde95d6140320aeeddb5a13c056e8c12d890d35ff976c6503a92e23ec8b"
 q_minus_sha256: "8002975e444d69650243b491548593dc8f2c410dcdac0519cf4e0875a00a2752"
 numeric_schedule: "추가 레코드 i의 수치 필드 = 원본 × (1 + 0.25·i)"
 source_scale: "P11의 원본 수치 배율 = ×2"
@@ -53,12 +54,25 @@ entity_extraction:
     pk_value: "SUP-001"
 rows:
   -
+    state_id: "f00"
+    file: "f00.json"
+    perturbation_row: "P00"
+    edit_text: "무편집 기준 행. 상류 기준 상태를 그대로 쓴다(단일 편집 대조의 기준)"
+    applicable: true
+    reason_if_not_applicable: ""
+    state_canonical_sha256: "43c53fde95d6140320aeeddb5a13c056e8c12d890d35ff976c6503a92e23ec8b"
+    equals_base_state: true
+    operations:
+      - "편집 없음 — 상류 기준 상태 그대로. E_expose의 단일 편집 대조 기준이 된다"
+  -
     state_id: "f01"
     file: "f01.json"
     perturbation_row: "P01"
     edit_text: "지시문의 서술을 똑같이 만족하는 같은 종류의 후보 개체를 1개 → 3개로 늘린다(이름·설명만 다르게)"
     applicable: true
     reason_if_not_applicable: ""
+    state_canonical_sha256: "7ca943c1c7c41f00c7b50a47984531eb952a66d8bb6672b5d2e5e6c4fc1f1ed3"
+    equals_base_state: false
     operations:
       - "후보를 1개로 줄임: supplier_listings에 supplier_id=SUP-001만 남기고 4개 레코드 삭제"
       - "딸린 레코드 복제: supplier_contracts contract_id=CON-004 (supplier_id=SUP-004)"
@@ -72,6 +86,8 @@ rows:
     edit_text: "조건을 충족하는 레코드를 N개 → N+2개로 늘린다"
     applicable: true
     reason_if_not_applicable: ""
+    state_canonical_sha256: "a400589f58101f33e0bc2ab687a6a94f1eb7d7169e7be84b93440d58bb4ddd56"
+    equals_base_state: false
     operations:
       - "조건 충족 레코드 3개 → 5개 (supplier_listings)"
       - "레코드 추가: supplier_listings supplier_id=SUP-004 (수치 필드 ×1.25)"
@@ -83,6 +99,8 @@ rows:
     edit_text: "대상 레코드의 상태 플래그를 뒤집는다"
     applicable: true
     reason_if_not_applicable: ""
+    state_canonical_sha256: "837695d17e9298a8962035fa1d378a0e776e3630afcc08d168c8b6a398303efc"
+    equals_base_state: false
     operations:
       - "플래그 뒤집기: inventory_items[0].counterfeit_flag → True"
       - "플래그 뒤집기: supplier_contracts[0].active → False"
@@ -95,6 +113,8 @@ rows:
     edit_text: "상태의 현재 시각(current_date/current_time)을 옮겨 '어제·내일·이번 주'의 지칭 대상을 바꾼다"
     applicable: false
     reason_if_not_applicable: "상태에 현재 시각 필드(current_date/current_time)가 없고 q에 상대 시각 표현이 없다 (perturbation-v1 §4 주의 (i))"
+    state_canonical_sha256: "43c53fde95d6140320aeeddb5a13c056e8c12d890d35ff976c6503a92e23ec8b"
+    equals_base_state: true
     operations: []
   -
     state_id: "f05"
@@ -103,6 +123,8 @@ rows:
     edit_text: "커밋 본문으로 옮겨야 할 원본(문서·파일·데이터셋)의 수치와 항목 수를 바꾼다"
     applicable: true
     reason_if_not_applicable: ""
+    state_canonical_sha256: "dbafbf22e680712162484bbe3f4648284903b3f0a4fb627d9b48199d9faa7ea2"
+    equals_base_state: false
     operations:
       - "원본 수치 ×2: inventory_items[0].quantity_on_hand 42 → 84"
   -
@@ -112,6 +134,8 @@ rows:
     edit_text: "대조하는 두 컬렉션의 값을 불일치시킨다"
     applicable: true
     reason_if_not_applicable: ""
+    state_canonical_sha256: "7d4a51d537f2e7179e3eb1b45674d74131d3ceb17f81a4d5844def4ac013a00f"
+    equals_base_state: false
     operations:
       - "컬렉션 간 불일치: 공유 필드 'brand' — catalog_products[0] 'Coca-Cola' → 'Coca-Cola [registry copy differs]'"
       - "같은 필드를 가진 곳: [('authenticity_records', 0), ('catalog_products', 0)]"
@@ -122,6 +146,8 @@ rows:
     edit_text: "분기 조건의 대상을 없앤다(otherwise 경로로 넘어가야 함)"
     applicable: true
     reason_if_not_applicable: ""
+    state_canonical_sha256: "46502ad14a0f9714ac8221949087c97d7572198d95d2cbe49d65d507a63ecd1d"
+    equals_base_state: false
     operations:
       - "분기 대상 삭제: supplier_listings에서 q가 가리키는 후보 3개 제거 (['SUP-001', 'SUP-002', 'SUP-003'])"
   -
@@ -131,6 +157,8 @@ rows:
     edit_text: "기본값 포인터를 비운다"
     applicable: true
     reason_if_not_applicable: ""
+    state_canonical_sha256: "4a24ef644c074a8f6bd220c3b3fd7b7f24f2fa81fb591119a72c2d894a4a6548"
+    equals_base_state: false
     operations:
       - "포인터 비움: inventory_items[0].authenticity_record_id 'AUTH-001' → ''"
       - "포인터 비움: supplier_contracts[0].supplier_id 'SUP-001' → ''"
