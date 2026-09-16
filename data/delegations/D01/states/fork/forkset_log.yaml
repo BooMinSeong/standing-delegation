@@ -14,27 +14,23 @@ forbidden_inputs:
   - "policy_preview.md"
 base_state_sha256: "178e9f330baee6e998b61e2c73e16d5f271be8e6883e9a1e73da9d295d87764b"
 base_state_canonical_sha256: "43c53fde95d6140320aeeddb5a13c056e8c12d890d35ff976c6503a92e23ec8b"
-q_minus_sha256: "8002975e444d69650243b491548593dc8f2c410dcdac0519cf4e0875a00a2752"
+q_minus_sha256: "de99dd218162f51034b74bf079baba866d2be980cf940863041baff3a9a69a23"
 numeric_schedule: "추가 레코드 i의 수치 필드 = 원본 × (1 + 0.25·i)"
 source_scale: "P11의 원본 수치 배율 = ×2"
 entity_extraction:
   ids_in_q:
-    - "INV-001"
     - "PROD-001"
   numbers_in_q:
     - 100
-    - 400
-  state_fields_named_in_q:
-    - "quantity_on_hand"
-  other_snake_tokens_in_q:
-    - "create_purchase_order"
+  state_fields_named_in_q: []
+  other_snake_tokens_in_q: []
   anchor_collections:
     catalog_products:
       - 0
-    inventory_items:
-      - 0
   referenced_collections:
     authenticity_records:
+      - 0
+    inventory_items:
       - 0
     sales_history:
       - 0
@@ -99,10 +95,9 @@ rows:
     edit_text: "대상 레코드의 상태 플래그를 뒤집는다"
     applicable: true
     reason_if_not_applicable: ""
-    state_canonical_sha256: "837695d17e9298a8962035fa1d378a0e776e3630afcc08d168c8b6a398303efc"
+    state_canonical_sha256: "2ee6764729ff405019efb3992f56c32bbb6c0b7eac91f18ed08040902c6a0ec1"
     equals_base_state: false
     operations:
-      - "플래그 뒤집기: inventory_items[0].counterfeit_flag → True"
       - "플래그 뒤집기: supplier_contracts[0].active → False"
       - "플래그 뒤집기: supplier_contracts[0].ordering_permitted → False"
       - "문자열 상태 필드는 같은 컬렉션에 대안 값이 없으면 그대로 뒀다"
@@ -121,12 +116,11 @@ rows:
     file: "f05.json"
     perturbation_row: "P11"
     edit_text: "커밋 본문으로 옮겨야 할 원본(문서·파일·데이터셋)의 수치와 항목 수를 바꾼다"
-    applicable: true
-    reason_if_not_applicable: ""
-    state_canonical_sha256: "dbafbf22e680712162484bbe3f4648284903b3f0a4fb627d9b48199d9faa7ea2"
-    equals_base_state: false
-    operations:
-      - "원본 수치 ×2: inventory_items[0].quantity_on_hand 42 → 84"
+    applicable: false
+    reason_if_not_applicable: "기준 개체의 원본 레코드에 수치 필드가 없다"
+    state_canonical_sha256: "43c53fde95d6140320aeeddb5a13c056e8c12d890d35ff976c6503a92e23ec8b"
+    equals_base_state: true
+    operations: []
   -
     state_id: "f06"
     file: "f06.json"
@@ -157,8 +151,7 @@ rows:
     edit_text: "기본값 포인터를 비운다"
     applicable: true
     reason_if_not_applicable: ""
-    state_canonical_sha256: "4a24ef644c074a8f6bd220c3b3fd7b7f24f2fa81fb591119a72c2d894a4a6548"
+    state_canonical_sha256: "cf99734dd9db7893fef4974960968b246eabb3178be5ea89ae4ad627f5f137b0"
     equals_base_state: false
     operations:
-      - "포인터 비움: inventory_items[0].authenticity_record_id 'AUTH-001' → ''"
       - "포인터 비움: supplier_contracts[0].supplier_id 'SUP-001' → ''"

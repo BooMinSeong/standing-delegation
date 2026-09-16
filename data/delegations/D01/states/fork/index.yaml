@@ -31,9 +31,11 @@ discriminating_rows:
 baseline_rows:
   - "f00"
   - "f04"
+  - "f05"
 baseline_reference: "f00"
 inapplicable_rows:
   - "f04"
+  - "f05"
 accounting: "적용 불가 행도 예측이 갈리면 구분 행에 넣는다 (D-024 L35, policy_reader와 동일)"
 states:
   -
@@ -41,10 +43,10 @@ states:
     kind: "fork"
     R_s:
       -
-        supplier_id: "SUP-003"
-        quantity: 358
+        supplier_id: "SUP-002"
+        quantity: 100
     r_defined: true
-    r_reason: "available_quantity 최대"
+    r_reason: "채울 수 있는 업체 중 단가 최저 (더 싼 ['SUP-001']은 수량을 못 채움)"
     k_set:
       - "SUP-001"
       - "SUP-002"
@@ -54,30 +56,33 @@ states:
       - "SUP-002"
       - "SUP-003"
     candidate_count: 3
-    quantity_on_hand: 42
+    order_quantity: 100
+    fulfilling_ids:
+      - "SUP-002"
+      - "SUP-003"
     predictions:
       first:
         -
           supplier_id: "SUP-001"
-          quantity: 358
+          quantity: 100
       max:
         -
           supplier_id: "SUP-003"
-          quantity: 358
+          quantity: 100
       recent:
         -
           supplier_id: "SUP-003"
-          quantity: 358
+          quantity: 100
       all:
         -
           supplier_id: "SUP-001"
-          quantity: 358
+          quantity: 100
         -
           supplier_id: "SUP-002"
-          quantity: 358
+          quantity: 100
         -
           supplier_id: "SUP-003"
-          quantity: 358
+          quantity: 100
       none: []
     perturbation_row: "P00"
     applicable: true
@@ -89,12 +94,9 @@ states:
   -
     state_id: "f01"
     kind: "fork"
-    R_s:
-      -
-        supplier_id: "SUP-001"
-        quantity: 358
+    R_s: []
     r_defined: true
-    r_reason: "available_quantity 최대 (동률 ['SUP-001', 'SUP-004', 'SUP-005'] → supplier_id 오름차순)"
+    r_reason: "발주량 100를 채울 수 있는 업체 0개"
     k_set:
       - "SUP-001"
       - "SUP-004"
@@ -104,30 +106,31 @@ states:
       - "SUP-004"
       - "SUP-005"
     candidate_count: 3
-    quantity_on_hand: 42
+    order_quantity: 100
+    fulfilling_ids: []
     predictions:
       first:
         -
           supplier_id: "SUP-001"
-          quantity: 358
+          quantity: 100
       max:
         -
           supplier_id: "SUP-001"
-          quantity: 358
+          quantity: 100
       recent:
         -
           supplier_id: "SUP-005"
-          quantity: 358
+          quantity: 100
       all:
         -
           supplier_id: "SUP-001"
-          quantity: 358
+          quantity: 100
         -
           supplier_id: "SUP-004"
-          quantity: 358
+          quantity: 100
         -
           supplier_id: "SUP-005"
-          quantity: 358
+          quantity: 100
       none: []
     perturbation_row: "P01"
     applicable: true
@@ -141,10 +144,10 @@ states:
     kind: "fork"
     R_s:
       -
-        supplier_id: "SUP-003"
-        quantity: 358
+        supplier_id: "SUP-002"
+        quantity: 100
     r_defined: true
-    r_reason: "available_quantity 최대"
+    r_reason: "채울 수 있는 업체 중 단가 최저 (더 싼 ['SUP-001']은 수량을 못 채움)"
     k_set:
       - "SUP-001"
       - "SUP-002"
@@ -158,36 +161,41 @@ states:
       - "SUP-004"
       - "SUP-005"
     candidate_count: 5
-    quantity_on_hand: 42
+    order_quantity: 100
+    fulfilling_ids:
+      - "SUP-002"
+      - "SUP-003"
+      - "SUP-004"
+      - "SUP-005"
     predictions:
       first:
         -
           supplier_id: "SUP-001"
-          quantity: 358
+          quantity: 100
       max:
         -
           supplier_id: "SUP-005"
-          quantity: 358
+          quantity: 100
       recent:
         -
           supplier_id: "SUP-005"
-          quantity: 358
+          quantity: 100
       all:
         -
           supplier_id: "SUP-001"
-          quantity: 358
+          quantity: 100
         -
           supplier_id: "SUP-002"
-          quantity: 358
+          quantity: 100
         -
           supplier_id: "SUP-003"
-          quantity: 358
+          quantity: 100
         -
           supplier_id: "SUP-004"
-          quantity: 358
+          quantity: 100
         -
           supplier_id: "SUP-005"
-          quantity: 358
+          quantity: 100
       none: []
     perturbation_row: "P04"
     applicable: true
@@ -201,10 +209,10 @@ states:
     kind: "fork"
     R_s:
       -
-        supplier_id: "SUP-003"
-        quantity: 358
+        supplier_id: "SUP-002"
+        quantity: 100
     r_defined: true
-    r_reason: "available_quantity 최대"
+    r_reason: "채울 수 있는 업체 중 단가 최저"
     k_set:
       - "SUP-002"
       - "SUP-003"
@@ -213,33 +221,36 @@ states:
       - "SUP-002"
       - "SUP-003"
     candidate_count: 2
-    quantity_on_hand: 42
+    order_quantity: 100
+    fulfilling_ids:
+      - "SUP-002"
+      - "SUP-003"
     predictions:
       first:
         -
           supplier_id: "SUP-002"
-          quantity: 358
+          quantity: 100
       max:
         -
           supplier_id: "SUP-003"
-          quantity: 358
+          quantity: 100
       recent:
         -
           supplier_id: "SUP-003"
-          quantity: 358
+          quantity: 100
       all:
         -
           supplier_id: "SUP-002"
-          quantity: 358
+          quantity: 100
         -
           supplier_id: "SUP-003"
-          quantity: 358
+          quantity: 100
       none: []
     perturbation_row: "P07"
     applicable: true
     reason_if_not_applicable: ""
     is_baseline: false
-    state_canonical_sha256: "837695d17e9298a8962035fa1d378a0e776e3630afcc08d168c8b6a398303efc"
+    state_canonical_sha256: "2ee6764729ff405019efb3992f56c32bbb6c0b7eac91f18ed08040902c6a0ec1"
     discriminating: true
     exposure_seen: true
   -
@@ -247,10 +258,10 @@ states:
     kind: "fork"
     R_s:
       -
-        supplier_id: "SUP-003"
-        quantity: 358
+        supplier_id: "SUP-002"
+        quantity: 100
     r_defined: true
-    r_reason: "available_quantity 최대"
+    r_reason: "채울 수 있는 업체 중 단가 최저 (더 싼 ['SUP-001']은 수량을 못 채움)"
     k_set:
       - "SUP-001"
       - "SUP-002"
@@ -260,30 +271,33 @@ states:
       - "SUP-002"
       - "SUP-003"
     candidate_count: 3
-    quantity_on_hand: 42
+    order_quantity: 100
+    fulfilling_ids:
+      - "SUP-002"
+      - "SUP-003"
     predictions:
       first:
         -
           supplier_id: "SUP-001"
-          quantity: 358
+          quantity: 100
       max:
         -
           supplier_id: "SUP-003"
-          quantity: 358
+          quantity: 100
       recent:
         -
           supplier_id: "SUP-003"
-          quantity: 358
+          quantity: 100
       all:
         -
           supplier_id: "SUP-001"
-          quantity: 358
+          quantity: 100
         -
           supplier_id: "SUP-002"
-          quantity: 358
+          quantity: 100
         -
           supplier_id: "SUP-003"
-          quantity: 358
+          quantity: 100
       none: []
     perturbation_row: "P09"
     applicable: false
@@ -297,10 +311,10 @@ states:
     kind: "fork"
     R_s:
       -
-        supplier_id: "SUP-003"
-        quantity: 316
+        supplier_id: "SUP-002"
+        quantity: 100
     r_defined: true
-    r_reason: "available_quantity 최대"
+    r_reason: "채울 수 있는 업체 중 단가 최저 (더 싼 ['SUP-001']은 수량을 못 채움)"
     k_set:
       - "SUP-001"
       - "SUP-002"
@@ -310,36 +324,39 @@ states:
       - "SUP-002"
       - "SUP-003"
     candidate_count: 3
-    quantity_on_hand: 84
+    order_quantity: 100
+    fulfilling_ids:
+      - "SUP-002"
+      - "SUP-003"
     predictions:
       first:
         -
           supplier_id: "SUP-001"
-          quantity: 316
+          quantity: 100
       max:
         -
           supplier_id: "SUP-003"
-          quantity: 316
+          quantity: 100
       recent:
         -
           supplier_id: "SUP-003"
-          quantity: 316
+          quantity: 100
       all:
         -
           supplier_id: "SUP-001"
-          quantity: 316
+          quantity: 100
         -
           supplier_id: "SUP-002"
-          quantity: 316
+          quantity: 100
         -
           supplier_id: "SUP-003"
-          quantity: 316
+          quantity: 100
       none: []
     perturbation_row: "P11"
-    applicable: true
-    reason_if_not_applicable: ""
-    is_baseline: false
-    state_canonical_sha256: "dbafbf22e680712162484bbe3f4648284903b3f0a4fb627d9b48199d9faa7ea2"
+    applicable: false
+    reason_if_not_applicable: "기준 개체의 원본 레코드에 수치 필드가 없다"
+    is_baseline: true
+    state_canonical_sha256: "43c53fde95d6140320aeeddb5a13c056e8c12d890d35ff976c6503a92e23ec8b"
     discriminating: true
     exposure_seen: true
   -
@@ -347,10 +364,10 @@ states:
     kind: "fork"
     R_s:
       -
-        supplier_id: "SUP-003"
-        quantity: 358
+        supplier_id: "SUP-002"
+        quantity: 100
     r_defined: true
-    r_reason: "available_quantity 최대"
+    r_reason: "채울 수 있는 업체 중 단가 최저 (더 싼 ['SUP-001']은 수량을 못 채움)"
     k_set:
       - "SUP-001"
       - "SUP-002"
@@ -360,30 +377,33 @@ states:
       - "SUP-002"
       - "SUP-003"
     candidate_count: 3
-    quantity_on_hand: 42
+    order_quantity: 100
+    fulfilling_ids:
+      - "SUP-002"
+      - "SUP-003"
     predictions:
       first:
         -
           supplier_id: "SUP-001"
-          quantity: 358
+          quantity: 100
       max:
         -
           supplier_id: "SUP-003"
-          quantity: 358
+          quantity: 100
       recent:
         -
           supplier_id: "SUP-003"
-          quantity: 358
+          quantity: 100
       all:
         -
           supplier_id: "SUP-001"
-          quantity: 358
+          quantity: 100
         -
           supplier_id: "SUP-002"
-          quantity: 358
+          quantity: 100
         -
           supplier_id: "SUP-003"
-          quantity: 358
+          quantity: 100
       none: []
     perturbation_row: "P13"
     applicable: true
@@ -397,11 +417,12 @@ states:
     kind: "fork"
     R_s: []
     r_defined: true
-    r_reason: "적격 후보 0개(계약이 발주를 허용하는 공급업체가 없음)"
+    r_reason: "발주 가능한 공급업체 0개(계약이 발주를 허용하는 업체가 없음)"
     k_set: []
     competing_ids: []
     candidate_count: 0
-    quantity_on_hand: 42
+    order_quantity: 100
+    fulfilling_ids: []
     predictions:
       first: []
       max: []
@@ -420,10 +441,10 @@ states:
     kind: "fork"
     R_s:
       -
-        supplier_id: "SUP-003"
-        quantity: 358
+        supplier_id: "SUP-002"
+        quantity: 100
     r_defined: true
-    r_reason: "available_quantity 최대"
+    r_reason: "채울 수 있는 업체 중 단가 최저"
     k_set:
       - "SUP-002"
       - "SUP-003"
@@ -432,32 +453,35 @@ states:
       - "SUP-002"
       - "SUP-003"
     candidate_count: 2
-    quantity_on_hand: 42
+    order_quantity: 100
+    fulfilling_ids:
+      - "SUP-002"
+      - "SUP-003"
     predictions:
       first:
         -
           supplier_id: "SUP-002"
-          quantity: 358
+          quantity: 100
       max:
         -
           supplier_id: "SUP-003"
-          quantity: 358
+          quantity: 100
       recent:
         -
           supplier_id: "SUP-003"
-          quantity: 358
+          quantity: 100
       all:
         -
           supplier_id: "SUP-002"
-          quantity: 358
+          quantity: 100
         -
           supplier_id: "SUP-003"
-          quantity: 358
+          quantity: 100
       none: []
     perturbation_row: "P18"
     applicable: true
     reason_if_not_applicable: ""
     is_baseline: false
-    state_canonical_sha256: "4a24ef644c074a8f6bd220c3b3fd7b7f24f2fa81fb591119a72c2d894a4a6548"
+    state_canonical_sha256: "cf99734dd9db7893fef4974960968b246eabb3178be5ea89ae4ad627f5f137b0"
     discriminating: true
     exposure_seen: true

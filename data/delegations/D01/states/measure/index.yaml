@@ -24,10 +24,10 @@ states:
     kind: "measure"
     R_s:
       -
-        supplier_id: "SUP-003"
-        quantity: 358
+        supplier_id: "SUP-002"
+        quantity: 100
     r_defined: true
-    r_reason: "available_quantity 최대"
+    r_reason: "채울 수 있는 업체 중 단가 최저 (더 싼 ['SUP-001']은 수량을 못 채움)"
     k_set:
       - "SUP-001"
       - "SUP-002"
@@ -37,44 +37,47 @@ states:
       - "SUP-002"
       - "SUP-003"
     candidate_count: 3
-    quantity_on_hand: 42
+    order_quantity: 100
+    fulfilling_ids:
+      - "SUP-002"
+      - "SUP-003"
     predictions:
       first:
         -
           supplier_id: "SUP-001"
-          quantity: 358
+          quantity: 100
       max:
         -
           supplier_id: "SUP-003"
-          quantity: 358
+          quantity: 100
       recent:
         -
           supplier_id: "SUP-003"
-          quantity: 358
+          quantity: 100
       all:
         -
           supplier_id: "SUP-001"
-          quantity: 358
+          quantity: 100
         -
           supplier_id: "SUP-002"
-          quantity: 358
+          quantity: 100
         -
           supplier_id: "SUP-003"
-          quantity: 358
+          quantity: 100
       none: []
     branching: true
     branching_declared: true
     series: "branching"
-    note: "기준 재료 그대로. 최저가·첫 번째·최단 리드타임이 SUP-001에 겹치고 R은 SUP-003"
+    note: "씨앗 상태 그대로. 최저가 SUP-001은 가용 80이라 100을 못 채우고 R은 SUP-002"
   -
     state_id: "s02"
     kind: "measure"
     R_s:
       -
         supplier_id: "SUP-102"
-        quantity: 385
+        quantity: 100
     r_defined: true
-    r_reason: "available_quantity 최대"
+    r_reason: "채울 수 있는 업체 중 단가 최저"
     k_set:
       - "SUP-101"
       - "SUP-102"
@@ -84,44 +87,48 @@ states:
       - "SUP-102"
       - "SUP-103"
     candidate_count: 3
-    quantity_on_hand: 15
+    order_quantity: 100
+    fulfilling_ids:
+      - "SUP-101"
+      - "SUP-102"
+      - "SUP-103"
     predictions:
       first:
         -
           supplier_id: "SUP-101"
-          quantity: 385
+          quantity: 100
       max:
         -
-          supplier_id: "SUP-102"
-          quantity: 385
+          supplier_id: "SUP-101"
+          quantity: 100
       recent:
         -
           supplier_id: "SUP-103"
-          quantity: 385
+          quantity: 100
       all:
         -
           supplier_id: "SUP-101"
-          quantity: 385
+          quantity: 100
         -
           supplier_id: "SUP-102"
-          quantity: 385
+          quantity: 100
         -
           supplier_id: "SUP-103"
-          quantity: 385
+          quantity: 100
       none: []
     branching: true
     branching_declared: true
     series: "branching"
-    note: "R의 대상이 목록 가운데이고 최고가. 최저가·첫 번째·최단 리드타임이 모두 다른 업체"
+    note: "셋 다 수량을 채울 수 있어 필터가 무력하다. R은 목록 가운데의 최저가"
   -
     state_id: "s03"
     kind: "measure"
     R_s:
       -
         supplier_id: "SUP-201"
-        quantity: 334
+        quantity: 100
     r_defined: true
-    r_reason: "available_quantity 최대 (동률 ['SUP-201', 'SUP-202'] → supplier_id 오름차순)"
+    r_reason: "채울 수 있는 업체 중 단가 최저 (동률 ['SUP-201', 'SUP-202'] → supplier_id 오름차순)"
     k_set:
       - "SUP-202"
       - "SUP-201"
@@ -131,44 +138,48 @@ states:
       - "SUP-201"
       - "SUP-203"
     candidate_count: 3
-    quantity_on_hand: 66
+    order_quantity: 100
+    fulfilling_ids:
+      - "SUP-202"
+      - "SUP-201"
+      - "SUP-203"
     predictions:
       first:
         -
           supplier_id: "SUP-202"
-          quantity: 334
+          quantity: 100
       max:
         -
           supplier_id: "SUP-203"
-          quantity: 334
+          quantity: 100
       recent:
         -
           supplier_id: "SUP-203"
-          quantity: 334
+          quantity: 100
       all:
         -
           supplier_id: "SUP-201"
-          quantity: 334
+          quantity: 100
         -
           supplier_id: "SUP-202"
-          quantity: 334
+          quantity: 100
         -
           supplier_id: "SUP-203"
-          quantity: 334
+          quantity: 100
       none: []
     branching: true
     branching_declared: true
     series: "branching"
-    note: "available_quantity 동률 2개. 동률 해소 규칙(supplier_id 오름차순)이 대상을 정한다"
+    note: "최저가 동률 2개(둘 다 수량 충족). 동률 해소 규칙(supplier_id 오름차순)이 대상을 정한다"
   -
     state_id: "s04"
     kind: "measure"
     R_s:
       -
-        supplier_id: "SUP-302"
-        quantity: 312
+        supplier_id: "SUP-303"
+        quantity: 100
     r_defined: true
-    r_reason: "available_quantity 최대"
+    r_reason: "채울 수 있는 업체 중 단가 최저 (더 싼 ['SUP-302']은 수량을 못 채움)"
     k_set:
       - "SUP-303"
       - "SUP-302"
@@ -177,108 +188,126 @@ states:
       - "SUP-301"
       - "SUP-302"
     candidate_count: 2
-    quantity_on_hand: 88
+    order_quantity: 100
+    fulfilling_ids:
+      - "SUP-303"
     predictions:
       first:
         -
           supplier_id: "SUP-303"
-          quantity: 312
+          quantity: 100
       max:
         -
           supplier_id: "SUP-303"
-          quantity: 312
+          quantity: 100
       recent:
         -
           supplier_id: "SUP-302"
-          quantity: 312
+          quantity: 100
       all:
         -
           supplier_id: "SUP-302"
-          quantity: 312
+          quantity: 100
         -
           supplier_id: "SUP-303"
-          quantity: 312
+          quantity: 100
       none: []
     branching: true
     branching_declared: true
     series: "branching"
-    note: "가용 수량이 가장 큰 업체의 계약이 발주를 막는다(W 조건). 적격 후보는 2개"
+    note: "최저가 업체는 계약이 막고(씨앗 pair의 procurement hold), 그다음 싼 업체는 가용 60이라 못 채운다"
   -
     state_id: "s05"
-    kind: "measure"
-    R_s: []
-    r_defined: true
-    r_reason: "트리거 미충족(quantity_on_hand >= 100)"
-    k_set:
-      - "SUP-001"
-      - "SUP-002"
-      - "SUP-003"
-    competing_ids:
-      - "SUP-001"
-      - "SUP-002"
-      - "SUP-003"
-    candidate_count: 3
-    quantity_on_hand: 140
-    predictions:
-      first: []
-      max: []
-      recent: []
-      all: []
-      none: []
-    branching: false
-    branching_declared: false
-    series: "empty"
-    note: "비분기: 트리거 미충족(140 >= 100). 후보 구조는 s01과 같다"
-  -
-    state_id: "s06"
     kind: "measure"
     R_s:
       -
         supplier_id: "SUP-401"
-        quantity: 355
+        quantity: 100
     r_defined: true
-    r_reason: "available_quantity 최대"
+    r_reason: "채울 수 있는 업체 중 단가 최저"
     k_set:
       - "SUP-401"
     competing_ids:
       - "SUP-401"
     candidate_count: 1
-    quantity_on_hand: 45
+    order_quantity: 100
+    fulfilling_ids:
+      - "SUP-401"
     predictions:
       first:
         -
           supplier_id: "SUP-401"
-          quantity: 355
+          quantity: 100
       max:
         -
           supplier_id: "SUP-401"
-          quantity: 355
+          quantity: 100
       recent:
         -
           supplier_id: "SUP-401"
-          quantity: 355
+          quantity: 100
       all:
         -
           supplier_id: "SUP-401"
-          quantity: 355
+          quantity: 100
       none: []
     branching: false
     branching_declared: false
     series: "single_candidate"
-    note: "비분기(적격 후보 1개): PROD-001 공급업체가 한 곳뿐이라 선택 규칙 전부와 R(s)가 같은 업체를 낸다"
+    note: "비분기(적격 후보 1개): 이 상품 공급업체가 한 곳뿐이고 수량을 채운다. 선택 규칙 전부와 R(s)가 같다"
+  -
+    state_id: "s06"
+    kind: "measure"
+    R_s:
+      -
+        supplier_id: "SUP-501"
+        quantity: 100
+    r_defined: true
+    r_reason: "채울 수 있는 업체 중 단가 최저"
+    k_set:
+      - "SUP-501"
+    competing_ids:
+      - "SUP-501"
+    candidate_count: 1
+    order_quantity: 100
+    fulfilling_ids:
+      - "SUP-501"
+    predictions:
+      first:
+        -
+          supplier_id: "SUP-501"
+          quantity: 100
+      max:
+        -
+          supplier_id: "SUP-501"
+          quantity: 100
+      recent:
+        -
+          supplier_id: "SUP-501"
+          quantity: 100
+      all:
+        -
+          supplier_id: "SUP-501"
+          quantity: 100
+      none: []
+    branching: false
+    branching_declared: false
+    series: "single_candidate"
+    note: "비분기(적격 후보 1개): 이 상품은 한 곳, 다른 상품은 두 곳이다. 빈손 조회가 타 상품 후보까지 돌려주므로 상품 필터를 지키는지도 본다"
   -
     state_id: "s07"
     kind: "measure"
     R_s: []
     r_defined: true
-    r_reason: "적격 후보 0개(계약이 발주를 허용하는 공급업체가 없음)"
+    r_reason: "발주 가능한 공급업체 0개(계약이 발주를 허용하는 업체가 없음)"
     k_set: []
     competing_ids:
       - "SUP-001"
       - "SUP-002"
       - "SUP-003"
     candidate_count: 0
-    quantity_on_hand: 36
+    order_quantity: 100
+    fulfilling_ids: []
     predictions:
       first: []
       max: []
@@ -288,41 +317,25 @@ states:
     branching: false
     branching_declared: false
     series: "empty"
-    note: "비분기: 트리거는 걸리지만 세 업체의 계약이 모두 발주를 막는다(적격 후보 0)"
+    note: "비분기(∅): 세 업체의 계약이 모두 발주를 막는다(씨앗 pair의 abstain 조건 그대로). K(s) = ∅"
   -
     state_id: "s08"
     kind: "measure"
-    R_s:
-      -
-        supplier_id: "SUP-501"
-        quantity: 355
+    R_s: []
     r_defined: true
-    r_reason: "available_quantity 최대"
-    k_set:
-      - "SUP-501"
-    competing_ids:
-      - "SUP-501"
-    candidate_count: 1
-    quantity_on_hand: 45
+    r_reason: "발주 가능한 공급업체 0개(계약이 발주를 허용하는 업체가 없음)"
+    k_set: []
+    competing_ids: []
+    candidate_count: 0
+    order_quantity: 100
+    fulfilling_ids: []
     predictions:
-      first:
-        -
-          supplier_id: "SUP-501"
-          quantity: 355
-      max:
-        -
-          supplier_id: "SUP-501"
-          quantity: 355
-      recent:
-        -
-          supplier_id: "SUP-501"
-          quantity: 355
-      all:
-        -
-          supplier_id: "SUP-501"
-          quantity: 355
+      first: []
+      max: []
+      recent: []
+      all: []
       none: []
     branching: false
     branching_declared: false
-    series: "single_candidate"
-    note: "비분기(적격 후보 1개): PROD-001은 한 곳, PROD-002는 두 곳이다. 빈손 조회가 타 상품 후보까지 돌려주므로 상품 필터를 지키는지도 본다"
+    series: "empty"
+    note: "비분기(∅): 이 상품의 공급업체 목록이 비었다(다른 상품 목록만 있음). K(s) = ∅"

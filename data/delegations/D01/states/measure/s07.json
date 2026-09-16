@@ -27,7 +27,7 @@
             "product_id": "PROD-001",
             "sku": "CC-355-SGL",
             "name": "Coca-Cola Classic 355ml Can",
-            "quantity_on_hand": 36,
+            "quantity_on_hand": 42,
             "unit": "cans",
             "location": "Warehouse A, Row 3, Shelf 2",
             "status": "in_stock",
@@ -57,7 +57,7 @@
             "supplier_sku": "001-CC-355",
             "price": 0.72,
             "currency": "USD",
-            "available_quantity": 80,
+            "available_quantity": 800,
             "lead_time_days": 2,
             "contact_details": "orders@metro.example.com | +1-800-555-1101"
         },

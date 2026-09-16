@@ -27,7 +27,7 @@
             "product_id": "PROD-001",
             "sku": "CC-355-SGL",
             "name": "Coca-Cola Classic 355ml Can",
-            "quantity_on_hand": 84,
+            "quantity_on_hand": 42,
             "unit": "cans",
             "location": "Warehouse A, Row 3, Shelf 2",
             "status": "in_stock",

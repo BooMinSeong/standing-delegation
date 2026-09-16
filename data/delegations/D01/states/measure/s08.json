@@ -27,7 +27,7 @@
             "product_id": "PROD-001",
             "sku": "CC-355-SGL",
             "name": "Coca-Cola Classic 355ml Can",
-            "quantity_on_hand": 45,
+            "quantity_on_hand": 42,
             "unit": "cans",
             "location": "Warehouse A, Row 3, Shelf 2",
             "status": "in_stock",
@@ -51,63 +51,21 @@
     ],
     "supplier_listings": [
         {
-            "supplier_id": "SUP-501",
-            "supplier_name": "Lakeshore Drink Partners",
-            "product_id": "PROD-001",
-            "supplier_sku": "501-CC-355",
-            "price": 0.76,
-            "currency": "USD",
-            "available_quantity": 430,
-            "lead_time_days": 2,
-            "contact_details": "orders@lakeshore.example.com | +1-800-555-1101"
-        },
-        {
-            "supplier_id": "SUP-502",
-            "supplier_name": "Brightwater Distributors",
+            "supplier_id": "SUP-021",
+            "supplier_name": "Tri-State Diet Beverages",
             "product_id": "PROD-002",
-            "supplier_sku": "502-DC-355",
-            "price": 0.68,
+            "supplier_sku": "021-DC-355",
+            "price": 0.69,
             "currency": "USD",
-            "available_quantity": 900,
-            "lead_time_days": 2,
-            "contact_details": "orders@brightwater.example.com | +1-800-555-1102"
-        },
-        {
-            "supplier_id": "SUP-503",
-            "supplier_name": "Copper Ridge Supply",
-            "product_id": "PROD-002",
-            "supplier_sku": "503-DC-355",
-            "price": 0.83,
-            "currency": "USD",
-            "available_quantity": 610,
-            "lead_time_days": 5,
-            "contact_details": "orders@copper.example.com | +1-800-555-1103"
+            "available_quantity": 700,
+            "lead_time_days": 3,
+            "contact_details": "orders@tri-state.example.com | +1-800-555-1101"
         }
     ],
     "supplier_contracts": [
         {
             "contract_id": "CON-001",
-            "supplier_id": "SUP-501",
-            "product_id": "PROD-001",
-            "active": true,
-            "start_date": "2026-01-01",
-            "end_date": "2026-12-31",
-            "ordering_permitted": true,
-            "restrictions": "Standard beverage replenishment terms."
-        },
-        {
-            "contract_id": "CON-002",
-            "supplier_id": "SUP-502",
-            "product_id": "PROD-002",
-            "active": true,
-            "start_date": "2026-01-01",
-            "end_date": "2026-12-31",
-            "ordering_permitted": true,
-            "restrictions": "Standard beverage replenishment terms."
-        },
-        {
-            "contract_id": "CON-003",
-            "supplier_id": "SUP-503",
+            "supplier_id": "SUP-021",
             "product_id": "PROD-002",
             "active": true,
             "start_date": "2026-01-01",

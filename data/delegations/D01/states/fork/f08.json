@@ -33,7 +33,7 @@
             "status": "in_stock",
             "counterfeit_flag": false,
             "handling_notes": "Store at room temperature, away from direct sunlight.",
-            "authenticity_record_id": ""
+            "authenticity_record_id": "AUTH-001"
         },
         {
             "item_id": "INV-002",

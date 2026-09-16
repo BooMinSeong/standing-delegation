@@ -31,7 +31,7 @@
             "unit": "cans",
             "location": "Warehouse A, Row 3, Shelf 2",
             "status": "in_stock",
-            "counterfeit_flag": true,
+            "counterfeit_flag": false,
             "handling_notes": "Store at room temperature, away from direct sunlight.",
             "authenticity_record_id": "AUTH-001"
         },
