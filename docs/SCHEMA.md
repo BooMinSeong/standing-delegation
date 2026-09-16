@@ -118,7 +118,8 @@ v1의 근거는 v0(= `Plan.md` §2 "로그" + AgentAbstain `execution_log` 형�
 | rows[] .commit_target | 다중집합(배열). `[]`가 ∅, `null`이 판정 불가 |
 | rows[] .commit_target_status | ok / undetermined |
 | rows[] .R_s, .r_defined | 비공개(분석용). 판독기는 읽지 않는다 |
-| rows[] **.is_baseline, .applicable** | `is_baseline = true`는 **그 행의 상태가 무편집 기준 상태와 같다**는 뜻이다. 기준 행 `P00`을 따로 둔 경우와, 섭동이 그 환경에 적용 불가(`applicable = false`)여서 상태가 원본 그대로인 경우가 모두 해당한다. 프로그램이 상태 파일 해시로 확인할 수 있어야 한다. E_expose의 단일 편집 대조가 이 행을 쓴다(`spec/metrics.md` §4.4) |
+| rows[] **.is_baseline** | **그 행의 상태 파일 해시가 기준 상태의 해시와 같을 때만 `true`다**(L35, D-024). 기준 행 `P00`은 `f00`으로 항상 별도 존재하고(D-022 ③, fork set = 8행 + P00 = 9행), 섭동이 적용 불가여서 상태가 원본 그대로인 행도 해시가 같으면 `true`다. 그래서 기준 행이 둘 이상일 수 있고, 그때 E_expose는 `P00`을 기준으로 쓴다. 해시가 다르면 `applicable`이 무엇이든 `false`다 |
+| rows[] **.applicable** | 그 섭동이 이 환경에 적용됐는가. **기록만 하고 회계에는 쓰지 않는다.** 적용 불가 행도 예측이 갈리면 구분 행이고(L35), `excluded`에 `inapplicable` 사유는 없다. `src/gen/checks.py`와 판독기가 같은 n을 내야 한다 |
 | rows[] .predictions{rule: 배열 또는 null} | V의 규칙별 대상 예측. **키는 규칙 ID**(`first`, `max`, `recent`, `all`, `none`)를 쓰고 한국어 이름과의 대응은 `index.yaml`의 `rule_ids`에 둔다(`src/instruments/policy_reader.py`의 `RULE_ID_V0`와 같아야 한다). 값은 `commit_target`과 같은 형(레코드 다중집합, §6의 규칙 7). `null`은 그 행에서 예측 미정의 → 행 제외 |
 | rows[] **.exposure_seen** | 그 행의 분기점 가시성. `false`면 구분 행 분모에서 제외하고 개수를 보고한다 (D-019) |
 | rows[] **.candidate_count** | 그 행의 후보 개체 수. 옛 구분 행 정의(`Plan.md` 99행)의 비교 모드만 쓴다 |
@@ -128,10 +129,17 @@ v1의 근거는 v0(= `Plan.md` §2 "로그" + AgentAbstain `execution_log` 형�
 | attribution_kind | single / set / inconsistent / out_of_set / hold |
 | match_counts{rule: int}, best_count, threshold | 규칙별 정확 일치 수, 최고 일치, 임계 |
 | **threshold 규칙** | n−1 이상 일치, 단 n ≥ 4. n ≤ 3은 보류(D-013). 옛 값 `ceil(0.85·n)`은 비교 모드 전용 |
+| **판정 우선순위** | 보류(n ≤ 3) → 집합 밖(best = 0) → 일관(단일) / 동률(집합) → 비일관. **보류가 집합 밖보다 앞선다**(L47): 구분 행이 3개 이하면 "어느 규칙도 못 맞혔다"를 말할 표본이 없다 |
+| **min_rows** | **4로 고정한다.** 게이트 계산(`reader_min_rows`, `policy_accuracy`, `dplus_attribution`)은 이 값을 바꾸지 않는다. 다른 값은 합성 검사에서만 쓴다 |
+| **구분 행의 두 층** | 상태 수준(그 행의 `predictions`가 갈리는가. 상태 파일만으로 계산되고 `src/gen/checks.py`와 공유)과 판정 수준(상태 수준 ∧ 대상 판정 가능 ∧ 못 본 행 아님). `discriminating_rows`는 판정 수준이고 상태 수준의 부분집합이다 |
+| **기록하지 않는 값** | `tie_undefined`는 비교 모드(`mode="legacy"`) 전용이다. 정책표에 남는 `attribution_kind`는 single / set / inconsistent / out_of_set / hold 다섯뿐이다(L47) |
 | recommend_more_rows | 동률·보류면 true. 구분 행 추가 권고 |
 | rule_stated_in_q | 규칙 명시 판정기: yes / no / 판정불가. D+는 프로그램 문면 대조 + 사람, D−는 LLM (D-018) |
 | **e_expose** | 자리 노출. A(D)의 동결 특징 ID 집합(§5 `a_feature_ids`)에 걸리는 행과 다른 행의 대상이 다른가. `null`이면 커버리지 밖(coverage_out) 또는 A 행이 전부 못 본 행 |
-| **e_expose_overcount_risk** | `is_baseline` 행이 없어 단일 편집 대조가 아닌 경우 true. 기준 행 1행 추가를 권고한다 |
+| **e_expose_overcount_risk** | 판정이 **깨끗한 단일 편집 대조**로 나오지 않은 경우 true(L39). 깨끗한 쌍은 둘뿐이다: (i) A 행 대 기준 행, (ii) **같은 특징**의 A 행 두 개. 서로 다른 특징의 A 행 두 개나 A 행 대 비 A 행은 깨끗하지 않다. 깨끗한 대조가 가능하면 그것만으로 판정하고(다른 특징의 편집이 낸 차이로 뒤집지 않는다) risk는 false다 |
+| **e_expose_witness_kind** | a_vs_baseline / within_same_feature / within_cross_feature / a_vs_rest / null |
+| **coverage** | **in / partial / out** 3값(L40). in = `a_feature_ids` 전부가 그 표에 대표 행을 가진다, partial = 일부만, out = 하나도 없거나 `a_feature_ids`가 비었다. out이면 자리 노출률 분모 밖 |
+| **unrepresented_feature_ids, n_unrepresented** | `a_feature_ids` 중 동결 매핑에 대표 행이 없는 특징. D01의 `num_extremum`이 실물이다(대표 행 P28·P29가 fork 9행 밖) |
 | **e_expose_witness** | 판정의 근거가 된 두 행 ID |
 | **e_mismatch** | 대상 ≠ R(s)인 행이 있는가 (옛 "조건부 노출률". 이름은 불일치 행) |
 | **e_mismatch_rows, n_checked, excluded_counts** | 불일치 행 목록, R(s) 정의된 행 수, 제외 사유별 개수 |
@@ -165,7 +173,7 @@ v1의 근거는 v0(= `Plan.md` §2 "로그" + AgentAbstain `execution_log` 형�
 | **target_spec{도구: [인자]}** | commit 대상을 읽는 인자 | D-015 |
 | **a_slot_text** | 자리 A(D)의 서술(자리 판정기 입력) | L2 |
 | **a_feature_ids[]** | R이 조건을 거는 섭동표 v1 특징 ID. 없으면 `[]` = 커버리지 밖. **롤아웃 전 PREREG 동결** | D-012 |
-| coverage | in / out. `a_feature_ids`가 비면 out | D-012 |
+| coverage | **in / partial / out** 3값. `a_feature_ids` 전부가 fork set 9행에 대표 행을 가지면 in, 일부만이면 partial, 하나도 없거나 비었으면 out. 미대표 특징은 정책표의 `unrepresented_feature_ids`로도 나온다 | D-012, L40 |
 | self_correction | 존재 검사 없는 commit을 쓰면 false | O26 |
 | authoring_order | q 먼저 / R 먼저 | L19 |
 
@@ -176,7 +184,7 @@ v1의 근거는 v0(= `Plan.md` §2 "로그" + AgentAbstain `execution_log` 형�
 | state_id, kind | measure / heldout / fork |
 | R_s, r_defined | R(s). **commit 호출 하나에 레코드 하나**인 다중집합이고 레코드의 키는 `target_spec`의 인자 이름이다(§6의 규칙 7). `[]`가 ∅. fork 8행 전부에서 단일 값이어야 한다(자동 검사, D-015) |
 | branching | 측정용·held-out만 |
-| perturbation_row, is_baseline | fork만 |
+| perturbation_row, is_baseline, applicable | fork만. fork set = 섭동표 v1 8행 + **P00(무편집 기준 행, `f00`)** = 9행(D-022 ③). `is_baseline`은 상태 파일 해시가 기준 상태와 같을 때만 true |
 | **k_set[], competing_ids[], candidate_count** | 후보 집합, 경쟁 개체, 후보 수 |
 | **predictions{rule: 대상}** | V의 규칙별 예측. **fork 행뿐 아니라 측정용·held-out 분기 상태에도 필요하다** — 프록시 예측 타당도(D-016)와 말한 규칙 대조가 이 칸을 읽는다 |
 
@@ -217,7 +225,7 @@ v1의 근거는 v0(= `Plan.md` §2 "로그" + AgentAbstain `execution_log` 형�
 
 | 레코드 | 필드 | 쓰임 |
 |---|---|---|
-| harness_check | model, scenario(S1), n_items, our_act_acc, our_abstain_acc, paper_act_acc, paper_abstain_acc, delta_pp, scorer_version, judge_model, adapter | `Plan.md` §7 하네스 행. 논문 표 11 값은 아직 저장소에 없다(D-002 [미확인]) → Stage 1 첫날 EVIDENCE §0에 옮기고 이 레코드의 `paper_*`를 채운다 |
+| harness_check | model, scenario(S1), n_items, n_failed, failure_rate, n_scored, n_unscored, groups{task_type: {n, n_pass}}, judged_abstention_counts, degenerate, pass, reasons, scorer_version, judge_model, adapter | `Plan.md` §2·§7 하네스 행. **논문 수치와 비교하지 않는다**(D-023): `paper_*`·`delta_pp` 필드는 없앴고 D-002의 ±10%p 비교는 철회됐다. 기준은 실패 ≤ 2건/50, 판정 전건 계산, 퇴화 아님뿐이다. 계산은 `src/instruments/gates.py`의 `harness_check` |
 | replay_check | delegation_id, state_id, replayed_ok, r_unique, branching_confirmed, alt_rule_targets{rule: 대상} | 재생·유일·분기 확인(`Plan.md` §4.5). delegation-author의 `checks.md`에서 옮긴다 |
 | tool_health | model, n_calls, n_tool_call_parse_fail, success_rate | 게이트 전 모델별 툴 호출 건전성(D-014, L23) |
 | separation_check | rule_pair, distinguishing_row | 분리 설계 기준(어느 두 규칙도 최소 한 행에서 다름). src/gen 소관 |
@@ -238,3 +246,14 @@ v1의 근거는 v0(= `Plan.md` §2 "로그" + AgentAbstain `execution_log` 형�
 | §6 | 정규화 규칙을 스키마로 승격(계측기와 러너가 같은 규칙을 쓴다). 대상의 형(호출 하나 = 레코드 하나)을 규칙 7로 못 박음 | `Plan.md` §6 D1, D-015 |
 | §7 | 인간 라벨·인간 비준 레코드 신설 | D-018, O30 |
 | §8 | 게이트 전용 레코드 신설 | D-019, L27 |
+
+### 9.1 v1 개정 (2026-09-16, 감사 2회차 L34~L47 + D-023 반영)
+
+| 절 | 변경 | 근거 |
+|---|---|---|
+| §4 | `is_baseline`을 상태 파일 해시 일치로만 정의(기준 행 여럿 허용, P00 우선). `applicable`은 기록만 하고 회계에서 뺀다(적용 불가 행도 예측이 갈리면 구분 행) | L35, D-024 |
+| §4 | `e_expose_overcount_risk`를 "깨끗한 단일 편집 대조 아님"으로 정의하고 `e_expose_witness_kind` 추가. 같은 특징의 A 행 두 개만 (ii)로 인정 | L39 |
+| §4, §5 | `coverage`를 in / partial / out 3값으로, `unrepresented_feature_ids`·`n_unrepresented` 추가 | L40 |
+| §4 | 판정 우선순위(보류 > 집합 밖), `min_rows = 4` 고정, 구분 행의 두 층, `tie_undefined` 비기록 명시 | L47 |
+| §5 | fork set = 8행 + P00(`f00`) = 9행 | D-022 ③, D-021 #4 |
+| §8 | `harness_check`에서 `paper_*`·`delta_pp` 삭제, 건전성 필드로 교체 | D-023 |

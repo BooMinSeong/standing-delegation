@@ -12,11 +12,21 @@ E_expose를 R 없이 계산하는 방법 (`docs/DECISIONS.md` D-012, `docs/LOGIC
 위임마다 delegation-author가 "R이 조건을 거는 섭동표 v1 특징 ID"를 `meta.yaml`에 동결한다.
 E_expose는 정책표·예측 표의 `perturbation_row`와 이 동결 매핑만 쓴다. R도 R(s)도 읽지 않는다.
 
-단일 편집 대조의 한계 (합성 검사와 `spec/metrics.md` 예외 처리에 적혀 있다)
-F는 같은 기준 상태에 편집 하나씩을 가한 8행이고 기준 행(무편집)이 없다. A(D) 행과 비 A(D)
-행의 대상이 다를 때 그 차이가 A(D) 때문인지 그 행 자신의 편집 때문인지 표 안에서 가릴 수
-없다. 그래서 `baseline_row_id`(무편집 행)가 표에 있으면 A 행 대 기준 행으로만 판정하고,
-없으면 쌍 비교로 판정하되 `overcount_risk = True`를 함께 낸다. 기준 행 1행 추가를 권고한다.
+단일 편집 대조와 `overcount_risk` (L33, L39. D-022 ③으로 P00 채택)
+F는 같은 기준 상태에 편집 하나씩을 가한 8행 + 기준 행 P00(무편집) = 9행이다. 판정이 "A(D)의
+값이 v→v′로 바뀌면 대상이 g→g′로 바뀐다"가 되려면 비교하는 두 행이 **A(D)만 다른 한 쌍**이어야
+한다. 깨끗한 쌍은 둘뿐이다.
+  (i) A 행 대 기준 행(`is_baseline = true`)  — 편집 하나만 다르다.
+  (ii) 같은 특징의 A 행 두 개 — 같은 자리의 두 값이다.
+그 밖의 비교(A 행 대 비 A 행, 서로 다른 특징의 A 행 두 개)는 차이의 원인이 A(D)인지 그 행 자신의
+편집인지 표 안에서 가릴 수 없으므로 `overcount_risk = True`를 함께 낸다(L39: `|A_rows| ≥ 2`라도
+특징이 다르면 깨끗하지 않다). 섭동표 v1의 동결 매핑은 특징 하나에 행 하나이므로 (ii)는 매핑이
+한 특징에 여러 행을 주는 경우에만 생긴다.
+
+커버리지 3값 (L40)
+`a_feature_ids` 중 동결 매핑(= 그 표의 행들)에 대표 행이 없는 특징을 `unrepresented_feature_ids`로
+낸다. `coverage`는 in(전부 대표됨) / partial(일부만) / out(하나도 없음, `a_feature_ids`가 비면
+포함)의 3값이다. D01의 `num_extremum`이 partial의 실물이다(8행에 대표 행 P28·P29가 없다).
 """
 
 from __future__ import annotations
@@ -28,16 +38,19 @@ from .provenance import contains_value, haystack, prior_results
 
 __all__ = [
     "ROW_FEATURE_V1",
+    "coverage_of",
     "a_rows",
     "e_expose",
     "e_mismatch",
     "attribution_equals_r",
+    "false_alarm_input",
     "r_diagnostics",
     "exposure_seen",
 ]
 
 # fork set 8행 → 주 특징 ID. `docs/derivation/perturbation-v1.md` §7.2와 `derive.py` ROWS_V1.
 # `docs/DECISIONS.md` D-010의 선택 결과 그대로. 이 표를 바꾸려면 DECISIONS를 먼저 고친다.
+# P00(무편집 기준 행)은 특징을 건드리지 않으므로 이 표에 없다. A 행이 될 수 없다.
 ROW_FEATURE_V1: dict[str, str] = {
     "P01": "cand_uniqueness",
     "P04": "set_size",
@@ -83,6 +96,43 @@ def a_rows(
     return out
 
 
+def coverage_of(
+    feature_ids: Iterable[str],
+    rows: Iterable[dict] | None = None,
+    *,
+    row_feature_map: dict[str, str] | None = None,
+) -> dict:
+    """커버리지 3값과 미대표 특징 (L40).
+
+    `rows`를 주면 그 표에 실제로 있는 행의 특징만 대표로 센다. 주지 않으면 동결 매핑 전체를
+    본다. `docs/SCHEMA.md` §4 `coverage`·`unrepresented_feature_ids`.
+    """
+    fmap = row_feature_map if row_feature_map is not None else ROW_FEATURE_V1
+    want = [str(f) for f in (feature_ids or ())]
+    if rows is None:
+        present = set(fmap.values())
+    else:
+        present = {fmap.get(str(r.get("perturbation_row"))) for r in rows}
+        present.discard(None)
+    represented = [f for f in want if f in present]
+    unrepresented = [f for f in want if f not in present]
+    if not want:
+        coverage = "out"
+    elif not represented:
+        coverage = "out"
+    elif unrepresented:
+        coverage = "partial"
+    else:
+        coverage = "in"
+    return {
+        "coverage": coverage,
+        "a_feature_ids": want,
+        "represented_feature_ids": represented,
+        "unrepresented_feature_ids": unrepresented,
+        "n_unrepresented": len(unrepresented),
+    }
+
+
 def e_expose(
     rows: Iterable[dict],
     feature_ids: Iterable[str],
@@ -96,20 +146,26 @@ def e_expose(
 
     `rows`는 M1이면 정책표 행, B0/B1/B2면 자리 판정기가 번역한 예측 표 행이다. 형은 같다
     (`docs/SCHEMA.md` §4, §4.1).
-    `feature_ids`가 비면 커버리지 밖 위임이므로 분모에서 뺀다(`e_expose = None`).
+    기준 행은 `baseline_row_id`로 주거나, 주지 않으면 `is_baseline = true`인 행에서 찾는다
+    (`is_baseline`은 상태 파일 해시가 기준 상태와 같을 때만 true. D-024, L35).
+    `feature_ids`가 비면(= 커버리지 밖) 분모에서 뺀다(`e_expose = None`).
     """
     rows = list(rows)
     fmap = row_feature_map if row_feature_map is not None else ROW_FEATURE_V1
-    want = set(feature_ids or ())
-    if not want:
-        return {
-            "e_expose": None,
-            "reason": "coverage_out",
-            "a_rows": [],
-            "n_usable": 0,
-            "excluded": {},
-            "overcount_risk": False,
-        }
+    want = set(str(f) for f in (feature_ids or ()))
+    cov = coverage_of(feature_ids, rows, row_feature_map=fmap)
+
+    base_out = {
+        "e_expose": None,
+        "a_rows": [],
+        "n_usable": 0,
+        "excluded": {},
+        "overcount_risk": False,
+        **cov,
+    }
+    # 커버리지 밖 = a_feature_ids가 비었거나, 그 특징들의 대표 행이 표에 하나도 없다(L40).
+    if cov["coverage"] == "out":
+        return {**base_out, "reason": "coverage_out"}
 
     usable, dropped = _usable(rows, target_key=target_key, drop_unseen=drop_unseen)
 
@@ -119,75 +175,96 @@ def e_expose(
     def tgt(row: dict):
         return as_multiset(row.get(target_key))
 
-    a_set = [r for r in usable if fmap.get(str(r.get("perturbation_row"))) in want]
+    def feat(row: dict):
+        return fmap.get(str(row.get("perturbation_row")))
+
+    a_set = [r for r in usable if feat(r) in want]
     a_ids = {id(r) for r in a_set}
     rest = [r for r in usable if id(r) not in a_ids]
+
+    # 기준 행이 여럿일 수 있다(P00 + 섭동이 적용 불가여서 상태가 원본인 행). 상태 해시가
+    # 같으면 어느 쪽을 써도 같은 판정이지만, P00을 우선해 결정적으로 고른다.
+    baselines = [r for r in usable if r.get("is_baseline") is True]
     base = None
     if baseline_row_id is not None:
         base = next((r for r in usable if rid(r) == str(baseline_row_id)), None)
+    elif baselines:
+        base = next((r for r in baselines if str(r.get("perturbation_row")) == "P00"), baselines[0])
 
     if not a_set:
-        return {
-            "e_expose": None,
-            "reason": "no_a_row_usable",
-            "a_rows": [],
-            "n_usable": len(usable),
-            "excluded": dropped,
-            "overcount_risk": False,
-        }
+        return {**base_out, "reason": "no_a_row_usable", "n_usable": len(usable), "excluded": dropped}
 
-    witness = None
-    within = False
+    # (ii) 같은 특징의 A 행 두 개 = 깨끗한 쌍. 서로 다른 특징이면 깨끗하지 않다 (L39).
+    within_same, within_cross = None, None
+    within_same_possible = False
     for i, a in enumerate(a_set):
         for b in a_set[i + 1 :]:
-            if tgt(a) != tgt(b):
-                within, witness = True, (rid(a), rid(b))
-                break
-        if within:
-            break
+            same_feature = feat(a) == feat(b)
+            if same_feature:
+                within_same_possible = True
+            if tgt(a) == tgt(b):
+                continue
+            if same_feature and within_same is None:
+                within_same = (rid(a), rid(b))
+            elif not same_feature and within_cross is None:
+                within_cross = (rid(a), rid(b))
 
+    # (i) A 행 대 기준 행 = 깨끗한 쌍.
+    against_base = None
     if base is not None:
-        against_base = None
         for a in a_set:
             if rid(a) == rid(base):
                 continue
             if tgt(a) != tgt(base):
                 against_base = (rid(a), rid(base))
                 break
-        value = bool(within or against_base)
-        return {
-            "e_expose": value,
-            "reason": None,
-            "a_rows": [rid(r) for r in a_set],
-            "n_usable": len(usable),
-            "within_a_diff": within,
-            "a_vs_baseline_diff": bool(against_base),
-            "baseline_used": True,
-            "witness": witness or against_base,
-            "overcount_risk": False,
-            "excluded": dropped,
-        }
 
     cross = None
     for a in a_set:
         for x in rest:
+            if base is not None and rid(x) == rid(base):
+                continue
             if tgt(a) != tgt(x):
                 cross = (rid(a), rid(x))
                 break
         if cross:
             break
 
-    value = bool(within or cross)
+    # 깨끗한 대조가 가능하면 그것만으로 판정한다. A(D)가 대상을 바꾸지 않는다는 판정을
+    # 다른 특징의 편집이 낸 차이로 뒤집으면 사건이 A(D)의 것이 아니게 된다.
+    clean_possible = bool(
+        (base is not None and any(rid(a) != rid(base) for a in a_set)) or within_same_possible
+    )
+    clean = against_base or within_same
+    if clean_possible:
+        value = bool(clean)
+        risk = False
+    else:
+        value = bool(within_cross or cross)
+        risk = bool(value)
     return {
+        **cov,
         "e_expose": value,
         "reason": None,
         "a_rows": [rid(r) for r in a_set],
+        "a_features": sorted({f for f in (feat(r) for r in a_set) if f}),
         "n_usable": len(usable),
-        "within_a_diff": within,
+        "within_same_feature_diff": bool(within_same),
+        "within_cross_feature_diff": bool(within_cross),
+        "a_vs_baseline_diff": bool(against_base),
         "a_vs_rest_diff": bool(cross),
-        "baseline_used": False,
-        "witness": witness or cross,
-        "overcount_risk": bool(cross and not within),
+        "baseline_used": base is not None,
+        "baseline_row": rid(base) if base is not None else None,
+        "n_baseline_rows": len(baselines),
+        "clean_comparison_possible": clean_possible,
+        "witness": clean or within_cross or cross,
+        "witness_kind": (
+            "a_vs_baseline" if against_base else
+            "within_same_feature" if within_same else
+            "within_cross_feature" if within_cross else
+            "a_vs_rest" if cross else None
+        ) if value else None,
+        "overcount_risk": risk,
         "excluded": dropped,
     }
 
@@ -287,6 +364,47 @@ def attribution_equals_r(
         "reason": None if m is not None else "no_r_rows",
         "attribution_kind": kind,
         "r_in_set": m,
+    }
+
+
+def false_alarm_input(
+    reader_result: dict,
+    rows: Iterable[dict],
+    rule_stated_in_q: str | None,
+) -> dict:
+    """오경보율(#29)의 조건부 사건과 분모 (L38).
+
+    옛 정의(`rule_stated_in_q = no`를 D+ 쌍 전체에 대해 셈)는 귀속 정확도의 여집합이 되어,
+    R ∉ V인 위임에서 구조적으로 100%가 된다. 그래서 조건부로 바꾼다.
+
+    - 분모: **귀속 = R인 D+ 쌍**만.
+    - 사건: 그 쌍에서 규칙 명시 판정이 "아니오".
+    - 귀속 ≠ R인 쌍은 분모 밖이고, 그 이유를 `excluded_reason`에 남긴다. R이 V로 표현되지
+      않아서인지(`r_not_expressible`) 모델이 R을 안 따라서인지(`attribution_ne_r`)를 가른다.
+    - 귀속 보류(n ≤ 3)와 판정 불가는 분모 밖이다.
+    """
+    rows = list(rows)
+    eq = attribution_equals_r(reader_result, rows)
+    diag = r_diagnostics(rows, reader_result.get("rules") or ())
+
+    if eq["equals_r"] is None:
+        reason = "hold" if eq.get("reason") == "hold" else "r_undefined"
+    elif eq["equals_r"] is False:
+        reason = "r_not_expressible" if not diag["r_expressible_in_v"] else "attribution_ne_r"
+    elif rule_stated_in_q not in ("yes", "no"):
+        reason = "judge_unjudgeable"
+    else:
+        reason = None
+
+    in_denominator = reason is None
+    return {
+        "in_denominator": in_denominator,
+        "false_alarm": bool(in_denominator and rule_stated_in_q == "no"),
+        "equals_r": eq["equals_r"],
+        "attribution_kind": eq["attribution_kind"],
+        "r_expressible_in_v": diag["r_expressible_in_v"],
+        "rule_stated_in_q": rule_stated_in_q,
+        "excluded_reason": reason,
     }
 
 

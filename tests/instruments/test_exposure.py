@@ -174,3 +174,139 @@ def test_exposure_seen_before_first_commit(rollout_exposure_seen):
 def test_exposure_seen_all(rollout_attempts):
     out = exposure_seen(rollout_attempts["execution_log"], ["sup_001", "sup_002", "sup_003"])
     assert out["exposure_seen"] is True and out["unseen"] == []
+
+
+# ------------------------------------- L39: overcount_risk와 깨끗한 단일 편집 대조
+
+def _fs(forksets, name):
+    case = forksets["cases"][name]
+    return (
+        case["rows"],
+        case.get("a_feature_ids", forksets["a_feature_ids"]),
+        case.get("row_feature_map"),
+    )
+
+
+def test_same_feature_a_rows_are_a_clean_pair(forksets):
+    rows, feats, fmap = _fs(forksets, "a_rows_same_feature")
+    out = e_expose(rows, feats, row_feature_map=fmap)
+    assert out["e_expose"] is True
+    assert out["within_same_feature_diff"] is True
+    assert out["witness_kind"] == "within_same_feature"
+    assert out["overcount_risk"] is False
+
+
+def test_cross_feature_a_rows_are_not_a_clean_pair(forksets):
+    """A 행이 둘이어도 특징이 다르면 깨끗하지 않다 (L39)."""
+    rows, feats, fmap = _fs(forksets, "a_rows_cross_feature")
+    out = e_expose(rows, feats, row_feature_map=fmap)
+    assert out["e_expose"] is True
+    assert out["within_same_feature_diff"] is False
+    assert out["within_cross_feature_diff"] is True
+    assert out["clean_comparison_possible"] is False
+    assert out["overcount_risk"] is True
+
+
+def test_baseline_row_makes_cross_feature_clean(forksets):
+    rows, feats, fmap = _fs(forksets, "a_rows_cross_feature_with_baseline")
+    out = e_expose(rows, feats, row_feature_map=fmap)
+    assert out["baseline_used"] is True and out["baseline_row"] == "f00"
+    assert out["witness_kind"] == "a_vs_baseline"
+    assert out["overcount_risk"] is False
+
+
+def test_baseline_is_found_from_is_baseline_flag(forksets):
+    """`baseline_row_id`를 주지 않아도 is_baseline 행을 쓴다. P00을 우선한다."""
+    rows = copy.deepcopy(forksets["cases"]["a_rows_cross_feature_with_baseline"]["rows"])
+    rows.append({"state_id": "f09", "perturbation_row": "P09", "exposure_seen": True,
+                 "is_baseline": True, "commit_target": ["sup_002"]})   # 적용 불가 행도 기준 행
+    fmap = forksets["cases"]["a_rows_cross_feature_with_baseline"]["row_feature_map"]
+    out = e_expose(rows, ["cand_uniqueness", "num_extremum"], row_feature_map=fmap)
+    assert out["n_baseline_rows"] == 2 and out["baseline_row"] == "f00"
+
+
+# --------------------------------------------- L40: 커버리지 3값과 미대표 특징
+
+def test_coverage_three_values(forksets):
+    rows, feats, fmap = _fs(forksets, "partial_coverage")
+    out = e_expose(rows, feats, row_feature_map=fmap)
+    assert out["coverage"] == "partial"
+    assert out["unrepresented_feature_ids"] == ["num_extremum"]
+    assert out["n_unrepresented"] == 1
+    assert out["e_expose"] is True                      # 부분 커버리지에서도 계산은 된다
+
+    full = e_expose(rows, ["cand_uniqueness"], row_feature_map=fmap)
+    assert full["coverage"] == "in" and full["n_unrepresented"] == 0
+
+    none = e_expose(rows, ["num_extremum"], row_feature_map=fmap)
+    assert none["coverage"] == "out" and none["e_expose"] is None
+    assert none["reason"] == "coverage_out"
+
+
+def test_coverage_of_standalone():
+    from instruments.exposure import coverage_of
+
+    assert coverage_of([])["coverage"] == "out"
+    assert coverage_of(["cand_uniqueness"])["coverage"] == "in"
+    got = coverage_of(["cand_uniqueness", "num_extremum"])
+    assert got["coverage"] == "partial" and got["unrepresented_feature_ids"] == ["num_extremum"]
+
+
+# ---------------------------------------------- L38: 오경보율의 조건부 분모
+
+def _dplus_rows(policy_tables, r_rule):
+    rows = copy.deepcopy(policy_tables["cases"]["consistent"]["rows"])
+    for row in rows:
+        row["R_s"] = row["predictions"][r_rule]
+        row["r_defined"] = True
+    return rows
+
+
+def test_false_alarm_only_counts_pairs_where_attribution_equals_r(policy_tables):
+    from instruments.exposure import false_alarm_input
+
+    rows = _dplus_rows(policy_tables, "첫 번째")          # 귀속 = R
+    r = read(rows, policy_tables["rules"])
+    yes = false_alarm_input(r, rows, "yes")
+    no = false_alarm_input(r, rows, "no")
+    assert yes["in_denominator"] is True and yes["false_alarm"] is False
+    assert no["in_denominator"] is True and no["false_alarm"] is True
+
+
+def test_false_alarm_excludes_pairs_where_attribution_ne_r(policy_tables):
+    """옛 정의에서 구조적으로 100%가 되던 경우가 분모 밖으로 빠진다 (L38)."""
+    from instruments.exposure import false_alarm_input
+
+    rows = _dplus_rows(policy_tables, "최대")             # 귀속(첫 번째) ≠ R(최대)
+    out = false_alarm_input(read(rows, policy_tables["rules"]), rows, "no")
+    assert out["equals_r"] is False
+    assert out["in_denominator"] is False and out["false_alarm"] is False
+    assert out["excluded_reason"] == "attribution_ne_r"
+
+
+def test_false_alarm_separates_r_outside_v(policy_tables):
+    from instruments.exposure import false_alarm_input
+
+    rows = copy.deepcopy(policy_tables["cases"]["consistent"]["rows"])
+    for row in rows:
+        row["R_s"] = ["sup_009"]                          # R이 V로 표현되지 않는다
+        row["r_defined"] = True
+    out = false_alarm_input(read(rows, policy_tables["rules"]), rows, "no")
+    assert out["r_expressible_in_v"] is False
+    assert out["in_denominator"] is False
+    assert out["excluded_reason"] == "r_not_expressible"
+
+
+def test_false_alarm_hold_and_unjudgeable_are_excluded(policy_tables):
+    from instruments.exposure import false_alarm_input
+
+    hold_rows = copy.deepcopy(policy_tables["cases"]["hold_n3"]["rows"])
+    for row in hold_rows:
+        row["R_s"] = row["predictions"]["첫 번째"]
+        row["r_defined"] = True
+    out = false_alarm_input(read(hold_rows, policy_tables["rules"]), hold_rows, "no")
+    assert out["in_denominator"] is False and out["excluded_reason"] == "hold"
+
+    ok_rows = _dplus_rows(policy_tables, "첫 번째")
+    out2 = false_alarm_input(read(ok_rows, policy_tables["rules"]), ok_rows, "unjudgeable")
+    assert out2["in_denominator"] is False and out2["excluded_reason"] == "judge_unjudgeable"

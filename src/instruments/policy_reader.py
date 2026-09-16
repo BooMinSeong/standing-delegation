@@ -9,6 +9,15 @@
 - 어느 규칙도 한 행도 못 맞히면 집합 밖. 맞히지만 임계 미달이면 비일관.
 - 못 본 행(`exposure_seen = false`)은 구분 행 분모에서 제외하고 개수를 보고한다
   (`docs/DECISIONS.md` D-019, `docs/LOGIC.md` L6).
+- **적용 불가 행도 예측이 갈리면 구분 행이다**(L35). `applicable = false`는 제외 사유가 아니고
+  `excluded`에 `inapplicable` 칸을 두지 않는다. 섭동이 그 환경에 적용되지 않아 상태가 원본
+  그대로라도, V의 규칙들이 다른 대상을 내면 그 행은 귀속의 증거다.
+- **판정 우선순위**(L47): 보류(n ≤ 3)가 집합 밖(best = 0)보다 앞선다. 구분 행이 3개 이하면
+  "어느 규칙도 못 맞혔다"를 말할 표본이 없다.
+- **`min_rows`는 4로 고정한다**(D-013). 게이트 계산(`reader_min_rows`, `policy_accuracy`,
+  `dplus_attribution`)은 기본값을 바꾸지 않는다. 인자는 합성 검사에서만 다른 값을 쓴다.
+- **`tie_undefined`는 비교 모드(`mode="legacy"`) 전용이고 기록하지 않는다.** 정책표에 남는
+  `attribution_kind`는 single / set / inconsistent / out_of_set / hold 다섯뿐이다.
 
 옛 규칙 비교 모드 (`mode="legacy"`)
 - 임계 = ceil(0.85·n), 보류 없음, 동률 미정의(그대로 "동률미정의"로 표시),
@@ -31,6 +40,9 @@ from .normalize import as_multiset, match_verdict
 
 __all__ = [
     "read",
+    "discriminating_reason",
+    "row_exclusion_reason",
+    "discriminating_row_ids",
     "compare_modes",
     "render_comparison_table",
     "ATTRIBUTION_KINDS",
@@ -71,6 +83,65 @@ def _target(value: Any) -> Any:
     return as_multiset(value)
 
 
+def discriminating_reason(
+    row: dict,
+    rules: Sequence[str],
+    *,
+    mode: str = "d013",
+) -> str | None:
+    """**상태 수준** 구분 행 판정. 없으면 None(= 구분 행).
+
+    구분 행 정의의 단일 출처다. 입력은 그 행의 `predictions`뿐이므로 롤아웃 없이,
+    상태 파일(`index.yaml`)만으로 계산된다. `src/gen/checks.py`(분리 설계 검사)와 판독기가
+    같은 답을 내야 한다(`docs/LOGIC.md` L35).
+
+    - `applicable`은 보지 않는다. 적용 불가 행도 예측이 갈리면 구분 행이다(L35).
+    - `is_baseline`도 보지 않는다. 기준 행 P00도 예측이 갈리면 구분 행이다.
+    """
+    preds = {r: _target((row.get("predictions") or {}).get(r)) for r in rules}
+    if any(p is None for p in preds.values()):
+        return "predictions_missing"
+    distinct = {tuple(sorted(p.items(), key=repr)) for p in preds.values()}
+    if len(distinct) <= 1:
+        return "non_discriminating"
+    if mode == "legacy" and row.get("candidate_count") == 1:
+        return "single_candidate_legacy"
+    return None
+
+
+def row_exclusion_reason(
+    row: dict,
+    rules: Sequence[str],
+    *,
+    mode: str = "d013",
+    drop_unseen: bool = True,
+) -> str | None:
+    """**판정 수준** 제외 사유. 상태 수준 판정에 롤아웃 사유(대상 판정 불가, 못 본 행)를 더한다.
+
+    귀속의 분모는 이 함수가 통과시킨 행이다. 상태 수준 구분 행의 부분집합이다.
+    """
+    actual = _target(row.get("commit_target"))
+    if actual is None or row.get("commit_target_status", "ok") == "undetermined":
+        return "undetermined"
+    if drop_unseen and row.get("exposure_seen") is False:
+        return "unseen"
+    return discriminating_reason(row, rules, mode=mode)
+
+
+def discriminating_row_ids(
+    rows: Iterable[dict],
+    rules: Sequence[str] = DEFAULT_RULES_V0,
+    *,
+    mode: str = "d013",
+) -> list[str]:
+    """상태 수준 구분 행 ID 목록. 상태 파일만으로 계산된다(롤아웃 불필요)."""
+    out = []
+    for row in rows:
+        if discriminating_reason(row, rules, mode=mode) is None:
+            out.append(str(row.get("state_id") or row.get("perturbation_row")))
+    return out
+
+
 def read(
     rows: Iterable[dict],
     rules: Sequence[str] = DEFAULT_RULES_V0,
@@ -92,24 +163,12 @@ def read(
     for row in rows:
         rid = str(row.get("state_id") or row.get("perturbation_row") or len(evidence))
         actual = _target(row.get("commit_target"))
-        status = row.get("commit_target_status", "ok")
         preds = {r: _target((row.get("predictions") or {}).get(r)) for r in rules}
         seen = row.get("exposure_seen")
         cand = row.get("candidate_count")
 
-        reason: str | None = None
-        if actual is None or status == "undetermined":
-            reason = "undetermined"
-        elif drop_unseen and seen is False:
-            reason = "unseen"
-        elif any(p is None for p in preds.values()):
-            reason = "predictions_missing"
-        else:
-            distinct = {tuple(sorted(p.items(), key=repr)) for p in preds.values()}
-            if len(distinct) <= 1:
-                reason = "non_discriminating"
-            elif mode == "legacy" and cand == 1:
-                reason = "single_candidate_legacy"
+        # 구분 행 판정은 `row_exclusion_reason` 하나만 쓴다 (L35: 정의의 단일 출처).
+        reason = row_exclusion_reason(row, rules, mode=mode, drop_unseen=drop_unseen)
 
         verdicts = {
             r: (match_verdict(actual, p) if (actual is not None and p is not None) else None)
@@ -123,6 +182,8 @@ def read(
             "excluded_reason": reason,
             "exposure_seen": seen,
             "candidate_count": cand,
+            "applicable": row.get("applicable"),   # 기록만. 제외 사유가 아니다 (L35)
+            "is_baseline": row.get("is_baseline"),
             "verdicts": verdicts,
             "matched_rules": matched,
         }
@@ -139,6 +200,7 @@ def read(
 
     if mode == "d013":
         threshold = max(n - 1, 0)
+        # 우선순위(L47): 보류(n ≤ 3) > 집합 밖(best = 0) > 일관/동률 > 비일관.
         if n < min_rows:
             kind, attribution = "hold", "보류"
         elif best == 0:
