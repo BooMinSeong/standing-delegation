@@ -9,6 +9,8 @@
 | 항목 | 값 | 출처 | 상태 |
 |---|---|---|---|
 | S1 쌍 수 / 문항 수 | 39 / 78 | `tasks.jsonl` | [확인 2026-09-14, v1 `AGENTABSTAIN.md` §11.1] |
+| S1 = `missing_critical_parameter` | 78행 (category별 집계: 78이 유일) | 데이터셋 README 시나리오 표, `tasks.jsonl` | [확인 2026-09-16] |
+| GPT-OSS 120B 전체 Act / Abstain / Paired / CAR | 78.3 / 59.5 / 46.2 / 58.2 | 코드 저장소 README 리더보드. 하네스 = OpenClaw(Bedrock 경로). 우리 재현은 vLLM + 자체 루프이므로 경로 차이를 병기 | [확인 2026-09-16]. S1 값은 논문 표 11 [미확인, PDF 필요] |
 | GLM-5 전체 Act / Abstain / Paired | 82.5 / 61.8 / 47.8 | 코드 저장소 README 리더보드 | [확인 2026-09-16, README 읽음]. S1 값은 논문 표 11에서 가져와야 함 [미확인] |
 | DeepSeek V3.2 전체 Act / Abstain / Paired | 82.4 / 52.1 / 41.4 | 같음 | 같음 |
 | Claude Opus 4.7 전체 Act / Abstain / Paired | 76.5 / 79.0 / 59.4 | 같음 | 같음 |

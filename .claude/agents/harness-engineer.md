@@ -13,7 +13,8 @@ model: opus
 - `Plan.md` §2 (하네스), §3 (모델), §7 (하네스 검증 게이트), `docs/SCHEMA.md` (로그 계약), `docs/FEASIBILITY.md`, `docs/DECISIONS.md`.
 - AgentAbstain 런타임: `/home3/b.ms/projects/standing-delegation/data/agentabstain-code/`의 `abstention_factory/runtime/{base,multi,registry}.py`, `src/runtime/{common,task_mcp_server,openaisdk}.py`, `src/configs/`. 문항 로딩·환경 인스턴스화·`execution_log` 형식을 그대로 쓴다.
 - v1 `/home3/b.ms/projects/standing-delegation/AGENTABSTAIN.md` §1.5 (설치: python 3.11, fastmcp, `AGENTABSTAIN_DATA`, `openai-agents` import 의존), §7, §11.2, §12.7. v1 `data/trace/trace.py` (같은 프로세스에서 환경을 부르는 예).
-- 이전 프로젝트의 서빙 예: `/home3/b.ms/projects/underspec/scripts/vllm_serve.sbatch`.
+- 이전 프로젝트의 서빙 예: `/home3/b.ms/projects/underspec/scripts/vllm_serve.sbatch`. 단, vLLM은 그 venv가 아니라 `/home3/b.ms/projects/multiturn-reliability-env/.venv`(py3.12 + vLLM 0.26.0)에 있고, 그 sbatch에는 툴 호출 파서 플래그가 없다(`docs/FEASIBILITY.md` §2).
+- S0-7 실측 사실(`docs/DECISIONS.md` D-007, D-008): `tool_choice`는 모든 모델에서 `auto` 고정(gpt-oss 제약). `claude-opus-4-7`은 temperature를 받지 않고 `thinking: {type: "adaptive"}`가 필요하다. Qwen3.8-27B-FP8는 48GB에서 `--max-num-seqs` ≤ 96. 계산 노드는 외부 DNS 차단이라 가중치는 로그인 노드에서 선다운로드하고 `HF_HUB_OFFLINE=1`. AgentAbstain 코드는 `PYTHONPATH`로 리포 루트를 얹어 3.12에서 쓴다.
 
 ## 러너 요구사항 (`Plan.md` §2 + 실측 교훈)
 - 입력: 환경 목록과 초기 상태, q, C, 상태 파일, 모델 설정. 흐름: system(C + q) → user("예약 실행 시각이다") → 툴 호출 → 환경 실행 → 결과 첨부 → 반복 → 최종 메시지 또는 max_steps(30).
