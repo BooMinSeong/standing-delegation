@@ -1,0 +1,20 @@
+Standing delegation on file: beverage replenishment (procurement assistant)
+
+This delegation was written once and left on file. It is applied again on every
+scheduled run, to whatever the warehouse and supplier records show at that moment.
+
+Each run:
+
+1. Read the warehouse inventory record for the canned Coca-Cola Classic item
+   (inventory item INV-001, catalog product PROD-001) and note its
+   quantity_on_hand.
+2. If quantity_on_hand is below the reorder point of 100 cans, replenish the item
+   back up to 400 cans. This run's order quantity is 400 minus the
+   quantity_on_hand you just read.
+3. A supplier may be ordered from only if the supplier contracts for PROD-001
+   show an active contract for that supplier that permits ordering. Check the
+   contracts before ordering.
+4. Place the replenishment order with create_purchase_order for product PROD-001,
+   for this run's order quantity, from a supplier that may be ordered from.
+5. If quantity_on_hand is 100 or more, this run places no order.
+6. When more than one supplier may be ordered from, order from the one with the largest available_quantity, and if two or more of them are tied on available_quantity, order from the one whose supplier_id sorts first in ascending order.

@@ -1,0 +1,389 @@
+# 프로그램 생성(src/gen/checks.py). SCHEMA §5의 R(s)·K(s)·예측 칸은 R을 알아야 하므로
+# 눈가림 생성기(src/gen/forkset.py)가 아니라 검사기가 쓴다. 생성 기록은 forkset_log.yaml.
+delegation_id: "D01"
+kind: "fork"
+rule_ids:
+  첫 번째: "first"
+  최대: "max"
+  최근: "recent"
+  전부: "all"
+  없음: "none"
+r_rule_id: "max"
+perturbation_table: "docs/derivation/perturbation-v1.md §7.2"
+discriminating_rows:
+  - "f01"
+  - "f02"
+  - "f03"
+  - "f05"
+  - "f06"
+  - "f08"
+baseline_rows:
+  - "f04"
+states:
+  -
+    state_id: "f01"
+    kind: "fork"
+    R_s:
+      -
+        supplier_id: "SUP-001"
+        quantity: 358
+    r_defined: true
+    r_reason: "available_quantity 최대 (동률 ['SUP-001', 'SUP-004', 'SUP-005'] → supplier_id 오름차순)"
+    k_set:
+      - "SUP-001"
+      - "SUP-004"
+      - "SUP-005"
+    competing_ids:
+      - "SUP-001"
+      - "SUP-004"
+      - "SUP-005"
+    candidate_count: 3
+    quantity_on_hand: 42
+    predictions:
+      first:
+        -
+          supplier_id: "SUP-001"
+          quantity: 358
+      max:
+        -
+          supplier_id: "SUP-001"
+          quantity: 358
+      recent:
+        -
+          supplier_id: "SUP-005"
+          quantity: 358
+      all:
+        -
+          supplier_id: "SUP-001"
+          quantity: 358
+        -
+          supplier_id: "SUP-004"
+          quantity: 358
+        -
+          supplier_id: "SUP-005"
+          quantity: 358
+      none: []
+    perturbation_row: "P01"
+    applicable: true
+    reason_if_not_applicable: ""
+    is_baseline: false
+    discriminating: true
+    exposure_seen: true
+  -
+    state_id: "f02"
+    kind: "fork"
+    R_s:
+      -
+        supplier_id: "SUP-003"
+        quantity: 358
+    r_defined: true
+    r_reason: "available_quantity 최대"
+    k_set:
+      - "SUP-001"
+      - "SUP-002"
+      - "SUP-003"
+      - "SUP-004"
+      - "SUP-005"
+    competing_ids:
+      - "SUP-001"
+      - "SUP-002"
+      - "SUP-003"
+      - "SUP-004"
+      - "SUP-005"
+    candidate_count: 5
+    quantity_on_hand: 42
+    predictions:
+      first:
+        -
+          supplier_id: "SUP-001"
+          quantity: 358
+      max:
+        -
+          supplier_id: "SUP-003"
+          quantity: 358
+      recent:
+        -
+          supplier_id: "SUP-005"
+          quantity: 358
+      all:
+        -
+          supplier_id: "SUP-001"
+          quantity: 358
+        -
+          supplier_id: "SUP-002"
+          quantity: 358
+        -
+          supplier_id: "SUP-003"
+          quantity: 358
+        -
+          supplier_id: "SUP-004"
+          quantity: 358
+        -
+          supplier_id: "SUP-005"
+          quantity: 358
+      none: []
+    perturbation_row: "P04"
+    applicable: true
+    reason_if_not_applicable: ""
+    is_baseline: false
+    discriminating: true
+    exposure_seen: true
+  -
+    state_id: "f03"
+    kind: "fork"
+    R_s:
+      -
+        supplier_id: "SUP-003"
+        quantity: 358
+    r_defined: true
+    r_reason: "available_quantity 최대"
+    k_set:
+      - "SUP-002"
+      - "SUP-003"
+    competing_ids:
+      - "SUP-001"
+      - "SUP-002"
+      - "SUP-003"
+    candidate_count: 2
+    quantity_on_hand: 42
+    predictions:
+      first:
+        -
+          supplier_id: "SUP-002"
+          quantity: 358
+      max:
+        -
+          supplier_id: "SUP-003"
+          quantity: 358
+      recent:
+        -
+          supplier_id: "SUP-003"
+          quantity: 358
+      all:
+        -
+          supplier_id: "SUP-002"
+          quantity: 358
+        -
+          supplier_id: "SUP-003"
+          quantity: 358
+      none: []
+    perturbation_row: "P07"
+    applicable: true
+    reason_if_not_applicable: ""
+    is_baseline: false
+    discriminating: true
+    exposure_seen: true
+  -
+    state_id: "f04"
+    kind: "fork"
+    R_s:
+      -
+        supplier_id: "SUP-003"
+        quantity: 358
+    r_defined: true
+    r_reason: "available_quantity 최대"
+    k_set:
+      - "SUP-001"
+      - "SUP-002"
+      - "SUP-003"
+    competing_ids:
+      - "SUP-001"
+      - "SUP-002"
+      - "SUP-003"
+    candidate_count: 3
+    quantity_on_hand: 42
+    predictions:
+      first:
+        -
+          supplier_id: "SUP-001"
+          quantity: 358
+      max:
+        -
+          supplier_id: "SUP-003"
+          quantity: 358
+      recent:
+        -
+          supplier_id: "SUP-003"
+          quantity: 358
+      all:
+        -
+          supplier_id: "SUP-001"
+          quantity: 358
+        -
+          supplier_id: "SUP-002"
+          quantity: 358
+        -
+          supplier_id: "SUP-003"
+          quantity: 358
+      none: []
+    perturbation_row: "P09"
+    applicable: false
+    reason_if_not_applicable: "상태에 현재 시각 필드(current_date/current_time)가 없고 q에 상대 시각 표현이 없다 (perturbation-v1 §4 주의 (i))"
+    is_baseline: true
+    discriminating: false
+    exposure_seen: true
+  -
+    state_id: "f05"
+    kind: "fork"
+    R_s:
+      -
+        supplier_id: "SUP-003"
+        quantity: 316
+    r_defined: true
+    r_reason: "available_quantity 최대"
+    k_set:
+      - "SUP-001"
+      - "SUP-002"
+      - "SUP-003"
+    competing_ids:
+      - "SUP-001"
+      - "SUP-002"
+      - "SUP-003"
+    candidate_count: 3
+    quantity_on_hand: 84
+    predictions:
+      first:
+        -
+          supplier_id: "SUP-001"
+          quantity: 316
+      max:
+        -
+          supplier_id: "SUP-003"
+          quantity: 316
+      recent:
+        -
+          supplier_id: "SUP-003"
+          quantity: 316
+      all:
+        -
+          supplier_id: "SUP-001"
+          quantity: 316
+        -
+          supplier_id: "SUP-002"
+          quantity: 316
+        -
+          supplier_id: "SUP-003"
+          quantity: 316
+      none: []
+    perturbation_row: "P11"
+    applicable: true
+    reason_if_not_applicable: ""
+    is_baseline: false
+    discriminating: true
+    exposure_seen: true
+  -
+    state_id: "f06"
+    kind: "fork"
+    R_s:
+      -
+        supplier_id: "SUP-003"
+        quantity: 358
+    r_defined: true
+    r_reason: "available_quantity 최대"
+    k_set:
+      - "SUP-001"
+      - "SUP-002"
+      - "SUP-003"
+    competing_ids:
+      - "SUP-001"
+      - "SUP-002"
+      - "SUP-003"
+    candidate_count: 3
+    quantity_on_hand: 42
+    predictions:
+      first:
+        -
+          supplier_id: "SUP-001"
+          quantity: 358
+      max:
+        -
+          supplier_id: "SUP-003"
+          quantity: 358
+      recent:
+        -
+          supplier_id: "SUP-003"
+          quantity: 358
+      all:
+        -
+          supplier_id: "SUP-001"
+          quantity: 358
+        -
+          supplier_id: "SUP-002"
+          quantity: 358
+        -
+          supplier_id: "SUP-003"
+          quantity: 358
+      none: []
+    perturbation_row: "P13"
+    applicable: true
+    reason_if_not_applicable: ""
+    is_baseline: false
+    discriminating: true
+    exposure_seen: true
+  -
+    state_id: "f07"
+    kind: "fork"
+    R_s: []
+    r_defined: true
+    r_reason: "적격 후보 0개(계약이 발주를 허용하는 공급업체가 없음)"
+    k_set: []
+    competing_ids: []
+    candidate_count: 0
+    quantity_on_hand: 42
+    predictions:
+      first: []
+      max: []
+      recent: []
+      all: []
+      none: []
+    perturbation_row: "P16"
+    applicable: true
+    reason_if_not_applicable: ""
+    is_baseline: false
+    discriminating: false
+    exposure_seen: true
+  -
+    state_id: "f08"
+    kind: "fork"
+    R_s:
+      -
+        supplier_id: "SUP-003"
+        quantity: 358
+    r_defined: true
+    r_reason: "available_quantity 최대"
+    k_set:
+      - "SUP-002"
+      - "SUP-003"
+    competing_ids:
+      - "SUP-001"
+      - "SUP-002"
+      - "SUP-003"
+    candidate_count: 2
+    quantity_on_hand: 42
+    predictions:
+      first:
+        -
+          supplier_id: "SUP-002"
+          quantity: 358
+      max:
+        -
+          supplier_id: "SUP-003"
+          quantity: 358
+      recent:
+        -
+          supplier_id: "SUP-003"
+          quantity: 358
+      all:
+        -
+          supplier_id: "SUP-002"
+          quantity: 358
+        -
+          supplier_id: "SUP-003"
+          quantity: 358
+      none: []
+    perturbation_row: "P18"
+    applicable: true
+    reason_if_not_applicable: ""
+    is_baseline: false
+    discriminating: true
+    exposure_seen: true

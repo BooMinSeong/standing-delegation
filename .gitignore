@@ -7,3 +7,4 @@ results/
 slurm_logs/
 *.log
 .pytest_cache/
+*.swp

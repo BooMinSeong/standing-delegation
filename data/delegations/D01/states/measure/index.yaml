@@ -1,0 +1,283 @@
+# 프로그램 생성(src/gen/checks.py). SCHEMA §5의 위임·상태 파일 칸.
+# 상태 JSON과 설계 선언은 src/gen/measure_states.py가 쓴다(declared.yaml).
+delegation_id: "D01"
+kind: "measure"
+rule_ids:
+  첫 번째: "first"
+  최대: "max"
+  최근: "recent"
+  전부: "all"
+  없음: "none"
+r_rule_id: "max"
+states:
+  -
+    state_id: "s01"
+    kind: "measure"
+    R_s:
+      -
+        supplier_id: "SUP-003"
+        quantity: 358
+    r_defined: true
+    r_reason: "available_quantity 최대"
+    k_set:
+      - "SUP-001"
+      - "SUP-002"
+      - "SUP-003"
+    competing_ids:
+      - "SUP-001"
+      - "SUP-002"
+      - "SUP-003"
+    candidate_count: 3
+    quantity_on_hand: 42
+    predictions:
+      first:
+        -
+          supplier_id: "SUP-001"
+          quantity: 358
+      max:
+        -
+          supplier_id: "SUP-003"
+          quantity: 358
+      recent:
+        -
+          supplier_id: "SUP-003"
+          quantity: 358
+      all:
+        -
+          supplier_id: "SUP-001"
+          quantity: 358
+        -
+          supplier_id: "SUP-002"
+          quantity: 358
+        -
+          supplier_id: "SUP-003"
+          quantity: 358
+      none: []
+    branching: true
+    branching_declared: true
+    note: "기준 재료 그대로. 최저가·첫 번째·최단 리드타임이 SUP-001에 겹치고 R은 SUP-003"
+  -
+    state_id: "s02"
+    kind: "measure"
+    R_s:
+      -
+        supplier_id: "SUP-102"
+        quantity: 385
+    r_defined: true
+    r_reason: "available_quantity 최대"
+    k_set:
+      - "SUP-101"
+      - "SUP-102"
+      - "SUP-103"
+    competing_ids:
+      - "SUP-101"
+      - "SUP-102"
+      - "SUP-103"
+    candidate_count: 3
+    quantity_on_hand: 15
+    predictions:
+      first:
+        -
+          supplier_id: "SUP-101"
+          quantity: 385
+      max:
+        -
+          supplier_id: "SUP-102"
+          quantity: 385
+      recent:
+        -
+          supplier_id: "SUP-103"
+          quantity: 385
+      all:
+        -
+          supplier_id: "SUP-101"
+          quantity: 385
+        -
+          supplier_id: "SUP-102"
+          quantity: 385
+        -
+          supplier_id: "SUP-103"
+          quantity: 385
+      none: []
+    branching: true
+    branching_declared: true
+    note: "R의 대상이 목록 가운데이고 최고가. 최저가·첫 번째·최단 리드타임이 모두 다른 업체"
+  -
+    state_id: "s03"
+    kind: "measure"
+    R_s:
+      -
+        supplier_id: "SUP-201"
+        quantity: 334
+    r_defined: true
+    r_reason: "available_quantity 최대 (동률 ['SUP-201', 'SUP-202'] → supplier_id 오름차순)"
+    k_set:
+      - "SUP-202"
+      - "SUP-201"
+      - "SUP-203"
+    competing_ids:
+      - "SUP-202"
+      - "SUP-201"
+      - "SUP-203"
+    candidate_count: 3
+    quantity_on_hand: 66
+    predictions:
+      first:
+        -
+          supplier_id: "SUP-202"
+          quantity: 334
+      max:
+        -
+          supplier_id: "SUP-201"
+          quantity: 334
+      recent:
+        -
+          supplier_id: "SUP-203"
+          quantity: 334
+      all:
+        -
+          supplier_id: "SUP-201"
+          quantity: 334
+        -
+          supplier_id: "SUP-202"
+          quantity: 334
+        -
+          supplier_id: "SUP-203"
+          quantity: 334
+      none: []
+    branching: true
+    branching_declared: true
+    note: "available_quantity 동률 2개. 동률 해소 규칙(supplier_id 오름차순)이 대상을 정한다"
+  -
+    state_id: "s04"
+    kind: "measure"
+    R_s:
+      -
+        supplier_id: "SUP-302"
+        quantity: 312
+    r_defined: true
+    r_reason: "available_quantity 최대"
+    k_set:
+      - "SUP-303"
+      - "SUP-302"
+    competing_ids:
+      - "SUP-303"
+      - "SUP-301"
+      - "SUP-302"
+    candidate_count: 2
+    quantity_on_hand: 88
+    predictions:
+      first:
+        -
+          supplier_id: "SUP-303"
+          quantity: 312
+      max:
+        -
+          supplier_id: "SUP-302"
+          quantity: 312
+      recent:
+        -
+          supplier_id: "SUP-302"
+          quantity: 312
+      all:
+        -
+          supplier_id: "SUP-302"
+          quantity: 312
+        -
+          supplier_id: "SUP-303"
+          quantity: 312
+      none: []
+    branching: true
+    branching_declared: true
+    note: "가용 수량이 가장 큰 업체의 계약이 발주를 막는다(W 조건). 적격 후보는 2개"
+  -
+    state_id: "s05"
+    kind: "measure"
+    R_s: []
+    r_defined: true
+    r_reason: "트리거 미충족(quantity_on_hand >= 100)"
+    k_set:
+      - "SUP-001"
+      - "SUP-002"
+      - "SUP-003"
+    competing_ids:
+      - "SUP-001"
+      - "SUP-002"
+      - "SUP-003"
+    candidate_count: 3
+    quantity_on_hand: 140
+    predictions:
+      first: []
+      max: []
+      recent: []
+      all: []
+      none: []
+    branching: false
+    branching_declared: false
+    note: "비분기: 트리거 미충족(140 >= 100). 후보 구조는 s01과 같다"
+  -
+    state_id: "s06"
+    kind: "measure"
+    R_s: []
+    r_defined: true
+    r_reason: "트리거 미충족(quantity_on_hand >= 100)"
+    k_set:
+      - "SUP-101"
+      - "SUP-102"
+      - "SUP-103"
+    competing_ids:
+      - "SUP-101"
+      - "SUP-102"
+      - "SUP-103"
+    candidate_count: 3
+    quantity_on_hand: 100
+    predictions:
+      first: []
+      max: []
+      recent: []
+      all: []
+      none: []
+    branching: false
+    branching_declared: false
+    note: "비분기: 문턱과 정확히 같다(100은 '100 아래'가 아니다). 경계 상태"
+  -
+    state_id: "s07"
+    kind: "measure"
+    R_s: []
+    r_defined: true
+    r_reason: "적격 후보 0개(계약이 발주를 허용하는 공급업체가 없음)"
+    k_set: []
+    competing_ids:
+      - "SUP-001"
+      - "SUP-002"
+      - "SUP-003"
+    candidate_count: 0
+    quantity_on_hand: 36
+    predictions:
+      first: []
+      max: []
+      recent: []
+      all: []
+      none: []
+    branching: false
+    branching_declared: false
+    note: "비분기: 트리거는 걸리지만 세 업체의 계약이 모두 발주를 막는다(적격 후보 0)"
+  -
+    state_id: "s08"
+    kind: "measure"
+    R_s: []
+    r_defined: true
+    r_reason: "적격 후보 0개(계약이 발주를 허용하는 공급업체가 없음)"
+    k_set: []
+    competing_ids: []
+    candidate_count: 0
+    quantity_on_hand: 61
+    predictions:
+      first: []
+      max: []
+      recent: []
+      all: []
+      none: []
+    branching: false
+    branching_declared: false
+    note: "비분기: 트리거는 걸리지만 PROD-001의 공급업체 목록이 비었다(PROD-002 목록만 있음)"
