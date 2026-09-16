@@ -27,7 +27,7 @@
             "product_id": "PROD-001",
             "sku": "CC-355-SGL",
             "name": "Coca-Cola Classic 355ml Can",
-            "quantity_on_hand": 100,
+            "quantity_on_hand": 45,
             "unit": "cans",
             "location": "Warehouse A, Row 3, Shelf 2",
             "status": "in_stock",
@@ -51,63 +51,21 @@
     ],
     "supplier_listings": [
         {
-            "supplier_id": "SUP-101",
-            "supplier_name": "Harbor Point Beverages",
+            "supplier_id": "SUP-401",
+            "supplier_name": "Cedar Mill Beverage",
             "product_id": "PROD-001",
-            "supplier_sku": "101-CC-355",
-            "price": 0.7,
+            "supplier_sku": "401-CC-355",
+            "price": 0.74,
             "currency": "USD",
-            "available_quantity": 250,
-            "lead_time_days": 2,
-            "contact_details": "orders@harbor.example.com | +1-800-555-1101"
-        },
-        {
-            "supplier_id": "SUP-102",
-            "supplier_name": "Cascade Bottling Partners",
-            "product_id": "PROD-001",
-            "supplier_sku": "102-CC-355",
-            "price": 0.88,
-            "currency": "USD",
-            "available_quantity": 640,
-            "lead_time_days": 5,
-            "contact_details": "orders@cascade.example.com | +1-800-555-1102"
-        },
-        {
-            "supplier_id": "SUP-103",
-            "supplier_name": "Northgate Drink Supply",
-            "product_id": "PROD-001",
-            "supplier_sku": "103-CC-355",
-            "price": 0.76,
-            "currency": "USD",
-            "available_quantity": 400,
+            "available_quantity": 520,
             "lead_time_days": 3,
-            "contact_details": "orders@northgate.example.com | +1-800-555-1103"
+            "contact_details": "orders@cedar.example.com | +1-800-555-1101"
         }
     ],
     "supplier_contracts": [
         {
             "contract_id": "CON-001",
-            "supplier_id": "SUP-101",
-            "product_id": "PROD-001",
-            "active": true,
-            "start_date": "2026-01-01",
-            "end_date": "2026-12-31",
-            "ordering_permitted": true,
-            "restrictions": "Standard beverage replenishment terms."
-        },
-        {
-            "contract_id": "CON-002",
-            "supplier_id": "SUP-102",
-            "product_id": "PROD-001",
-            "active": true,
-            "start_date": "2026-01-01",
-            "end_date": "2026-12-31",
-            "ordering_permitted": true,
-            "restrictions": "Standard beverage replenishment terms."
-        },
-        {
-            "contract_id": "CON-003",
-            "supplier_id": "SUP-103",
+            "supplier_id": "SUP-401",
             "product_id": "PROD-001",
             "active": true,
             "start_date": "2026-01-01",

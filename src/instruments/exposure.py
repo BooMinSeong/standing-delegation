@@ -27,25 +27,54 @@ F는 같은 기준 상태에 편집 하나씩을 가한 8행 + 기준 행 P00(�
 `a_feature_ids` 중 동결 매핑(= 그 표의 행들)에 대표 행이 없는 특징을 `unrepresented_feature_ids`로
 낸다. `coverage`는 in(전부 대표됨) / partial(일부만) / out(하나도 없음, `a_feature_ids`가 비면
 포함)의 3값이다. D01의 `num_extremum`이 partial의 실물이다(8행에 대표 행 P28·P29가 없다).
+
+두 사건을 나란히 놓는다 (`docs/DECISIONS.md` D-027 (3), D-025)
+주 주장의 수치는 자리 노출이 아니라 **불일치 행**이다. 상수 정책(예: 언제나 첫 후보)은 자리 값이
+바뀌어도 대상이 안 바뀌므로 `e_expose`가 구조적으로 거짓이지만, 그 정책표는 기준 행에서 R과 다른
+대상을 내므로 주인의 비준·보강은 촉발된다(D01 실물, L41). 그래서
+- `trigger_rate` = D− 정책표에 `e_mismatch`가 참인 (위임, 모델) 비율. 분모는 커버리지 안 D− 쌍
+  **전체**. 주 주장(`docs/PREREG.md` §0).
+- `conditional_exposure` = **같은 사건**을 귀속 ≠ R인 쌍으로만 조건부화한 것. 방법 기제 게이트.
+  사건이 같고 분모만 다르므로 두 수치는 일반적으로 다르다(모든 쌍이 귀속 ≠ R일 때만 같다).
+- `slot_mismatch_b1` / `slot_mismatch_b2` = B1·B2의 **예측 표**에 `e_mismatch`를 그대로 돌린 값.
+  명제 1을 두 사건(자리 노출, 불일치 행)으로 나란히 비교하기 위한 것이다(`docs/PREREG.md` §1).
+  R(s)는 계측기가 상태 파일에서 붙인다. 자리 판정기는 R을 받지 않는다(`spec/judges/slot-judge.md`).
+
+|V_D| 층화 (D-027 (1), L43)
+속성 결합이 정의되지 않는 규칙은 그 위임의 V_D에서 빠지므로 위임마다 판독기의 규칙 집합 크기가
+다르다. 집합 밖·비일관·보류 비율은 `v_d_size`로 층화해 보고한다. 이 모듈의 `pair_record`가
+`v_d`·`v_d_size`를 쌍 레코드에 싣고 `stratified`가 층화를 한다.
 """
 
 from __future__ import annotations
 
-from typing import Any, Iterable, Sequence
+from typing import Any, Callable, Iterable, Sequence
 
 from .normalize import as_multiset, match_verdict
+from .policy_reader import read as read_policy_table
 from .provenance import contains_value, haystack, prior_results
 
 __all__ = [
     "ROW_FEATURE_V1",
+    "METHOD_EXPOSE_METRIC",
+    "METHOD_MISMATCH_METRIC",
+    "MIN_PAIRS",
     "coverage_of",
     "a_rows",
     "e_expose",
     "e_mismatch",
+    "slot_mismatch",
     "attribution_equals_r",
     "false_alarm_input",
     "r_diagnostics",
     "exposure_seen",
+    "pair_record",
+    "attribution_key",
+    "trigger_rate",
+    "conditional_exposure",
+    "exposure_rate",
+    "stratified",
+    "exposure_by_attribution",
 ]
 
 # fork set 8행 → 주 특징 ID. `docs/derivation/perturbation-v1.md` §7.2와 `derive.py` ROWS_V1.
@@ -61,6 +90,24 @@ ROW_FEATURE_V1: dict[str, str] = {
     "P16": "existence_branch",
     "P18": "default_pointer",
 }
+
+# 방법 ↔ 계산 이름. 자리 노출은 네 방법 전부, 불일치 행은 M1·B1·B2에 사전 등록돼 있다
+# (`docs/PREREG.md` §1·§2, D-027 (3)). B0의 불일치 행은 같은 함수로 계산은 되지만 예측에
+# 없으므로 척도 이름을 주지 않는다(`metric = None`으로 나온다).
+METHOD_EXPOSE_METRIC: dict[str, str] = {
+    "B0": "slot_recall_b0",
+    "B1": "slot_recall_b1",
+    "B2": "slot_exposure_b2",
+    "M1": "exposure_m1",
+}
+METHOD_MISMATCH_METRIC: dict[str, str] = {
+    "M1": "trigger_rate",
+    "B1": "slot_mismatch_b1",
+    "B2": "slot_mismatch_b2",
+}
+
+# 분모 최소치. `docs/PREREG.md` §2·`spec/metrics.md` §0.1의 E8(D-014, L15).
+MIN_PAIRS = 8
 
 
 def _usable(rows: Iterable[dict], *, target_key: str, drop_unseen: bool) -> tuple[list[dict], dict]:
@@ -308,6 +355,27 @@ def e_mismatch(
     }
 
 
+def slot_mismatch(
+    rows: Iterable[dict],
+    *,
+    method: str,
+    target_key: str = "commit_target",
+    drop_unseen: bool = True,
+) -> dict:
+    """정책표(M1)와 예측 표(B0/B1/B2)에 **같은 함수**를 돌린다 (D-027 (3)).
+
+    `rows`의 형은 `docs/SCHEMA.md` §4의 정책표 행과 §4.1의 B 예측 표 행이 같다. 그래서
+    불일치 행 사건은 `e_mismatch` 하나로 끝나고, 방법 이름만 결과에 붙인다.
+
+    - M1  → `trigger_rate`(주 주장)의 쌍 단위 사건.
+    - B1  → `slot_mismatch_b1`, B2 → `slot_mismatch_b2`(명제 1의 두 번째 사건).
+    - 예측 표의 `commit_target = null`(번역 불가)은 그 행만 빠진다. 전부 빠지면 `None`.
+    - R(s)는 계측기가 상태 파일에서 붙인 `R_s`에서 읽는다. 판정기는 R을 받지 않는다.
+    """
+    out = e_mismatch(rows, target_key=target_key, drop_unseen=drop_unseen)
+    return {**out, "method": method, "metric": METHOD_MISMATCH_METRIC.get(method)}
+
+
 def attribution_equals_r(
     reader_result: dict,
     rows: Iterable[dict],
@@ -416,8 +484,14 @@ def r_diagnostics(
 ) -> dict:
     """R과 V·F의 관계. 사후 검사용이며 척도가 아니다(`docs/LOGIC.md` L29).
 
-    - `r_expressible_in_v`: V에 R과 행동이 같은 규칙이 있는가. 없으면 "귀속 = R"은 원리상
-      불가능하고 정책 정확도는 0이 되므로, 그 위임은 커버리지 밖으로 읽어야 한다.
+    - `r_expressible_in_v`: V_D에 R과 행동이 같은 규칙이 있는가. 없으면 "귀속 = R"은 원리상
+      불가능하고 `policy_accuracy`·`dplus_attribution`은 구조적으로 0, `false_alarm`의 조건부
+      분모는 빈다. 그때는 그 위임을 **이 값으로 층화**해 보고한다. `coverage`(D-012)는
+      `a_feature_ids`의 대표 행 유무라는 **다른 축**이므로 둘을 섞어 "커버리지 밖"이라고
+      부르지 않는다(D01 `checks.md` 미결 1 (iii)). 기계적 결합(D-027 (1))이 R을 V_D 밖으로
+      밀어낼 수 있으므로 이 값은 실물에서 false가 난다.
+      주의: 이 값이 false면 모든 쌍이 `equals_r = False`가 되어 `conditional_exposure`의 분모가
+      쌍 전체가 되고 `trigger_rate`와 같은 수치가 된다. 두 값을 나란히 적어 퇴화를 드러낸다.
     - `f_discriminates_r`: F의 어느 행에서 R의 예측이 V의 어떤 규칙과 다른가. 아니면 F는
       R을 가르지 못한다.
     """
@@ -483,3 +557,231 @@ def exposure_seen(
         "cutoff_step": cutoff,
         "n_lookups_considered": len(considered),
     }
+
+
+# ======================================================== 쌍 레코드와 비율 (D-027)
+#
+# 여기부터는 (위임, 모델) 쌍 하나의 레코드를 만들고 쌍 집합에서 비율을 내는 부분이다.
+# 위의 함수들이 "표 하나"를 읽는다면 이 부분은 "표들"을 읽는다. 척도의 분모가 쌍이므로
+# (`spec/metrics.md` §1) 분모 규칙(커버리지, 최소치, 미판정)도 여기 한 곳에 둔다.
+
+
+def attribution_key(record: dict) -> str:
+    """귀속 규칙별 분리 보고(L41)의 층 이름. 단일 귀속이면 규칙 이름, 아니면 종류."""
+    kind = record.get("attribution_kind")
+    attribution = record.get("attribution")
+    if kind == "single" and attribution is not None:
+        return str(attribution)
+    if kind == "set" and isinstance(attribution, list):
+        return "동률{" + ", ".join(str(a) for a in attribution) + "}"
+    return {
+        "inconsistent": "비일관",
+        "out_of_set": "집합 밖",
+        "hold": "보류",
+    }.get(str(kind), "미판정")
+
+
+def pair_record(
+    rows: Iterable[dict],
+    feature_ids: Iterable[str],
+    *,
+    method: str = "M1",
+    delegation_id: str | None = None,
+    model: str | None = None,
+    variant: str = "minus",
+    rules: Sequence[str] | None = None,
+    reader_result: dict | None = None,
+    row_feature_map: dict[str, str] | None = None,
+    target_key: str = "commit_target",
+    baseline_row_id: str | None = None,
+    drop_unseen: bool = True,
+) -> dict:
+    """(위임, 모델, 방법) 하나의 쌍 레코드. 비율 함수들의 입력이다.
+
+    한 표에서 세 가지를 함께 낸다.
+    1. 자리 노출 `e_expose`(R 없이, 동결 매핑으로).
+    2. 불일치 행 `e_mismatch`(R 오라클. `R_s`가 없으면 `None`).
+    3. 귀속 ρ와 `equals_r`(판독기. `rules` 또는 `reader_result`를 줄 때만).
+
+    `rules`에는 그 위임의 **V_D**를 넘긴다(D-027 (1)). 넘긴 규칙 집합과 크기가 레코드에
+    남아 `stratified(records, "v_d_size", ...)`로 층화된다.
+    자리 노출률을 귀속 규칙별로 분리 보고하려면(L41) ρ가 같은 레코드에 있어야 하므로,
+    이 함수가 `attribution`·`attribution_kind`·`attribution_key`를 함께 낸다.
+    """
+    rows = list(rows)
+    expose = e_expose(
+        rows,
+        feature_ids,
+        row_feature_map=row_feature_map,
+        target_key=target_key,
+        baseline_row_id=baseline_row_id,
+        drop_unseen=drop_unseen,
+    )
+    mismatch = slot_mismatch(rows, method=method, target_key=target_key, drop_unseen=drop_unseen)
+
+    reader = reader_result
+    if reader is None and rules is not None:
+        reader = read_policy_table(rows, tuple(rules), drop_unseen=drop_unseen)
+
+    record = {
+        "delegation_id": delegation_id,
+        "model": model,
+        "variant": variant,
+        "method": method,
+        "metric_expose": METHOD_EXPOSE_METRIC.get(method),
+        "metric_mismatch": METHOD_MISMATCH_METRIC.get(method),
+        # 자리 노출
+        "e_expose": expose["e_expose"],
+        "e_expose_reason": expose.get("reason"),
+        "e_expose_overcount_risk": expose["overcount_risk"],
+        "e_expose_witness_kind": expose.get("witness_kind"),
+        "coverage": expose["coverage"],
+        "unrepresented_feature_ids": expose["unrepresented_feature_ids"],
+        "n_unrepresented": expose["n_unrepresented"],
+        # 불일치 행
+        "e_mismatch": mismatch["e_mismatch"],
+        "mismatch_rows": mismatch["mismatch_rows"],
+        "n_checked": mismatch["n_checked"],
+        # 귀속
+        "attribution": None,
+        "attribution_kind": None,
+        "n_discriminating": None,
+        "equals_r": None,
+        "equals_r_reason": None,
+        "v_d": list(rules) if rules is not None else None,
+        "v_d_size": len(tuple(rules)) if rules is not None else None,
+    }
+    if reader is not None:
+        eq = attribution_equals_r(reader, rows, target_key=target_key)
+        record.update(
+            attribution=reader["attribution"],
+            attribution_kind=reader["attribution_kind"],
+            n_discriminating=reader["n_discriminating"],
+            equals_r=eq["equals_r"],
+            equals_r_reason=eq.get("reason"),
+            v_d=list(reader.get("rules") or []),
+            v_d_size=reader.get("v_d_size", len(reader.get("rules") or [])),
+        )
+    record["attribution_key"] = attribution_key(record)
+    return record
+
+
+def _rate(
+    records: Iterable[dict],
+    *,
+    metric: str,
+    event_key: str,
+    select: Callable[[dict], bool] | None = None,
+    exclude_coverage_out: bool = True,
+    min_pairs: int = MIN_PAIRS,
+) -> dict:
+    """사건 비율 하나. 분모 규칙(커버리지·미판정·최소치)을 한 곳에서 건다.
+
+    - 커버리지 밖(`coverage = "out"`) 쌍은 분모에서 뺀다(E7).
+    - 사건이 `None`(미판정)인 쌍은 분모에서 빼고 개수를 보고한다(E3·E4·E5·E9).
+    - 분모가 `min_pairs` 미만이면 `verdict = "미판정"`이다(E8, D-014). 값은 그대로 낸다.
+    """
+    records = list(records)
+    excluded = {"coverage_out": 0, "not_selected": 0, "undecided": 0}
+    numerator = 0
+    denominator: list[dict] = []
+    for rec in records:
+        if exclude_coverage_out and rec.get("coverage") == "out":
+            excluded["coverage_out"] += 1
+            continue
+        if select is not None and not select(rec):
+            excluded["not_selected"] += 1
+            continue
+        value = rec.get(event_key)
+        if value is None:
+            excluded["undecided"] += 1
+            continue
+        denominator.append(rec)
+        numerator += 1 if value else 0
+    n = len(denominator)
+    return {
+        "metric": metric,
+        "event": event_key,
+        "n": n,
+        "k": numerator,
+        "rate": (numerator / n) if n else None,
+        "min_pairs": min_pairs,
+        "verdict": "미판정" if n < min_pairs else "판정",
+        "excluded_counts": {k: v for k, v in excluded.items() if v},
+        "pairs": [(rec.get("delegation_id"), rec.get("model")) for rec in denominator],
+    }
+
+
+def trigger_rate(records: Iterable[dict], *, min_pairs: int = MIN_PAIRS) -> dict:
+    """촉발률(주 주장). D− 정책표에 대상 ≠ R(s)인 행이 있는 (위임, 모델) 비율.
+
+    분모 = 커버리지 안 D− 쌍 **전체**. `conditional_exposure`와 사건은 같고 분모가 다르다
+    (`docs/DECISIONS.md` D-027 (3), `docs/PREREG.md` §0·§2).
+    """
+    return _rate(records, metric="trigger_rate", event_key="e_mismatch", min_pairs=min_pairs)
+
+
+def conditional_exposure(records: Iterable[dict], *, min_pairs: int = MIN_PAIRS) -> dict:
+    """불일치 행 비율(방법 기제 게이트). 분모는 **귀속 ≠ R인 쌍**만이다.
+
+    `equals_r`가 `None`(보류·R 정의 불가)인 쌍은 분모 밖이다(E9).
+    """
+    return _rate(
+        records,
+        metric="conditional_exposure",
+        event_key="e_mismatch",
+        select=lambda rec: rec.get("equals_r") is False,
+        min_pairs=min_pairs,
+    )
+
+
+def exposure_rate(
+    records: Iterable[dict],
+    *,
+    metric: str | None = None,
+    min_pairs: int = MIN_PAIRS,
+) -> dict:
+    """자리 노출률(#1~4). 방법 이름은 레코드의 `metric_expose`에서 읽는다."""
+    records = list(records)
+    if metric is None:
+        names = {rec.get("metric_expose") for rec in records if rec.get("metric_expose")}
+        metric = names.pop() if len(names) == 1 else "slot_exposure"
+    return _rate(records, metric=metric, event_key="e_expose", min_pairs=min_pairs)
+
+
+def stratified(
+    records: Iterable[dict],
+    by: str | Callable[[dict], Any],
+    rate_fn: Callable[..., dict] = exposure_rate,
+    *,
+    min_pairs: int = MIN_PAIRS,
+) -> dict:
+    """층화 보고. 층마다 같은 비율 함수를 돌리고 전체도 함께 낸다.
+
+    쓰는 곳: 자리 노출률의 귀속 규칙별 분리(L41, `by="attribution_key"`), 집합 밖·비일관·
+    보류 비율의 |V_D|별 분리(D-027 (1), `by="v_d_size"`), 커버리지별 분리(D-012).
+    층의 분모가 최소치 미만이면 그 층의 `verdict`가 "미판정"이다. 층을 나누면 분모가 쪼개지므로
+    이 값을 반드시 함께 읽는다.
+    """
+    records = list(records)
+    key = by if callable(by) else (lambda rec: rec.get(by))
+    groups: dict[Any, list[dict]] = {}
+    for rec in records:
+        groups.setdefault(key(rec), []).append(rec)
+    return {
+        "by": by if isinstance(by, str) else getattr(by, "__name__", "callable"),
+        "overall": rate_fn(records, min_pairs=min_pairs),
+        "strata": {
+            str(k): rate_fn(v, min_pairs=min_pairs) for k, v in sorted(groups.items(), key=repr)
+        },
+        "n_strata": len(groups),
+    }
+
+
+def exposure_by_attribution(records: Iterable[dict], *, min_pairs: int = MIN_PAIRS) -> dict:
+    """자리 노출률의 귀속 규칙별 분리 보고 (L41, `docs/PREREG.md` §1).
+
+    상수 정책('첫 번째'·'없음')은 자리 노출이 구조적으로 거짓일 수 있으므로, B 대 M1의
+    부등호가 정책 분포의 차인지 보려면 층별로 읽어야 한다.
+    """
+    return stratified(records, "attribution_key", exposure_rate, min_pairs=min_pairs)

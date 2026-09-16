@@ -8,7 +8,16 @@ rule_ids:
   최근: "recent"
   전부: "all"
   없음: "none"
-r_rule_id: "max"
+r_rule_id: null
+r_expressible_in_v_d: false
+r_equivalent_rule_ids: []
+v_d:
+  - "첫 번째"
+  - "최대"
+  - "최근"
+  - "전부"
+  - "없음"
+v_d_size: 5
 states:
   -
     state_id: "s01"
@@ -55,6 +64,7 @@ states:
       none: []
     branching: true
     branching_declared: true
+    series: "branching"
     note: "기준 재료 그대로. 최저가·첫 번째·최단 리드타임이 SUP-001에 겹치고 R은 SUP-003"
   -
     state_id: "s02"
@@ -101,6 +111,7 @@ states:
       none: []
     branching: true
     branching_declared: true
+    series: "branching"
     note: "R의 대상이 목록 가운데이고 최고가. 최저가·첫 번째·최단 리드타임이 모두 다른 업체"
   -
     state_id: "s03"
@@ -128,7 +139,7 @@ states:
           quantity: 334
       max:
         -
-          supplier_id: "SUP-201"
+          supplier_id: "SUP-203"
           quantity: 334
       recent:
         -
@@ -147,6 +158,7 @@ states:
       none: []
     branching: true
     branching_declared: true
+    series: "branching"
     note: "available_quantity 동률 2개. 동률 해소 규칙(supplier_id 오름차순)이 대상을 정한다"
   -
     state_id: "s04"
@@ -173,7 +185,7 @@ states:
           quantity: 312
       max:
         -
-          supplier_id: "SUP-302"
+          supplier_id: "SUP-303"
           quantity: 312
       recent:
         -
@@ -189,6 +201,7 @@ states:
       none: []
     branching: true
     branching_declared: true
+    series: "branching"
     note: "가용 수량이 가장 큰 업체의 계약이 발주를 막는다(W 조건). 적격 후보는 2개"
   -
     state_id: "s05"
@@ -214,32 +227,45 @@ states:
       none: []
     branching: false
     branching_declared: false
+    series: "empty"
     note: "비분기: 트리거 미충족(140 >= 100). 후보 구조는 s01과 같다"
   -
     state_id: "s06"
     kind: "measure"
-    R_s: []
+    R_s:
+      -
+        supplier_id: "SUP-401"
+        quantity: 355
     r_defined: true
-    r_reason: "트리거 미충족(quantity_on_hand >= 100)"
+    r_reason: "available_quantity 최대"
     k_set:
-      - "SUP-101"
-      - "SUP-102"
-      - "SUP-103"
+      - "SUP-401"
     competing_ids:
-      - "SUP-101"
-      - "SUP-102"
-      - "SUP-103"
-    candidate_count: 3
-    quantity_on_hand: 100
+      - "SUP-401"
+    candidate_count: 1
+    quantity_on_hand: 45
     predictions:
-      first: []
-      max: []
-      recent: []
-      all: []
+      first:
+        -
+          supplier_id: "SUP-401"
+          quantity: 355
+      max:
+        -
+          supplier_id: "SUP-401"
+          quantity: 355
+      recent:
+        -
+          supplier_id: "SUP-401"
+          quantity: 355
+      all:
+        -
+          supplier_id: "SUP-401"
+          quantity: 355
       none: []
     branching: false
     branching_declared: false
-    note: "비분기: 문턱과 정확히 같다(100은 '100 아래'가 아니다). 경계 상태"
+    series: "single_candidate"
+    note: "비분기(적격 후보 1개): PROD-001 공급업체가 한 곳뿐이라 선택 규칙 전부와 R(s)가 같은 업체를 낸다"
   -
     state_id: "s07"
     kind: "measure"
@@ -261,23 +287,42 @@ states:
       none: []
     branching: false
     branching_declared: false
+    series: "empty"
     note: "비분기: 트리거는 걸리지만 세 업체의 계약이 모두 발주를 막는다(적격 후보 0)"
   -
     state_id: "s08"
     kind: "measure"
-    R_s: []
+    R_s:
+      -
+        supplier_id: "SUP-501"
+        quantity: 355
     r_defined: true
-    r_reason: "적격 후보 0개(계약이 발주를 허용하는 공급업체가 없음)"
-    k_set: []
-    competing_ids: []
-    candidate_count: 0
-    quantity_on_hand: 61
+    r_reason: "available_quantity 최대"
+    k_set:
+      - "SUP-501"
+    competing_ids:
+      - "SUP-501"
+    candidate_count: 1
+    quantity_on_hand: 45
     predictions:
-      first: []
-      max: []
-      recent: []
-      all: []
+      first:
+        -
+          supplier_id: "SUP-501"
+          quantity: 355
+      max:
+        -
+          supplier_id: "SUP-501"
+          quantity: 355
+      recent:
+        -
+          supplier_id: "SUP-501"
+          quantity: 355
+      all:
+        -
+          supplier_id: "SUP-501"
+          quantity: 355
       none: []
     branching: false
     branching_declared: false
-    note: "비분기: 트리거는 걸리지만 PROD-001의 공급업체 목록이 비었다(PROD-002 목록만 있음)"
+    series: "single_candidate"
+    note: "비분기(적격 후보 1개): PROD-001은 한 곳, PROD-002는 두 곳이다. 빈손 조회가 타 상품 후보까지 돌려주므로 상품 필터를 지키는지도 본다"

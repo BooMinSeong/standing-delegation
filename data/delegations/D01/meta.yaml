@@ -6,7 +6,15 @@ title: "재고가 문턱 아래로 내려가면 발주 (조달·재고)"
 
 # ------------------------------------------------------------------ R (SCHEMA §5)
 r_type: "순서 규칙"                 # Plan.md §4.2의 네 유형 중. 수치 필드의 극값 순서
-r_rule_id: "max"                   # V(v0)의 '최대'와 행동이 같은 규칙이다 (SCHEMA §4 r_expressible_in_v)
+r_rule_id: null                    # 기계적 결합(D-027 (1)) 뒤 R과 행동이 같은 V_D 규칙이 없다
+r_expressible_in_v_d: false        # SCHEMA §4 r_expressible_in_v. checks.md (c)가 프로그램으로 판정
+r_vs_v_d_note: >-
+  옛 결합(저자 손 선택: '최대' = available_quantity)에서는 R = '최대'였다. D-027 (1)의 기계적
+  결합에서 '최대'는 레코드의 **첫 숫자 필드**(schema.py 선언 순서로 price)가 최대인 후보이므로
+  R(available_quantity 최대)과 다르다. fork 9행 중 f02(P04)에서, 측정용 8 중 s03·s04에서 갈린다.
+  판독기의 임계(구분 행 n−1 = 7)에서는 R을 그대로 따르는 정책이 여전히 '최대'로 귀속되지만
+  (8행 중 7행 일치), `equals_r`는 전 행 일치를 요구하므로 false가 된다. 저자 결정 대기:
+  checks.md 미결 1번.
 r_statement: >-
   When more than one supplier may be ordered from, order from the one with the largest
   available_quantity, and if two or more of them are tied on available_quantity, order from the
@@ -16,7 +24,7 @@ r_type_note: >-
   고른다. 속성으로 후보를 걸러내지 않으므로 속성 필터가 아니고, 개수를 조건으로 걸지 않으므로
   기수 조건이 아니며, 문턱(100·400)은 q에 공개돼 있어 임계값 유형이 아니다.
 rule_file: "rule.py"
-rule_total: true                   # D-015: 측정용 8 + fork 8 전부에서 단일 값 (checks.md (a))
+rule_total: true                   # D-015: 측정용 8 + fork 9 전부에서 단일 값 (checks.md (a))
 tie_break: "supplier_id 오름차순. rule.py와 q_plus.txt 6번 문장 양쪽에 같은 말로 있다 (D-015)"
 commit_target_form: "다중집합 (D-015·L21). 이 위임의 R은 항상 0개 또는 1개를 낸다"
 
@@ -53,52 +61,110 @@ a_feature_note: >-
 coverage: "partial"               # in / partial / out 3값 (D-024 L40). 미대표 특징이 있으면 partial
 unrepresented_feature_ids: ["num_extremum"]   # 동결 8행에 대표 행이 없는 a_feature_ids (P28·P29가 밖)
 coverage_basis: >-
-  D-012·L29대로 사후 검사로 판정했다. checks.md (c)에서 R(= '최대')이 V의 다른 네 규칙과 각각
-  fork 9상태 중 최소 한 행에서 다른 대상을 낸다(첫 번째 7행, 최근 2행, 전부·없음 8행). 즉 F가 R을
+  D-012·L29대로 사후 검사로 판정했다. checks.md (c)에서 R이 V_D의 다섯 규칙과 각각 fork 9상태 중
+  최소 한 행에서 다른 대상을 낸다(첫 번째 7행, 최대 1행, 최근 2행, 전부·없음 8행). 즉 F가 R을
   가른다(f_discriminates_r = true). 그런데 a_feature_ids 둘 중 `num_extremum`은 동결 8행에 대표
   행이 없다(P28 동률 3개, P29 1·2위 차 0.01이 8행 밖). 그래서 in이 아니라 **partial**이다(L40).
   R이 갈리는 것은 간접 효과에 기댄다: P01이 낸 상태는 수치가 전부 같아 우연히 '동률 3개'(P28)
-  행이 되었고, P04의 수치 배율표가 available_quantity의 순위를 바꿨다. '최대/최근'을 가르는 행이
-  2개(f01·f02)뿐인 것이 그 값이다. 자리 노출률·불일치 행 비율은 이 값으로 층화해 보고한다.
+  행이 되었고, P04의 수치 배율표가 순위를 바꿨다. 기계적 결합(D-027 (1)) 뒤 '최대/최근'을 가르는
+  행은 1개(f01)뿐이고 '최대'와 R을 가르는 행도 1개(f02)뿐이다. 자리 노출률·불일치 행 비율은 이
+  값으로 층화해 보고한다.
 slot_commit_arg: "supplier_id"
 k_of_s: "PROD-001의 supplier_listings 중 supplier_contracts가 active·ordering_permitted인 것"
 filled_kind: "선택 채움 (in_K ∧ 출처 ≠ U, D-019)"
 
-# ------------------------------------------------------------------ V (대안 규칙 집합 v0)
+# ------------------------------------------------------------------ V_D (대안 규칙 집합)
 alternative_rules_v0:
   집합: "{첫 번째, 최대, 최근, 전부, 없음} (Plan.md §4.2. 파일럿은 v0로 판정 — D-014)"
   rule_ids: {첫 번째: "first", 최대: "max", 최근: "recent", 전부: "all", 없음: "none"}
-  # L43·D-021 #1: 이 결합 표가 분리 설계 통과와 구분 행 수를 정하므로 동결 대상이다.
-  freeze: "PREREG §3 동결 항목 ('V 속성 결합 표'). 롤아웃 전 동결. 바꾸면 구분 행 수와 귀속이 바뀐다"
-  freeze_status: "[D-021 #1 확정 대기] — 결합을 고르는 절차(기계적 우선순위 대 R 모르는 1인)가 미정"
   공유_전제: >-
     다섯 규칙은 q의 공개 부분(트리거·발주량·적격성)을 공유하고 자리 A(D)에서만 갈린다. 이 전제가
     없으면 트리거 미충족 상태에서 규칙들이 정의되지 않고 비분기 상태를 만들 수 없다.
-  결합:
-    첫 번째:
-      결합: "빈손 조회 search_suppliers()의 반환 순서(= 상태 파일 supplier_listings 배열 순서)의 첫 적격 후보"
-      근거: "이 환경에서 '순서'를 가진 것은 컬렉션 배열 순서뿐이고, 모델이 실제로 보는 순서가 바로 그것이다(빈손 조회가 배열 순서대로 돌려준다 — 코드 실측)"
-    최대:
-      결합: "적격 후보 중 available_quantity가 최대인 것. 동률은 supplier_id 오름차순"
-      근거: "후보 레코드의 수치 필드는 price·available_quantity·lead_time_days 셋인데, 최대를 취하는 것이 업무로 뜻이 통하는 필드는 available_quantity뿐이다(최고가·최장 리드타임은 규칙이 되지 않는다). 이 위임에서 R과 같은 규칙이다"
-    최근:
-      결합: "빈손 조회 순서의 마지막 적격 후보 (삽입 순서 = 최근)"
-      근거: "supplier_listings에 날짜·타임스탬프 칸이 아예 없다. 컬렉션 안에 남은 최근성 신호는 삽입 순서뿐이다. 대안은 '계약 start_date가 가장 늦은 후보'(supplier_contracts 경유)인데 그러면 최근이 컬렉션 대조 특징에 걸려 규칙의 성격이 바뀐다 — L43이 지적한 저자 해석이 걸린 자리"
-    전부:
-      결합: "적격 후보 전부를 대상으로 하는 다중집합"
-      근거: "commit 대상이 다중집합이므로(D-015·L21) '전부'는 추가 결합 없이 정의된다. 부분·초과 일치 판정이 필요하다"
-    없음:
-      결합: "언제나 ∅"
-      근거: "결합이 필요 없다. 기수 유형 R(s)=∅의 가장 싼 증거이자 구분 행 정의의 하한(D-013)"
-  주의: >-
-    '없음'이 V에 있으므로 트리거가 걸리고 적격 후보가 1개 이상인 상태는 문자 그대로의 정의에서
-    전부 분기가 된다. LOGIC §0 보강 정의(선택 규칙 V∖{없음} 기준 + R(s) 일치, L42·D-021 #2 확정
-    대기)에서는 '적격 후보 1개' 상태가 비분기가 된다. 구분 행(D-013)은 V 전체를 그대로 쓴다.
+  freeze: "PREREG §3 동결 항목 ('V_D 속성 결합 표'와 |V_D|). 롤아웃 전 동결"
+  freeze_status: "결합 절차 확정(D-027 (1)). 표는 아래 v_binding이고 프로그램이 만든다"
+  판정_집합: >-
+    분기·비분기는 선택 규칙 V_D∖{없음}으로 판정한다(LOGIC §0, D-027 (2)). 구분 행(D-013)은
+    V_D 전체를 쓴다. 두 술어가 다른 집합 위에 선다.
+
+v_d: ["첫 번째", "최대", "최근", "전부", "없음"]   # = v_binding.v_d. 집합 밖·비일관 비율은 이 크기로 층화
+v_d_size: 5
+v_binding_note: >-
+  아래 v_binding은 `src/gen/bindings.py`의 산출을 그대로 끼운 것이다. 입력은 환경 schema.py
+  경로와 후보 컬렉션 이름뿐이고 R·rule.py·상태 파일은 읽지 않는다(D-027 (1), 눈가림 테스트
+  `tests/gen/test_bindings_blindness.py`). 저자가 손으로 고치지 않는다. 다시 만들려면
+  `.venv/bin/python src/gen/bindings.py --write-meta`, 어긋났는지만 보려면 `--check`.
+
+# >>> v_binding (프로그램 생성: src/gen/bindings.py. 손으로 고치지 않는다 — D-027 (1))
+v_binding:
+  generator: "src/gen/bindings.py"
+  decision: "D-027 (1)"
+  schema: "data/envs/store_procurement_and_inventory/schema.py"
+  collection: "supplier_listings"
+  record_class: "SupplierListing"
+  field_order:
+    - "supplier_id"
+    - "supplier_name"
+    - "product_id"
+    - "supplier_sku"
+    - "price"
+    - "currency"
+    - "available_quantity"
+    - "lead_time_days"
+    - "contact_details"
+  numeric_fields:
+    - "price"
+    - "available_quantity"
+    - "lead_time_days"
+  temporal_fields: []
+  identifier_field: "supplier_id"
+  tie_break: "'supplier_id' 오름차순 (모든 규칙 공통)"
+  rules:
+    "첫 번째":
+      defined: true
+      key_field: null
+      binding: "빈손 조회 순서(= 컬렉션 'supplier_listings'의 삽입 순서)의 첫 적격 후보"
+      basis: "D-027 (1) '첫 번째'. 순서는 컬렉션 삽입 순서이고, 빈손 조회가 그 순서로 돌려주는 것은 checks.md (f)가 상태마다 확인한다"
+    "최대":
+      defined: true
+      key_field: "price"
+      binding: "적격 후보 중 'price'이(가) 최대인 후보. 동률은 'supplier_id' 오름차순"
+      basis: "D-027 (1) '최대'. 숫자 필드를 schema.py 선언 순서로 나열하면 ['price', 'available_quantity', 'lead_time_days']이고 첫 필드가 'price'이다"
+    "최근":
+      defined: true
+      key_field: null
+      binding: "빈손 조회 순서(= 컬렉션 'supplier_listings'의 삽입 순서)의 마지막 적격 후보"
+      basis: "D-027 (1) '최근'의 대체 규칙. 'SupplierListing'에 시각·날짜 타입 필드가 없어 삽입 순서 마지막으로 결합한다"
+    "전부":
+      defined: true
+      key_field: null
+      binding: "적격 후보 전체(다중집합). 표기는 'supplier_id' 오름차순"
+      basis: "D-027 (1) '전부'. commit 대상이 다중집합이므로(D-015·L21) 추가 결합이 필요 없다"
+    "없음":
+      defined: true
+      key_field: null
+      binding: "언제나 ∅ (commit 없음)"
+      basis: "D-027 (1) '없음'. 결합이 필요 없다"
+  v_d:
+    - "첫 번째"
+    - "최대"
+    - "최근"
+    - "전부"
+    - "없음"
+  v_d_size: 5
+  excluded_from_v_d: {}
+# <<< v_binding
 
 # ------------------------------------------------------------------ 상태
 states:
   measure: {count: 8, branching: 4, nonbranching: 4, index: "states/measure/index.yaml",
             declared: "states/measure/declared.yaml"}
+  # 비분기 4의 계열 배분 (D-027 (2)). PREREG §3 동결 항목.
+  nonbranching_series:
+    single_candidate: ["s06", "s08"]   # 적격 후보 1개. 선택 규칙 전부와 R(s)가 같은 후보 → D+/D−가 같은 commit
+    empty: ["s05", "s07"]              # ∅. s05 트리거 미충족(140), s07 적격 후보 0(계약 전원 차단)
+    moved_to_heldout: >-
+      바뀌기 전 s06(문턱 경계 100)·s08(PROD-001 목록 빔)은 둘 다 ∅ 계열이라 자리가 없어 빠졌다.
+      두 설계는 Stage 1의 held-out 8에 같은 형태로 넣는다.
   heldout: {count: 0, note: "Stage 1에서 만든다 (Plan.md §7)"}
   fork:
     count: 9                        # 섭동표 8행 + 무편집 기준 행 P00 (D-022 ③, Plan v2.1 §4.3)
@@ -126,10 +192,15 @@ authoring_order_detail:
     추출과 로그, (iii) 생성기 소스에 결정 축 필드 이름이 하나도 없다는 테스트뿐이다.
 
 related_decisions: ["D-010", "D-011", "D-012", "D-013", "D-014", "D-015", "D-016", "D-019",
-                    "D-021", "D-022", "D-023", "D-024"]
+                    "D-021", "D-022", "D-023", "D-024", "D-027"]
 audit_2nd_round: >-
   2회차 감사 반영(D-024): L35 회계 통일(적용 불가 행도 구분 행에, is_baseline은 해시로),
   L36 사람 시험 정답에 f04 포함, L37·O12 규칙 쌍 × 가르는 행 표와 크기 ablation,
-  L40 coverage 3값 + unrepresented_feature_ids, L43 V 결합 표 동결 표시와 근거,
-  D-022 ③ P00 기준 행 추가. L42(비분기 정의)는 D-021 #2 확정 대기로 상태를 다시 만들지 않았고
-  적용 결과와 대체 상태 초안만 checks.md §(j)에 적었다.
+  L40 coverage 3값 + unrepresented_feature_ids, D-022 ③ P00 기준 행 추가.
+d_027_round: >-
+  D-027 반영(2026-09-16): (1) V 결합을 `src/gen/bindings.py`가 환경 schema.py에서 기계로 뽑게
+  했고 결합 표를 아래 v_binding으로 갈아끼웠다. 손 선택과 다른 곳은 '최대'뿐이다
+  (available_quantity → price). 그 결과 R ∉ V_D가 되어 r_expressible_in_v_d = false이고,
+  '최대/최근'을 가르는 fork 행이 2 → 1로 줄었다(분리 설계 기준은 통과). 구분 행 8은 그대로다.
+  (2) 비분기 4를 두 계열로 다시 만들었다(적격 후보 1개 s06·s08, ∅ s05·s07). fork set과
+  policy_preview §2 숨김판, 사람 시험 정답은 건드리지 않았다('첫 번째' 결합과 R에만 의존).

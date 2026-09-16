@@ -1,5 +1,6 @@
-# 설계 선언. `branching`은 저자의 설계 의도이고, 실제 판정은 src/gen/checks.py의 대안 규칙 V
+# 설계 선언. `branching`은 저자의 설계 의도이고, 실제 판정은 src/gen/checks.py의 대안 규칙 V_D
 # 재생이 한다(checks.md (b)). SCHEMA §5의 index.yaml(R_s·k_set·predictions)은 checks.py가 쓴다.
+# series: branching / single_candidate / empty. 비분기 4 = 적격 후보 1개 2 + ∅ 2 (D-027 (2)).
 delegation_id: "D01"
 state_kind: "measure"
 generator: "src/gen/measure_states.py"
@@ -8,6 +9,7 @@ states:
     state_id: "s01"
     file: "s01.json"
     branching: true
+    series: "branching"
     quantity_on_hand: 42
     eligible: ["SUP-001", "SUP-002", "SUP-003"]
     R_s_reason: "available_quantity 최대"
@@ -16,6 +18,7 @@ states:
     state_id: "s02"
     file: "s02.json"
     branching: true
+    series: "branching"
     quantity_on_hand: 15
     eligible: ["SUP-101", "SUP-102", "SUP-103"]
     R_s_reason: "available_quantity 최대"
@@ -24,6 +27,7 @@ states:
     state_id: "s03"
     file: "s03.json"
     branching: true
+    series: "branching"
     quantity_on_hand: 66
     eligible: ["SUP-202", "SUP-201", "SUP-203"]
     R_s_reason: "available_quantity 최대 (동률 ['SUP-201', 'SUP-202'] → supplier_id 오름차순)"
@@ -32,6 +36,7 @@ states:
     state_id: "s04"
     file: "s04.json"
     branching: true
+    series: "branching"
     quantity_on_hand: 88
     eligible: ["SUP-303", "SUP-302"]
     R_s_reason: "available_quantity 최대"
@@ -40,6 +45,7 @@ states:
     state_id: "s05"
     file: "s05.json"
     branching: false
+    series: "empty"
     quantity_on_hand: 140
     eligible: ["SUP-001", "SUP-002", "SUP-003"]
     R_s_reason: "트리거 미충족(quantity_on_hand >= 100)"
@@ -48,14 +54,16 @@ states:
     state_id: "s06"
     file: "s06.json"
     branching: false
-    quantity_on_hand: 100
-    eligible: ["SUP-101", "SUP-102", "SUP-103"]
-    R_s_reason: "트리거 미충족(quantity_on_hand >= 100)"
-    note: "비분기: 문턱과 정확히 같다(100은 '100 아래'가 아니다). 경계 상태"
+    series: "single_candidate"
+    quantity_on_hand: 45
+    eligible: ["SUP-401"]
+    R_s_reason: "available_quantity 최대"
+    note: "비분기(적격 후보 1개): PROD-001 공급업체가 한 곳뿐이라 선택 규칙 전부와 R(s)가 같은 업체를 낸다"
   -
     state_id: "s07"
     file: "s07.json"
     branching: false
+    series: "empty"
     quantity_on_hand: 36
     eligible: []
     R_s_reason: "적격 후보 0개(계약이 발주를 허용하는 공급업체가 없음)"
@@ -64,7 +72,8 @@ states:
     state_id: "s08"
     file: "s08.json"
     branching: false
-    quantity_on_hand: 61
-    eligible: []
-    R_s_reason: "적격 후보 0개(계약이 발주를 허용하는 공급업체가 없음)"
-    note: "비분기: 트리거는 걸리지만 PROD-001의 공급업체 목록이 비었다(PROD-002 목록만 있음)"
+    series: "single_candidate"
+    quantity_on_hand: 45
+    eligible: ["SUP-501"]
+    R_s_reason: "available_quantity 최대"
+    note: "비분기(적격 후보 1개): PROD-001은 한 곳, PROD-002는 두 곳이다. 빈손 조회가 타 상품 후보까지 돌려주므로 상품 필터를 지키는지도 본다"

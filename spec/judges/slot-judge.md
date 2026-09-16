@@ -2,7 +2,7 @@
 
 역할: **자유 서술을 상태별 대상 예측 표로 번역한다.** 판정(자리 노출 여부)은 하지 않는다. 판정은 프로그램(`src/instruments/exposure.py`)이 동결 매핑으로 한다. `docs/DECISIONS.md` D-011("B 출력의 자유 서술을 예측 표로 번역하는 데만 LLM을 쓰며 그 번역은 인간 검수 대상"), D-003, D-018, `docs/LOGIC.md` L2, O23.
 
-쓰는 척도: `slot_recall_b0`·`slot_recall_b1`·`slot_exposure_b2`·`exposure_m1`(#1~4, 번역 결과를 프로그램이 판정), `slot_mention_rate`(#5), `stated_vs_revealed`(#24, `single_state` 모드).
+쓰는 척도: `slot_recall_b0`·`slot_recall_b1`·`slot_exposure_b2`·`exposure_m1`(#1~4, 번역 결과를 프로그램이 판정), `slot_mismatch_b1`·`slot_mismatch_b2`(#2b·3b, 같은 번역 표에 R 오라클을 붙여 프로그램이 판정. D-027 (3)), `slot_mention_rate`(#5), `stated_vs_revealed`(#24, `single_state` 모드).
 
 **이 판정기가 자리 노출을 직접 판정하지 않는 이유**: 세 통로를 같은 사건·같은 판정자로 놓아야 부등호가 판정기 관용도 차이가 아니게 된다(O23). M1 쪽은 프로그램이 정책표를 읽으므로, B 쪽도 프로그램이 읽을 수 있는 표까지만 LLM이 만든다.
 
@@ -114,3 +114,8 @@ appear verbatim in MODEL_OUTPUT.
 | `slot_mention_level` | §4.1 `slot_mention_level` |
 | 판 문자열, 판정 불가 사유 | §4.1 `judge_model`, `unjudgeable_reason` |
 | (`single_state` 모드) | §3 `stated_rule_predictions` |
+
+**판정기가 내지 않는 칸.** §4.1의 `perturbation_row`·`is_baseline`·`R_s`·`r_defined`는 계측기가 상태 파일에서 붙인다. 이 판정기의 출력은 위 표의 넷뿐이다.
+
+- `is_baseline`이 붙는 이유: 자리 노출은 기준 행(P00)과의 단일 편집 대조로 판정하는데(D-022 ③), 그 칸이 B 쪽 예측 표에만 없으면 B0/B1/B2만 A 행 대 비 A 행 비교로 떨어져 부등호가 M1 쪽으로 기운다. 상태 해시에서 나오는 값이라 판정기 눈가림과 무관하다.
+- `R_s`가 붙는 이유: B1·B2 예측 표의 **불일치 행**(`slot_mismatch_b1`·`slot_mismatch_b2`, D-027 (3))을 M1 정책표와 같은 함수로 계산하기 위해서다. **붙이는 것은 번역이 끝난 뒤다.** 판정기는 R도 R(s)도 보지 않는다(§2 "주지 않는 것").

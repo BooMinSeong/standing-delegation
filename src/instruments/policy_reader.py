@@ -19,6 +19,16 @@
 - **`tie_undefined`는 비교 모드(`mode="legacy"`) 전용이고 기록하지 않는다.** 정책표에 남는
   `attribution_kind`는 single / set / inconsistent / out_of_set / hold 다섯뿐이다.
 
+규칙 집합은 V가 아니라 **V_D**다 (`docs/DECISIONS.md` D-027 (1), `docs/LOGIC.md` L43)
+`rules` 인자에 그 위임의 V_D를 넘긴다. 속성 결합이 환경 스키마에서 정의되지 않는 규칙은 V_D에서
+빠지므로(예: 시각 필드도 삽입 순서도 없어 '최근'이 정의되지 않는 환경) 위임마다 규칙 집합의 크기가
+다르다. 판독기는 넘겨받은 집합을 `rules`·`v_d_size`로 결과에 남기고, 집합 밖·비일관·보류 비율은
+그 크기로 층화해 보고한다(`spec/metrics.md` #21~23). 규칙 하나가 빠지면 같은 표에서 귀속이
+바뀔 수 있다 — 그 규칙이 유일한 일치 규칙이었으면 귀속은 집합 밖이 된다(합성 검사
+`test_v_d_size_changes_attribution`).
+'없음'은 언제나 V_D에 있으므로(결합이 필요 없다) **구분 행 수는 |V_D|에 의존하지 않는다.**
+바뀌는 것은 일치 수와 귀속이다.
+
 옛 규칙 비교 모드 (`mode="legacy"`)
 - 임계 = ceil(0.85·n), 보류 없음, 동률 미정의(그대로 "동률미정의"로 표시),
   구분 행에서 후보 1개 행을 뺀다 (`Plan.md` 99행의 예시).
@@ -224,7 +234,8 @@ def read(
 
     return {
         "mode": mode,
-        "rules": list(rules),
+        "rules": list(rules),            # 이 표를 읽은 규칙 집합 = V_D (D-027 (1))
+        "v_d_size": len(rules),          # 층화 분모 (`spec/metrics.md` #21~23)
         "attribution": attribution,
         "attribution_kind": kind,
         "n_discriminating": n,

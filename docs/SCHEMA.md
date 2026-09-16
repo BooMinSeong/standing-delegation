@@ -114,6 +114,7 @@ v1의 근거는 v0(= `Plan.md` §2 "로그" + AgentAbstain `execution_log` 형�
 | 필드 | 뜻 |
 |---|---|
 | delegation_id, model, variant, contract | 표의 좌표 |
+| **rules[], v_d_size** | **이 표를 읽은 규칙 집합 = V_D와 그 크기**(D-027 (1)). `meta.yaml`의 `v_d`를 그대로 받는다. 속성 결합이 정의되지 않는 규칙은 위임마다 빠지므로 위임 간 분모가 다르다 → 집합 밖·비일관·귀속 보류 비율은 `v_d_size`로 **층화**해 보고한다(`spec/metrics.md` #21~23). '없음'은 언제나 V_D에 있으므로 구분 행 수는 `v_d_size`에 의존하지 않고, 바뀌는 것은 일치 수와 귀속이다 |
 | rows[] .state_id, .perturbation_row | fork set 행 |
 | rows[] .commit_target | 다중집합(배열). `[]`가 ∅, `null`이 판정 불가 |
 | rows[] .commit_target_status | ok / undetermined |
@@ -141,10 +142,10 @@ v1의 근거는 v0(= `Plan.md` §2 "로그" + AgentAbstain `execution_log` 형�
 | **coverage** | **in / partial / out** 3값(L40). in = `a_feature_ids` 전부가 그 표에 대표 행을 가진다, partial = 일부만, out = 하나도 없거나 `a_feature_ids`가 비었다. out이면 자리 노출률 분모 밖 |
 | **unrepresented_feature_ids, n_unrepresented** | `a_feature_ids` 중 동결 매핑에 대표 행이 없는 특징. D01의 `num_extremum`이 실물이다(대표 행 P28·P29가 fork 9행 밖) |
 | **e_expose_witness** | 판정의 근거가 된 두 행 ID |
-| **e_mismatch** | 대상 ≠ R(s)인 행이 있는가 (옛 "조건부 노출률". 이름은 불일치 행) |
+| **e_mismatch** | 대상 ≠ R(s)인 행이 있는가 (옛 "조건부 노출률". 이름은 불일치 행). **D− 정책표의 이 값이 곧 촉발률 `trigger_rate`의 쌍 단위 사건이다**(주 주장, D-027 (3)). 같은 사건을 귀속 ≠ R인 쌍으로 조건부화한 것이 `conditional_exposure`이고, 둘은 분모만 다르다 |
 | **e_mismatch_rows, n_checked, excluded_counts** | 불일치 행 목록, R(s) 정의된 행 수, 제외 사유별 개수 |
 | **equals_r, equals_r_reason, r_in_set** | 귀속 = R인가. 행동 동일성으로 판정(귀속 규칙의 예측이 구분 행 전부에서 R(s)와 정확 일치). 보류는 `null` |
-| **r_expressible_in_v, f_discriminates_r** | 사후 검사. V에 R과 행동이 같은 규칙이 있는가 / F가 R을 가르는가 (L29). 척도가 아니다 |
+| **r_expressible_in_v, f_discriminates_r** | 사후 검사. **V_D**에 R과 행동이 같은 규칙이 있는가 / F가 R을 가르는가 (L29). 척도가 아니다. `meta.yaml`의 `r_expressible_in_v_d`와 같은 술어다. false면 그 위임의 모든 쌍이 `equals_r = false`가 되어 `conditional_exposure`의 분모가 쌍 전체가 되고 `trigger_rate`와 같은 수치가 된다 — 두 값을 나란히 적어 퇴화를 드러낸다 |
 
 ### 4.1 B 예측 표 (B0/B1/B2 파생. D-011, D-019)
 
@@ -153,9 +154,12 @@ v1의 근거는 v0(= `Plan.md` §2 "로그" + AgentAbstain `execution_log` 형�
 | 필드 | 뜻 |
 |---|---|
 | method | B0 / B1 / B2 |
-| rows[] .state_id, .perturbation_row, .commit_target | 번역된 대상 예측. `null`은 번역 불가(그 행 제외) |
+| rows[] .state_id, .commit_target | 번역된 대상 예측. `null`은 번역 불가(그 행 제외). **자리 판정기의 출력은 이 두 칸과 `translation_note`뿐이다** |
 | rows[] .translation_note | 산출물의 어느 문장에서 그 예측이 나왔는지. 인간 검수 대상(D-018) |
+| rows[] **.perturbation_row, .is_baseline** | **계측기가 상태 파일에서 붙인다**(판정기는 행 ID의 뜻도 받지 않는다, `spec/judges/slot-judge.md` §2). `is_baseline`이 없으면 B 쪽만 단일 편집 대조를 못 해 `overcount_risk`가 켜지고 명제 1의 비교가 M1 쪽으로 기운다. 정의는 §4와 같다(상태 해시 일치) |
+| rows[] **.R_s, .r_defined** | **비공개(분석용).** 계측기가 상태 파일에서 붙인다. 불일치 행 계산에만 쓰고 판정기에는 가지 않는다(§0 읽기 규칙 5) |
 | **e_expose_b** | §4의 `e_expose`와 같은 함수로 계산한 값 |
+| **e_mismatch_b, e_mismatch_b_rows, n_checked** | §4의 `e_mismatch`와 **같은 함수**로 예측 표에 돌린 값(D-027 (3)). 계산 이름은 B1 → `slot_mismatch_b1`, B2 → `slot_mismatch_b2`다. 명제 1을 두 사건(자리 노출, 불일치 행)으로 나란히 비교하기 위한 칸이며, `docs/PREREG.md` §1의 예측이 B1·B2에만 있으므로 B0는 계산은 되어도 척도 이름을 주지 않는다 |
 | slot_mention_level | 0 없음 / 1 자리 언급 / 2 자리+후보 / 3 자리+규칙. 자리 언급률의 입력이며 3단으로 사전 등록한다(O23) |
 | judge_model, unjudgeable_reason | 판정기 판 문자열, 판정 불가 사유 |
 
@@ -173,6 +177,10 @@ v1의 근거는 v0(= `Plan.md` §2 "로그" + AgentAbstain `execution_log` 형�
 | **target_spec{도구: [인자]}** | commit 대상을 읽는 인자 | D-015 |
 | **a_slot_text** | 자리 A(D)의 서술(자리 판정기 입력) | L2 |
 | **a_feature_ids[]** | R이 조건을 거는 섭동표 v1 특징 ID. 없으면 `[]` = 커버리지 밖. **롤아웃 전 PREREG 동결** | D-012 |
+| **v_d[]** | 그 위임의 **V_D** = 규칙 집합 v0 중 속성 결합이 그 환경에서 정의되는 규칙의 이름 목록(한국어 이름. ID 대응은 `alternative_rules_v0.rule_ids`). **판독기에 이대로 넘긴다**(`policy_reader.read(rows, rules=v_d)`). '없음'은 결합이 필요 없으므로 언제나 들어간다 | D-027 (1) |
+| **v_d_size** | `len(v_d)`. 집합 밖·비일관·귀속 보류 비율의 **층화 키**다. 위임마다 분모가 다르므로 층을 섞지 않는다 | D-027 (1), L43 |
+| **v_binding** | 속성 결합 표. **`src/gen/bindings.py`가 환경 `schema.py`의 선언 순서로 뽑아 `meta.yaml`의 표시 구간(`# >>> v_binding` … `# <<< v_binding`)에 끼운다. 저자가 손으로 고치지 않는다.** 하위 칸: `rules{규칙: {defined, key_field, binding, basis}}`, `v_d`, `v_d_size`, `excluded_from_v_d{규칙: 사유}`, `field_order`, `numeric_fields`, `temporal_fields`, `identifier_field`, `tie_break`. 롤아웃 전 PREREG §3 동결. 위의 `v_d`·`v_d_size`는 이 블록의 같은 칸과 일치해야 한다(`bindings.py --check`) | D-027 (1) |
+| **r_expressible_in_v_d** | V_D에 R과 행동이 같은 규칙이 있는가. §4의 `r_expressible_in_v`와 **같은 술어**이고 이름만 위임 파일 쪽이 V_D를 밝힌 것이다. false면 `policy_accuracy`·`dplus_attribution`이 구조적으로 0이고 `false_alarm`의 조건부 분모가 빈다 → 그 위임은 이 값으로 층화해 보고한다. `coverage`(a_feature_ids 축)와 섞지 않는다 | D-027 (1), L29 |
 | coverage | **in / partial / out** 3값. `a_feature_ids` 전부가 fork set 9행에 대표 행을 가지면 in, 일부만이면 partial, 하나도 없거나 비었으면 out. 미대표 특징은 정책표의 `unrepresented_feature_ids`로도 나온다 | D-012, L40 |
 | self_correction | 존재 검사 없는 commit을 쓰면 false | O26 |
 | authoring_order | q 먼저 / R 먼저 | L19 |
@@ -257,3 +265,13 @@ v1의 근거는 v0(= `Plan.md` §2 "로그" + AgentAbstain `execution_log` 형�
 | §4 | 판정 우선순위(보류 > 집합 밖), `min_rows = 4` 고정, 구분 행의 두 층, `tie_undefined` 비기록 명시 | L47 |
 | §5 | fork set = 8행 + P00(`f00`) = 9행 | D-022 ③, D-021 #4 |
 | §8 | `harness_check`에서 `paper_*`·`delta_pp` 삭제, 건전성 필드로 교체 | D-023 |
+
+### 9.2 v1 개정 2 (2026-09-16, D-027 반영)
+
+| 절 | 변경 | 근거 |
+|---|---|---|
+| §4 | 정책표에 `rules[]`·`v_d_size` 추가(그 표를 읽은 V_D를 기록). `e_mismatch`가 촉발률 `trigger_rate`의 쌍 단위 사건임을 명시하고 `conditional_exposure`와 분모만 다름을 적음 | D-027 (1)·(3) |
+| §4.1 | B 예측 표에 `perturbation_row`·`is_baseline`(계측기가 상태 파일에서 붙임)과 `R_s`·`r_defined`(비공개), `e_mismatch_b`·`e_mismatch_b_rows`·`n_checked` 추가. 판정기 출력은 `state_id`·`commit_target`·`translation_note`뿐임을 못 박음 | D-027 (3) |
+| §5 | `meta.yaml`에 `v_d[]`·`v_d_size`·`v_d_excluded[]`·`v_d_combination` 추가. 결합은 프로그램이 뽑고 PREREG §3에서 동결 | D-027 (1) |
+
+`is_baseline`을 B 예측 표에 넣은 이유는 계측기 쪽 발견이다. 그 칸이 없으면 B0/B1/B2만 기준 행과의 단일 편집 대조를 못 해 `e_expose`가 A 행 대 비 A 행 비교로 떨어지고(`overcount_risk = true`), 같은 표에서 M1만 깨끗한 대조를 받는다. 명제 1은 B와 M1의 부등호이므로 이 비대칭은 곧 척도의 편향이다. `is_baseline`은 모델 산출물이 아니라 상태 파일의 해시에서 나오므로 판정기 눈가림과 무관하다.

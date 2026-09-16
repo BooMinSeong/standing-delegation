@@ -36,12 +36,19 @@ from pathlib import Path
 
 assert "rule" not in sys.modules, "fork set 생성기는 R을 임포트하지 않는다"
 
+_HERE = Path(__file__).resolve().parent
+if str(_HERE) not in sys.path:
+    sys.path.insert(0, str(_HERE))
+from _paths import bootstrap  # noqa: E402  (경로를 스스로 잡는다 — tests/conftest.py와 같은 방식)
+
+bootstrap()
+
 REPO = Path(__file__).resolve().parents[2]
 DELEG = REPO / "data" / "delegations" / "D01"
 Q_MINUS = DELEG / "q_minus.txt"
 OUT_DEFAULT = DELEG / "states" / "fork"
 BASE_STATE = (
-    Path(os.environ.get("AGENTABSTAIN_DATA", "/home3/b.ms/projects/standing-delegation/data/agentabstain-data"))
+    Path(os.environ["AGENTABSTAIN_DATA"])
     / "tasks/emergent_risk_discovery/preview_018/act/initial_states/store_procurement_and_inventory.json"
 )
 

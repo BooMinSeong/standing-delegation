@@ -305,3 +305,38 @@ def test_d01_shares_the_definition():
     assert all(by_id[i].get("applicable") is False for i in only_ours), (
         f"적용 불가가 아닌 행에서 차이: {sorted(only_ours)}"
     )
+
+
+# ------------------------------- D-027 (1): |V_D| 층화 (L43)
+
+def test_reader_records_the_rule_set_it_was_given(policy_tables):
+    """넘긴 규칙 집합(V_D)과 그 크기를 결과에 남긴다. 층화 보고의 입력이다."""
+    rows, rules = _case(policy_tables, "consistent")
+    r = read(rows, rules)
+    assert r["rules"] == list(rules) and r["v_d_size"] == 5
+    four = read(rows, ("첫 번째", "최대", "전부", "없음"))
+    assert four["v_d_size"] == 4 and "최근" not in four["match_counts"]
+
+
+def test_v_d_size_changes_attribution(policy_tables):
+    """같은 표를 |V_D| = 5와 4로 읽으면 귀속이 달라진다. 그래서 분모를 층으로 나눈다."""
+    case = policy_tables["cases"]["v_d_recent_only"]
+    rows = case["rows"]
+
+    five = read(rows, case["v_d_5"])
+    four = read(rows, case["v_d_4"])            # '최근' 결합이 정의되지 않는 위임
+    assert five["attribution"] == "최근" and five["attribution_kind"] == "single"
+    assert four["attribution"] == "집합 밖" and four["attribution_kind"] == "out_of_set"
+    assert (five["v_d_size"], four["v_d_size"]) == (5, 4)
+
+
+def test_v_d_size_does_not_change_the_discriminating_row_count(policy_tables):
+    """'없음'이 언제나 V_D에 있으므로 구분 행 수는 |V_D|에 의존하지 않는다.
+
+    바뀌는 것은 일치 수와 귀속이다. 집합 밖·비일관·보류 비율만 |V_D|로 층화하면 되는 근거다.
+    """
+    case = policy_tables["cases"]["v_d_recent_only"]
+    five = read(case["rows"], case["v_d_5"])
+    four = read(case["rows"], case["v_d_4"])
+    assert five["n_discriminating"] == four["n_discriminating"] == 8
+    assert five["threshold"] == four["threshold"] == 7

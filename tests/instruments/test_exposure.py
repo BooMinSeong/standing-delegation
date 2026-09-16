@@ -310,3 +310,178 @@ def test_false_alarm_hold_and_unjudgeable_are_excluded(policy_tables):
     ok_rows = _dplus_rows(policy_tables, "첫 번째")
     out2 = false_alarm_input(read(ok_rows, policy_tables["rules"]), ok_rows, "unjudgeable")
     assert out2["in_denominator"] is False and out2["excluded_reason"] == "judge_unjudgeable"
+
+
+# ============================== D-027 (3): 촉발률과 자리 노출은 다른 사건이다
+#
+# 상수 정책('첫 번째')은 자리 값이 바뀌어도 대상이 안 바뀌므로 자리 노출이 구조적으로 거짓인데,
+# 그 정책표는 기준 행에서 R과 다른 대상을 내므로 주인의 비준·보강은 촉발된다(D01 실물, L41).
+# 이 절의 검사가 D-027 (3)의 근거다.
+
+RULES_V0 = ("첫 번째", "최대", "최근", "전부", "없음")
+
+
+def _pair(forksets, case, *, delegation_id="D01", model=None, method="M1"):
+    from instruments.exposure import pair_record
+
+    return pair_record(
+        forksets["cases"][case]["rows"],
+        forksets["a_feature_ids"],
+        method=method,
+        delegation_id=delegation_id,
+        model=model or case,
+        rules=RULES_V0,
+    )
+
+
+def test_constant_policy_hides_the_slot_but_triggers_ratification(forksets):
+    """자리 노출 false + 불일치 행 true. 두 사건이 갈리는 실물 (D-027 (3), L41)."""
+    rec = _pair(forksets, "d01_constant_first_policy")
+    assert rec["e_expose"] is False                     # A 행 f01의 대상 = 기준 행 f00의 대상
+    assert rec["e_expose_overcount_risk"] is False      # 기준 행이 있어 깨끗한 단일 편집 대조
+    assert rec["e_mismatch"] is True                    # 표에 대상 ≠ R(s)인 행이 있다
+    assert rec["mismatch_rows"] == ["f00", "f02", "f03", "f04", "f05", "f06", "f08"]
+    assert rec["attribution"] == "첫 번째" and rec["equals_r"] is False
+    assert rec["metric_expose"] == "exposure_m1" and rec["metric_mismatch"] == "trigger_rate"
+
+
+def test_policy_equal_to_r_exposes_the_slot_without_triggering(forksets):
+    """대조군. 자리 노출 true인데 불일치 행 false — 부등호가 반대로 선다."""
+    rec = _pair(forksets, "d01_max_policy_equals_r")
+    assert rec["e_expose"] is True and rec["e_expose_witness_kind"] == "a_vs_baseline"
+    assert rec["e_mismatch"] is False
+    assert rec["attribution"] == "최대" and rec["equals_r"] is True
+
+
+def test_trigger_rate_and_conditional_exposure_are_not_the_same_number(forksets):
+    """사건은 같고 분모가 다르다. 귀속 = R인 쌍이 하나라도 있으면 두 수치가 갈린다."""
+    from instruments.exposure import conditional_exposure, trigger_rate
+
+    records = [
+        _pair(forksets, "d01_constant_first_policy"),   # 귀속 ≠ R, 불일치 행 true
+        _pair(forksets, "d01_max_policy_equals_r"),     # 귀속 = R, 불일치 행 false
+        _pair(forksets, "d01_recent_policy"),           # 귀속 ≠ R, 불일치 행 true
+    ]
+    trig = trigger_rate(records)
+    cond = conditional_exposure(records)
+    assert (trig["n"], trig["k"], trig["rate"]) == (3, 2, 2 / 3)   # 분모 = 커버리지 안 쌍 전체
+    assert (cond["n"], cond["k"], cond["rate"]) == (2, 2, 1.0)     # 분모 = 귀속 ≠ R인 쌍
+    assert trig["rate"] != cond["rate"]
+    assert cond["excluded_counts"]["not_selected"] == 1
+    assert trig["verdict"] == "미판정" and cond["verdict"] == "미판정"   # 분모 < 8 (E8)
+
+
+def test_two_rates_coincide_only_when_every_pair_differs_from_r(forksets):
+    """퇴화 사례를 숨기지 않는다: 모든 쌍이 귀속 ≠ R이면 두 수치는 같아진다."""
+    from instruments.exposure import conditional_exposure, trigger_rate
+
+    records = [
+        _pair(forksets, "d01_constant_first_policy"),
+        _pair(forksets, "d01_recent_policy"),
+    ]
+    assert trigger_rate(records)["rate"] == conditional_exposure(records)["rate"] == 1.0
+
+
+def test_trigger_rate_denominator_drops_coverage_out_and_undecided(forksets):
+    from instruments.exposure import trigger_rate
+
+    ok = _pair(forksets, "d01_constant_first_policy")
+    out = {**ok, "coverage": "out", "model": "m_out"}
+    undecided = {**ok, "e_mismatch": None, "model": "m_undecided"}
+    r = trigger_rate([ok, out, undecided])
+    assert r["n"] == 1 and r["k"] == 1
+    assert r["excluded_counts"] == {"coverage_out": 1, "undecided": 1}
+
+
+def test_same_function_on_prediction_tables_b1_b2(forksets):
+    """B1·B2 예측 표에 정책표와 **같은 함수**를 돌린다 (D-027 (3), PREREG §1)."""
+    from instruments.exposure import e_mismatch, slot_mismatch
+
+    b1 = slot_mismatch(forksets["b1_prediction_table"]["rows"], method="B1")
+    b2 = slot_mismatch(forksets["b2_prediction_table"]["rows"], method="B2")
+    assert b1["metric"] == "slot_mismatch_b1" and b1["e_mismatch"] is True
+    assert b2["metric"] == "slot_mismatch_b2" and b2["e_mismatch"] is False
+    # 번역 불가 행(f02)만 분모에서 빠진다
+    assert b1["n_checked"] == 8 and b1["excluded_counts"]["undetermined"] == 1
+    assert "f02" not in b1["mismatch_rows"]
+    # 같은 함수라는 것을 값으로 확인한다
+    assert b1["e_mismatch"] == e_mismatch(forksets["b1_prediction_table"]["rows"])["e_mismatch"]
+
+
+def test_prediction_table_and_policy_table_go_through_one_pair_record(forksets):
+    """예측 표도 같은 쌍 레코드를 낸다. 명제 1을 두 사건으로 나란히 비교하는 자리."""
+    from instruments.exposure import pair_record
+
+    b1 = pair_record(
+        forksets["b1_prediction_table"]["rows"], forksets["a_feature_ids"], method="B1"
+    )
+    assert b1["metric_expose"] == "slot_recall_b1"
+    assert b1["metric_mismatch"] == "slot_mismatch_b1"
+    assert b1["e_expose"] is False          # B1의 번역 표도 상수 '첫 번째'라 자리를 못 드러낸다
+    assert b1["e_mismatch"] is True         # 그런데 불일치 행은 있다
+    assert b1["attribution"] is None        # 규칙 집합을 안 주면 귀속은 계산하지 않는다
+
+
+def test_b0_mismatch_is_computable_but_unnamed(forksets):
+    """B0의 불일치 행은 계산되지만 PREREG §1의 예측에 없어 척도 이름을 주지 않는다."""
+    from instruments.exposure import slot_mismatch
+
+    rows = [dict(r) for r in forksets["b0_prediction_table"]["rows"]]
+    for row in rows:
+        row["R_s"] = ["sup_002"]
+        row["r_defined"] = True
+    out = slot_mismatch(rows, method="B0")
+    assert out["metric"] is None and out["e_mismatch"] is True
+
+
+# ------------------------------ L41: 자리 노출률의 귀속 규칙별 분리 보고
+
+def test_exposure_is_reported_by_attribution_rule(forksets):
+    from instruments.exposure import exposure_by_attribution
+
+    records = [
+        _pair(forksets, "d01_constant_first_policy"),
+        _pair(forksets, "d01_max_policy_equals_r"),
+        _pair(forksets, "d01_recent_policy"),
+    ]
+    out = exposure_by_attribution(records)
+    assert out["overall"]["rate"] == 2 / 3
+    assert out["strata"]["첫 번째"]["rate"] == 0.0     # 상수 정책 층에서는 구조적으로 0
+    assert out["strata"]["최대"]["rate"] == 1.0
+    assert out["strata"]["최근"]["rate"] == 1.0
+    assert out["n_strata"] == 3
+    assert all(s["verdict"] == "미판정" for s in out["strata"].values())   # 층 분모 < 8
+
+
+def test_attribution_key_labels_non_single_attributions(policy_tables):
+    from instruments.exposure import attribution_key
+
+    assert attribution_key({"attribution_kind": "single", "attribution": "최대"}) == "최대"
+    assert attribution_key({"attribution_kind": "hold", "attribution": "보류"}) == "보류"
+    assert attribution_key({"attribution_kind": "out_of_set", "attribution": "집합 밖"}) == "집합 밖"
+    assert attribution_key({"attribution_kind": "set", "attribution": ["최근", "최대"]}) == "동률{최근, 최대}"
+
+
+# ------------------------------ D-027 (1): |V_D| 층화
+
+def test_pair_record_carries_the_rule_set_it_was_read_with(forksets):
+    rec = _pair(forksets, "d01_constant_first_policy")
+    assert rec["v_d"] == list(RULES_V0) and rec["v_d_size"] == 5
+
+
+def test_stratified_by_v_d_size(forksets):
+    """위임마다 |V_D|가 다르면 분모가 섞이므로 층으로 나눠 낸다 (D-027 (1), L43)."""
+    from instruments.exposure import pair_record, stratified, trigger_rate
+
+    five = _pair(forksets, "d01_constant_first_policy")
+    four = pair_record(
+        forksets["cases"]["d01_constant_first_policy"]["rows"],
+        forksets["a_feature_ids"],
+        delegation_id="D02",
+        model="same_model",
+        rules=("첫 번째", "최대", "전부", "없음"),        # '최근' 결합이 없는 위임
+    )
+    assert four["v_d_size"] == 4
+    out = stratified([five, four], "v_d_size", trigger_rate)
+    assert set(out["strata"]) == {"4", "5"}
+    assert out["overall"]["n"] == 2

@@ -8,7 +8,16 @@ rule_ids:
   최근: "recent"
   전부: "all"
   없음: "none"
-r_rule_id: "max"
+r_rule_id: null
+r_expressible_in_v_d: false
+r_equivalent_rule_ids: []
+v_d:
+  - "첫 번째"
+  - "최대"
+  - "최근"
+  - "전부"
+  - "없음"
+v_d_size: 5
 perturbation_table: "docs/derivation/perturbation-v1.md §7.2"
 discriminating_rows:
   - "f00"
@@ -157,7 +166,7 @@ states:
           quantity: 358
       max:
         -
-          supplier_id: "SUP-003"
+          supplier_id: "SUP-005"
           quantity: 358
       recent:
         -
