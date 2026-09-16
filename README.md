@@ -13,8 +13,7 @@
 | `docs/related/` | 문헌 실재 확인 |
 | `data/delegations/D01/` | 씨앗 문항에서 유도한 위임 1개의 q·R. 출처는 `meta.yaml` |
 | `data/envs/` | AgentAbstain 조달 환경 사본 (조회 죽은 가지 패치, `data/env_patches.md`) |
-| `.claude/agents/` | 서브 에이전트 정의 8개. 한 번에 한 논점만 |
 
-2026-09-16 첫 시도의 전부(감사·반론·결정·척도·검사·상태)는 브랜치 `stage0-attempt1`에 있다. 새 증거 없이 되살리지 않는다.
+2026-09-16 첫 시도의 전부(감사·반론·결정·척도·검사·상태)는 브랜치 `stage0-attempt1`에 있다. 새 증거 없이 되살리지 않는다. 서브 에이전트 정의 8개도 그 문서 체계를 전제하므로 지웠다(D-032).
 
 v1 자산(동기·문헌·AgentAbstain 실측)은 `../standing-delegation/`.

@@ -16,16 +16,14 @@
   씨앗에 없으므로 이 위임에 없다.
 
 지위
-- 이 파일은 **R을 아는 쪽**이다. `src/gen/forkset.py`(fork set 생성기)와
-  `src/gen/bindings.py`(V 결합 추출기)는 이 파일을 임포트하지도 읽지도 않는다
-  (`tests/gen/test_forkset_blindness.py`, `tests/gen/test_bindings_blindness.py`).
-- R은 전항 함수다(`docs/DECISIONS.md` D-015). 동률 해소 규칙이 이 코드와 `q_plus.txt`의
-  R 절 양쪽에 같은 말로 들어 있다.
-- commit 대상은 다중집합이다(D-015, L21). 이 위임의 R은 항상 0개 또는 1개를 낸다.
+- 이 파일은 **R을 아는 쪽**이다. R을 몰라야 하는 것(방법의 fork set, `Plan.md` §4.3)은
+  이 파일을 임포트하지도 읽지도 않는다.
+- 동률 해소(supplier_id 오름차순)는 씨앗에도 `q_plus.txt`에도 없고 이 코드에만 있다.
+  `meta.yaml`의 added_by_us에 적었다.
+- 이 위임의 R은 항상 0개 또는 1개를 낸다.
 
 함수
-- `q_order_quantity`, `q_eligible_candidates`: q의 공개 부분. V_D의 규칙들도 이 공개
-  부분을 공유하고 자리 A(D)(어느 공급업체인가)에서만 갈린다.
+- `q_order_quantity`, `q_eligible_candidates`: q의 공개 부분(D+/D− 공통).
 - `R(state) -> dict | None`: 숨은 규칙. None이 ∅(발주 없음).
 - `R_detail(state) -> dict`: 정의 가능성·근거까지 담은 판. 검사기가 쓴다.
 """
@@ -141,7 +139,7 @@ def R(state: dict) -> dict | None:
     """숨은 규칙. commit 대상 하나 또는 None(∅).
 
     R(s)가 정의되지 않는 상태에서는 `RuntimeError`를 낸다. 호출자는 `R_detail`로
-    정의 가능성을 먼저 확인해야 한다(D-015: 정의 불가 행은 표시하고 분모에서 뺀다).
+    정의 가능성을 먼저 확인해야 한다.
     """
     detail = R_detail(state)
     if not detail["defined"]:
