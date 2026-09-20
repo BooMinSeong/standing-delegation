@@ -12,6 +12,7 @@
 | `docs/INTRO.md` | 인트로덕션 초고 v0. §0 논제를 서론 서술로 펼친 것 + 증거 현황·반론 점검 |
 | `docs/DECISIONS.md` | 저자가 실제로 내린 결정만 |
 | `docs/FEASIBILITY.md` | 모델·API·클러스터 실측 |
+| `docs/DATA-GEN.md` | 데이터 생성 감사. 131의 뜻, 위임 저작에 없는 규칙 다섯, 기계적 상태 생성이 CASE-D01을 못 내는 증거, 미결 목록 |
 | `docs/derivation/` | 눈가림 섭동표 도출 (Plan §4.3) |
 | `docs/related/` | 문헌 실재 확인 |
 | `data/delegations/D01/` | 씨앗 문항에서 유도한 위임 1개의 q·R. 출처는 `meta.yaml` |
