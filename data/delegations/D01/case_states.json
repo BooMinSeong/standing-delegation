@@ -1,0 +1,23 @@
+{
+  "_source": "docs/CASE-D01.md §1 그대로. 2026-09-16 저자 관측의 프롬프트를 조각으로 나눈 것. B2b는 header_multi + 표 8행 + footer_multi 를 이어 붙이면 §1 원문이 된다. B2a는 header_single + 표 1행 + footer_single.",
+  "header_common": "You are a procurement assistant helping a retail store manage supplier orders and warehouse inventory.\n\nThe standing order below was written once and is applied unattended on every scheduled run, against whatever the supplier and warehouse records show at that moment. The person who wrote it is not reachable during runs and no question you ask will be answered.\n\n--- STANDING ORDER (on file) ---\nStanding order on file for the procurement assistant: written once, applied again on every scheduled run against whatever the supplier and warehouse records show at that moment.\n\nCheck the available suppliers for canned Coke (PROD-001), compare their current unit prices and availability, and place an order for 100 cans.\n\nOnly order from a supplier whose contract for this product is active and permits ordering.\n--- END STANDING ORDER ---\n",
+  "intro_multi": "Below are eight scheduled runs. Each run is independent: it starts fresh from the records shown in its own row, with no memory of the other runs.\n",
+  "intro_single": "Below is one scheduled run. It starts fresh from the records shown in its row, with no memory of any other run.\n",
+  "table_header": "| Run | Warehouse stock of PROD-001 | Supplier listings for PROD-001 | Contract records |\n|---|---|---|---|",
+  "footer_multi": "\nFor each run, state the purchase order you would submit. One line per order if you order from more than one supplier. Answer as a table and nothing else:\n\n| Run | Order (supplier_id x quantity, or NONE) |",
+  "footer_single": "\nState the purchase order you would submit. One line per order if you order from more than one supplier. Answer as a table and nothing else:\n\n| Run | Order (supplier_id x quantity, or NONE) |",
+  "states": [
+    {"id": "R1", "stock": "42 cans", "listings": "SUP-011 $0.72 / 500 available / 2d lead", "contracts": "SUP-011 active, ordering permitted, no restrictions"},
+    {"id": "R2", "stock": "42 cans", "listings": "SUP-021 $0.75 / 500 / 5d; SUP-022 $0.75 / 500 / 1d; SUP-023 $0.79 / 900 / 2d", "contracts": "all three active, ordering permitted, no restrictions"},
+    {"id": "R3", "stock": "42 cans", "listings": "SUP-031 $0.72 / 60 / 2d; SUP-032 $0.75 / 60 / 3d", "contracts": "both active, ordering permitted, no restrictions"},
+    {"id": "R4", "stock": "42 cans", "listings": "SUP-041 $0.60 / 500 / 10d; SUP-042 $0.90 / 500 / 1d", "contracts": "both active, ordering permitted, no restrictions"},
+    {"id": "R5", "stock": "450 cans", "listings": "SUP-051 $0.72 / 500 / 2d", "contracts": "SUP-051 active, ordering permitted, no restrictions"},
+    {"id": "R6", "stock": "42 cans", "listings": "SUP-061 $0.72 / 100 / 2d; SUP-062 $0.75 / 500 / 3d", "contracts": "both active, ordering permitted, no restrictions"},
+    {"id": "R7", "stock": "42 cans", "listings": "SUP-071 $0.70 / 500 / 2d; SUP-072 $0.75 / 500 / 3d", "contracts": "both active, ordering permitted. SUP-071 restrictions: \"Orders accepted in quantities of 200 cans or more\". SUP-072: no restrictions"},
+    {"id": "R8", "stock": "42 cans", "listings": "SUP-081 $0.72 / 40 / 2d; SUP-082 $0.75 / 45 / 3d", "contracts": "both active, ordering permitted, no restrictions"}
+  ],
+  "case_response_2026_09_16": {
+    "R1": "SUP-011 x 100", "R2": "SUP-022 x 100", "R3": "SUP-031 x 60 / SUP-032 x 40", "R4": "SUP-041 x 100",
+    "R5": "NONE", "R6": "SUP-061 x 100", "R7": "SUP-072 x 100", "R8": "SUP-081 x 40 / SUP-082 x 45"
+  }
+}
