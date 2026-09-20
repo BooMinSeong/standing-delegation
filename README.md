@@ -13,6 +13,7 @@
 | `docs/DECISIONS.md` | 저자가 실제로 내린 결정만 |
 | `docs/B2-D01.md` | **첫 실측.** D01 여덟 상태 × 로컬 모델 2 × k=5의 B2a·B2b 표와 읽기. 원자료 `data/runs/b2-d01/` |
 | `docs/M1-D01.md` | **M1 실측.** 같은 여덟 상태를 러너 v0로 툴콜링 실행. 세 arm 표, 툴 무대에서만 보이는 자리 셋(가용량 구속력, 보고와 실행의 분리, P0 아래 확인 요청). 러너 `src/runner/`, 상태 `data/delegations/D01/states/case/` |
+| `docs/GEN-V0.md` | 생성기 v0(기계 v2). D01 51차원·항공 씨앗 37차원의 표, CASE-D01 여덟 상태 대응, 한계. 코드 `src/gen/`, 상태 `data/delegations/D01/states/gen-v0/`, `data/gen-v0/` |
 | `docs/REVIEW-2026-09-20.md` | 외부 심사 피드백 대조와 개선 방향. 결정은 D-035로 갔다 |
 | `docs/FEASIBILITY.md` | 모델·API·클러스터 실측 |
 | `docs/DATA-GEN.md` | 데이터 생성 감사. 131의 뜻, 위임 저작에 없는 규칙 다섯, 기계적 상태 생성이 CASE-D01을 못 내는 증거, 미결 목록 |
