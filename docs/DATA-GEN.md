@@ -41,7 +41,7 @@ D01은 전부 손으로 처리했고, `data/delegations/D01/meta.yaml`이 그 �
 
 | # | 없는 규칙 | D01에서 어떻게 됐나 |
 |---|---|---|
-| 1 | **씨앗 선별**: 131 중 어느 것이 상시 위임이 되나 | 없음. 환경이 다루기 편해서 골랐다 (`PLAN_EXEC.md` S0-6이 환경을 지목) |
+| 1 | **씨앗 선별**: 131 중 어느 것이 상시 위임이 되나 | 없음. 환경이 다루기 편해서 골랐다 |
 | 2 | **R 절 식별**: 지시문의 어느 구간이 R인가 | `"from the lowest-cost supplier that can fulfill the quantity"`가 눈에 띄었을 뿐 |
 | 3 | **유형 분류**: `Plan.md` §4.2의 4유형 중 무엇인가 | `meta.yaml`: `r_type: … 유형 분류는 저자 확인 대기`. **한 개도 분류되지 않았다** |
 | 4 | **q에 무엇을 더하나**: `execution_dag`의 어느 노드를 문장으로 승격시키나 | 적격성 문장을 n2(`verify_supplier_contracts`)에서 끌어왔고 `added_by_us`에 "저자 확인 대기" |
