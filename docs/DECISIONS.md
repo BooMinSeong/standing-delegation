@@ -223,6 +223,8 @@ D-031·D-032와의 관계. D-031의 "첫 실험은 프록시 실행"은 취소�
 
 **삭제.** `src/gen/hybrid.py`, `scripts/gen_v1.py`, `data/delegations/D01/states/gen-v1/`(상태 56 + manifest + llm_log). 전부 미커밋이었다.
 
+v0 구현은 커밋돼 있어 남아 있다가 2026-09-22에 지웠다: `src/gen/minimal_pairs.py`, `scripts/gen_v0.py`. 재현은 `git show 882d095:<경로>`. 실측 기록(`docs/GEN-V0.md`)과 상태(`data/delegations/D01/states/gen-v0/` 51, `data/gen-v0/` 37)는 남긴다 — 폐기된 조건이 낸 차원과 변수·변형이 내는 차원을 대조할 재료다.
+
 **반영.** `docs/GEN-ALGO.md` 전면 재작성. `Plan.md` 머리말·§0·§1(차원 f·최소쌍·심은 자리 정의)·§4.2·§4.3·§6 C2·척도 표·§7 예산·§10 한계.
 
 ### D-038 언급 등급은 (차원, 변형) 쌍에 붙는다 (채택, 저자 지시 2026-09-21)
