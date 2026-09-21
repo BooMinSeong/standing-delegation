@@ -17,7 +17,7 @@
 #SBATCH --output=slurm_logs/%x-%j.out
 #SBATCH --error=slurm_logs/%x-%j.err
 
-MODEL_KEY="${1:?모델 키 (qwen3.8-27B-FP8 | glm-4.7-flash | qwen3.6-27B | gemma-4-26B-A4B-it)}"
+MODEL_KEY="${1:?모델 키 (qwen3.8-27B-FP8 | glm-4.7-flash | gemma-4-26B-A4B-it)}"
 
 # errexit 은 소싱 **뒤에** (앞에 두면 ExitCode 11 즉사, slurm-assistant 스킬).
 source ~/slurm_common.sh
@@ -42,8 +42,7 @@ case "$MODEL_KEY" in
     # 모델 카드의 vllm serve 명령 그대로 (docs/FEASIBILITY.md §1.2): glm47 / glm45.
     glm-4.7-flash)    REPO_ID="zai-org/GLM-4.7-Flash"
                       REASONING_PARSER=glm45; TOOL_PARSER=glm47 ;;
-    # 판정기·생성기용 후보 (평가 대상 밖). 원래 D-036 혼합 생성기용이었고 그것은 D-037 로 폐기됐으나 모델 키는 남긴다.
-    qwen3.6-27B)        REPO_ID="Qwen/Qwen3.6-27B"; REASONING_PARSER=qwen3; TOOL_PARSER=qwen3_xml ;;
+    # 생성기 v1 의 LLM (평가 대상 밖, D-036). 이전 프로젝트에서 A100-80GB TP=1 실측 서빙(파서 없이). 툴·추론 파서 없이 띄운다.
     gemma-4-26B-A4B-it) REPO_ID="google/gemma-4-26B-A4B-it" ;;
     *) echo "[FATAL] unknown model key: $MODEL_KEY" >&2; exit 1 ;;
 esac

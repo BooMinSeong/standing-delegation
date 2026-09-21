@@ -42,7 +42,7 @@ case "$MODEL_KEY" in
     # 모델 카드의 vllm serve 명령 그대로 (docs/FEASIBILITY.md §1.2): glm47 / glm45.
     glm-4.7-flash)    REPO_ID="zai-org/GLM-4.7-Flash"
                       REASONING_PARSER=glm45; TOOL_PARSER=glm47 ;;
-    # 판정기·생성기용 후보 (평가 대상 밖). 원래 D-036 혼합 생성기용이었고 그것은 D-037 로 폐기됐으나 모델 키는 남긴다.
+    # 생성기 v1 의 LLM (평가 대상 밖, D-036). 평가 대상 Qwen3.8 의 이전 판. 이전 프로젝트에서 reasoning parser qwen3 로 서빙 실적.
     qwen3.6-27B)        REPO_ID="Qwen/Qwen3.6-27B"; REASONING_PARSER=qwen3; TOOL_PARSER=qwen3_xml ;;
     gemma-4-26B-A4B-it) REPO_ID="google/gemma-4-26B-A4B-it" ;;
     *) echo "[FATAL] unknown model key: $MODEL_KEY" >&2; exit 1 ;;
