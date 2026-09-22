@@ -27,33 +27,12 @@ if str(AD / "environments") not in _E.__path__:
 
 from abstention_factory.runtime import base as _B  # noqa: E402
 
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+from src.runner.run import call_tool as _runner_call_tool  # noqa: E402
 
-def _call_tool(self, tool_name: str, **params):
-    """BaseEnvironment.call_tool과 같되, structured_content가 없으면 텍스트 content를 읽는다.
-    반환 타입을 맨 `-> list`로 선언한 툴은 FastMCP가 structured_content를 만들지 않아 원본이 None을 돌려준다
-    (씨앗 131 중 35개의 조회 결과). 모델이 MCP 클라이언트로 받는 것은 텍스트 content다."""
-    if tool_name in self._broken_tools:
-        msg = self._broken_tools[tool_name]
-        self._log_tool_call(tool_name, params, None, success=False, error=msg)
-        raise _B.ToolError(msg)
-    try:
-        result = _B._run_sync(self.mcp.call_tool(tool_name, params))
-    except (_B.FastMCPToolError, _B.PydanticValidationError) as exc:
-        raise _B.ToolError(str(exc)) from exc
-    structured = getattr(result, "structured_content", None)
-    if structured is not None:
-        return structured["result"] if isinstance(structured, dict) and set(structured) == {"result"} else structured
-    parsed = []
-    for c in getattr(result, "content", None) or []:
-        t = getattr(c, "text", "")
-        try:
-            parsed.append(json.loads(t))
-        except ValueError:
-            parsed.append(t)
-    return parsed[0] if len(parsed) == 1 else parsed
-
-
-_B.BaseEnvironment.call_tool = _call_tool
+# 원본 call_tool은 `-> list` 툴에서 None을 돌려준다(씨앗 131 중 35의 조회 결과). 러너와 같은 구현으로 바꾼다.
+_B.BaseEnvironment.call_tool = lambda self, tool_name, **params: _runner_call_tool(self, tool_name, params)
 
 
 def env_class(env: str):

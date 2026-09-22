@@ -2,11 +2,12 @@
 
 흐름: system(C + q) → user(예약 실행 문구) → 모델 툴 호출 → 환경 실행 → 결과 첨부 → 반복 → 최종 메시지(보고) 또는 max_steps.
 - 환경: AgentAbstain 환경 사본(data/envs/…)을 프로세스 안에서 띄운다. 툴 스키마는 환경의 FastMCP 서버가 내는 것
-  (get_tool_schemas)을 OpenAI function calling 으로 바꾼다. 호출은 env.call_tool (FastMCP call_tool 경유).
+  (get_tool_schemas)을 OpenAI function calling 으로 바꾼다. 호출은 FastMCP call_tool 경유(`call_tool`: structured_content가 없으면 텍스트).
   원 하네스와 달리 stdio 서버가 아니고 툴 이름에 환경 접두어를 붙이지 않는다. __runtime_export_snapshot 은 등록하지 않는다.
 - 프록시: 상태는 메모리 안에만 있고 런이 끝나면 버린다(commit 은 기록만). 모델에게 알리지 않는다.
 - 어댑터: OpenAI 호환 chat completions 하나(vLLM). 샘플링 파라미터를 보내지 않는다(서버 기본값, D-035 5).
-- 로그: 전체 메시지(reasoning 포함), 툴 호출 인자, 툴 결과, 실행 로그, commit 목록, usage, 시각, 판 문자열.
+- 로그: 메시지 content, 툴 호출 인자, 툴 결과, 실행 로그, commit 목록, usage, 시각, 판 문자열. 추론(reasoning parser가
+  분리한 <think> 구간)은 길이만 남긴다. 관찰 대상이 아니다(Plan §2, D-043).
 """
 from __future__ import annotations
 
@@ -26,6 +27,32 @@ def load_env(env_module: str, state: dict):
     mod = importlib.import_module(env_module)
     cls = next(v for k, v in vars(mod).items() if k.endswith("Environment") and k != "BaseEnvironment" and isinstance(v, type))
     return cls, cls(state)
+
+
+def call_tool(env, name: str, params: dict):
+    """env.call_tool과 같되, structured_content가 없으면 텍스트 content를 읽는다.
+    반환 타입을 맨 `-> list`로 선언한 툴은 FastMCP가 structured_content를 만들지 않아 원본 call_tool이 None을 돌려준다
+    (환경 19/42, 툴 48. docs/PAPER-CHECKS.md §4). MCP 클라이언트가 모델에게 넘기는 것은 텍스트 content다."""
+    from abstention_factory.runtime import base as B
+    if name in env._broken_tools:
+        msg = env._broken_tools[name]
+        env._log_tool_call(name, params, None, success=False, error=msg)
+        raise B.ToolError(msg)
+    try:
+        result = B._run_sync(env.mcp.call_tool(name, params))
+    except (B.FastMCPToolError, B.PydanticValidationError) as exc:
+        raise B.ToolError(str(exc)) from exc
+    structured = getattr(result, "structured_content", None)
+    if structured is not None:
+        return structured["result"] if isinstance(structured, dict) and set(structured) == {"result"} else structured
+    parsed = []
+    for c in getattr(result, "content", None) or []:
+        t = getattr(c, "text", "")
+        try:
+            parsed.append(json.loads(t))
+        except ValueError:
+            parsed.append(t)
+    return parsed[0] if len(parsed) == 1 else parsed
 
 
 def tools_for_openai(cls) -> list[dict]:
@@ -68,7 +95,7 @@ def run_episode(client: openai.OpenAI, model_key: str, env_module: str, state: d
         if tool_calls:
             assistant["tool_calls"] = [{"id": tc["id"], "type": "function", "function": {"name": tc["function"]["name"], "arguments": tc["function"]["arguments"]}} for tc in tool_calls]
         messages.append(assistant)
-        turn = {"step": step, "finish_reason": choice.get("finish_reason"), "reasoning": reasoning, "content": msg.get("content") or "", "tool_calls": []}
+        turn = {"step": step, "finish_reason": choice.get("finish_reason"), "reasoning_chars": len(reasoning), "content": msg.get("content") or "", "tool_calls": []}
         if not tool_calls:
             turns.append(turn)
             finish = "end_turn" if choice.get("finish_reason") != "length" else "length"
@@ -82,7 +109,7 @@ def run_episode(client: openai.OpenAI, model_key: str, env_module: str, state: d
                 args, result, ok, err = {}, None, False, f"invalid JSON arguments: {e}"
             else:
                 try:
-                    result, ok, err = env.call_tool(name, **args), True, None
+                    result, ok, err = call_tool(env, name, args), True, None
                 except ToolError as e:
                     result, ok, err = None, False, str(e)
                 except Exception as e:  # 인자 불일치 등
