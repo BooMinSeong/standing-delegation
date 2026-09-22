@@ -16,7 +16,7 @@ from typing import Any, Iterator
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 AC = pathlib.Path("/home3/b.ms/projects/standing-delegation/data/agentabstain-code")
 AD = pathlib.Path("/home3/b.ms/projects/standing-delegation/data/agentabstain-data")
-GEN_MODEL = "qwen3.6-27B"   # 잠정. 생성기·판정기 모델은 Plan.md §12에서 미정
+GEN_MODEL = "qwen3.8-27B-FP8"   # 생성기는 평가 대상과 같은 Qwen3.8 (D-043, 저자)
 
 if str(AC) not in sys.path:
     sys.path.insert(0, str(AC))

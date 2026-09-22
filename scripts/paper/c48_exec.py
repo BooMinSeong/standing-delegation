@@ -32,6 +32,34 @@ logging.disable(logging.CRITICAL)
 OUT = aa.ROOT / "data" / "paper-checks" / "c48"
 OUT.mkdir(parents=True, exist_ok=True)
 
+# 기록 필드 태그(slots.record_tags → slots.tag_index). None이면 아래의 규칙(카운터·툴 이름 로그·시각 도장)을 쓴다.
+# 규칙은 종이 검사 때의 잣대로 남겨 두고 나란히 보고한다(D-043).
+TAGS: dict[str, list] | None = None
+
+
+def _blank_field(x, field: str):
+    if isinstance(x, dict):
+        return {k: (None if k == field else _blank_field(v, field)) for k, v in x.items()}
+    if isinstance(x, list):
+        return [_blank_field(v, field) for v in x]
+    return x
+
+
+def normalize(state: dict) -> dict:
+    """TAGS의 기록 필드를 비운 사본. TAGS가 없으면 그대로."""
+    if TAGS is None:
+        return state
+    s = dict(state)
+    for key, fields in TAGS.items():
+        if key not in s:
+            continue
+        if None in fields:
+            s[key] = None
+            continue
+        for f in fields:
+            s[key] = _blank_field(s[key], f)
+    return s
+
 
 # ---- 상태 경로 ---------------------------------------------------------------
 def values(x):
@@ -61,6 +89,8 @@ def flat(state: dict) -> dict:
 
 
 def counters(cls, state: dict) -> set[str]:
+    if TAGS is not None:
+        return set()
     ids = set(cls.mutation_id_fields)
     return {k for k, v in state.items()
             if isinstance(v, dict) and v and set(v) <= ids and all(isinstance(x, int) for x in v.values())}
@@ -75,6 +105,8 @@ def _has_value(x, s: str) -> bool:
 
 
 def log_paths(before: dict, after: dict, tools: set[str]) -> set[str]:
+    if TAGS is not None:
+        return set()
     fb, fa = flat(before), flat(after)
     out = set()
     for p, va in fa.items():
@@ -92,6 +124,8 @@ def stamps(before: dict, after: dict, args: list[dict]) -> dict[str, set]:
     """시각 도장: 호출이 인자에 없는 시각 값을 써넣은 필드. {컬렉션 경로: 필드 이름 집합}.
     환경 34/42가 벽시계(datetime.now)로 updated_at 같은 필드를 쓴다. 값이 인자에서 오지 않으니 도메인 결정이 아니다.
     레코드가 생기거나 사라진 목록은 내려가지 않는다(그 변화는 도메인이다)."""
+    if TAGS is not None:
+        return {}
     argv = {str(v) for a in args for v in values(a or {})}
     out: dict[str, set] = {}
 
@@ -124,6 +158,9 @@ def _blank(v, keys: set, p: str):
 
 def domain_changes(cls, before: dict, after: dict, tools: set[str], logs: set[str] | None = None,
                    st: dict[str, set] | None = None) -> set[str]:
+    if TAGS is not None:
+        fb, fa = flat(normalize(before)), flat(normalize(after))
+        return {p for p in set(fb) | set(fa) if fb.get(p) != fa.get(p)}
     skip = counters(cls, before) | counters(cls, after)
     logs = logs if logs is not None else log_paths(before, after, tools)
     fb, fa = flat(before), flat(after)

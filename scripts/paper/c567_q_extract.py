@@ -399,7 +399,12 @@ def main() -> None:
     ap.add_argument("--v", type=int, default=1)
     ap.add_argument("--schemes", default="S1,S2,S3")
     ap.add_argument("--m-qm", type=int, default=None)
+    ap.add_argument("--run", default="", help="실행 이름. 주면 LLM 캐시와 산출 파일을 따로 둔다(예: 모델을 바꾼 재실행)")
     args = ap.parse_args()
+    global LOG
+    if args.run:
+        LOG = OUT / f"llm-{args.run}.jsonl"
+    suffix = f"-{args.run}" if args.run else ""
     OUT.mkdir(parents=True, exist_ok=True)
     load_cache()
     t_start = time.time()
@@ -409,7 +414,7 @@ def main() -> None:
     tag = "" if V == 1 else str(V)
     schemes = args.schemes.split(",")
     m_of = lambda qv: args.m if qv == "q0" or args.m_qm is None else args.m_qm  # noqa: E731
-    report: dict = {"m": args.m, "v": V, "schemes": schemes, "battery": len(bat)}
+    report: dict = {"m": args.m, "v": V, "schemes": schemes, "battery": len(bat), "model": aa.GEN_MODEL, "run": args.run}
 
     # 1 gen
     jobs = [(f"gen{tag}|{qv}|{sc}|{i}", prompt(sc, orders[qv], V, i), "gen")
@@ -603,9 +608,9 @@ def main() -> None:
         "Qm": {s: [c["key"] for c in g] for s, g in Qm.items()},
         "hand_compare": comp, "literal": lits,
     })
-    (OUT / f"report_v{V}.json").write_text(json.dumps(report, ensure_ascii=False, indent=1))
-    (OUT / f"codes_v{V}.json").write_text(json.dumps({c["key"]: c["code"] for c in cands if c.get("code")}, ensure_ascii=False, indent=1))
-    (OUT / f"answers_v{V}.json").write_text(json.dumps({c["key"]: c.get("res") for c in cands}, ensure_ascii=False))
+    (OUT / f"report_v{V}{suffix}.json").write_text(json.dumps(report, ensure_ascii=False, indent=1))
+    (OUT / f"codes_v{V}{suffix}.json").write_text(json.dumps({c["key"]: c["code"] for c in cands if c.get("code")}, ensure_ascii=False, indent=1))
+    (OUT / f"answers_v{V}{suffix}.json").write_text(json.dumps({c["key"]: c.get("res") for c in cands}, ensure_ascii=False))
     print_summary(report, cands, Q0, Q0_noabl, Qm, comp, abl_rows, lits, bat)
 
 
