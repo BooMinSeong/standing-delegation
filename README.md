@@ -20,5 +20,6 @@
 | `docs/related/` | 문헌 실재 확인. `scout-2026-09-20.md`가 서지·인용문의 유일한 출처(ACCORD, 불완전 계약, criteria drift, gulf of envisioning, Daikon, VIPER, ratification) |
 | `data/delegations/D01/` | 씨앗 문항에서 유도한 위임 1개의 q·R. 출처는 `meta.yaml` |
 | `data/envs/` | AgentAbstain 조달 환경 사본 (조회 죽은 가지 패치, `data/env_patches.md`) |
+| (외부 리뷰) | 작업 트리에 두지 않는다. 원문을 한 번 커밋해 남기고 지운 뒤, 그 리뷰를 다룬 `docs/DECISIONS.md` 항목에 `git show <해시>:<경로>`로 적는다 |
 
 v1 자산(동기·문헌·AgentAbstain 실측)은 `../standing-delegation/`.
