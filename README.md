@@ -14,6 +14,7 @@
 | `docs/M1-D01.md` | **M1 실측.** 같은 여덟 상태를 러너 v0로 툴콜링 실행. 세 arm 표, 툴 무대에서만 보이는 자리 셋(가용량 구속력, 보고와 실행의 분리, P0 아래 확인 요청). 러너 `src/runner/`, 상태 `data/delegations/D01/states/case/` |
 | `docs/GEN-ALGO.md` | **상태 생성 규칙.** 변수를 찾고 변형한다. 층 셋(스키마·튜플·값), 값 변형은 순서관계가 정하고, 집합 크기는 0·1·여럿, q 변형은 툴 인자의 명세. 구현은 아직 없다 |
 | `docs/GEN-V0.md` | 폐기된 조건(기계 v2)의 실측 기록. D01 51차원·항공 씨앗 37차원의 표, CASE-D01 여덟 상태 대응, 한계. 상태 `data/delegations/D01/states/gen-v0/`, `data/gen-v0/` |
+| `docs/PAPER-CHECKS.md` | **종이 검사 여덟(Plan §7)의 결과.** 판정, 수치, 문서와 어긋난 것. 스크립트 `scripts/paper/`, 원출력 `data/paper-checks/` |
 | `docs/FEASIBILITY.md` | 모델·API·클러스터 실측 |
 | `docs/DATA-GEN.md` | 데이터 생성 감사. 131의 뜻, 위임 저작에 없는 규칙 다섯, 기계적 상태 생성이 CASE-D01을 못 내는 증거, 미결 목록 |
 | `docs/derivation/` | 눈가림 섭동표 도출 (Plan §4.3) |

@@ -1,0 +1,12 @@
+| 상태 | 기준 | A 직역 (기준 → 편집) | B 합계 (편집) | C 수락 (편집) | 영역 A / B / C | 영역 𝒬 = A∪B∪C | 해석 다의 | 영역 q⁻ |
+|---|---|---|---|---|---|---|---|---|
+| R1 | B_one 자체 | {SUP-011x100} → {SUP-011x100} | {SUP-011x100} | {SUP-011x100} | — | — |  | 기준 상태 자체 |
+| R2 | B_one: SUP-022 가격 0.75→0.79 (동률 해소) | {SUP-021x100} → {SUP-021x100, SUP-022x100} | {tie@0.75} | {SUP-021x100, SUP-022x100} | OPEN / OPEN / OPEN | OPEN |  | FILL |
+| R3 | B_many: 쌍둥이 둘 다 가용량 500 | {SUP-031x100, SUP-032x100} → ⊤ | {SUP-031x60+SUP-032x40} | ⊤ | FILL / CLOSE / FILL | FILL | ○ | FILL |
+| R4 | B_one: SUP-041 리드타임 10→2 | {SUP-041x100} → {SUP-041x100} | {SUP-041x100} | {SUP-041x100} | SILENT / SILENT / SILENT | SILENT |  | FILL |
+| R5 | B_one: 재고 450→42 | {SUP-051x100} → {SUP-051x100} | {SUP-051x100} | {SUP-051x100} | SILENT / SILENT / SILENT | SILENT |  | SILENT |
+| R6 | B_one: SUP-061 가용량 100→500 | {SUP-061x100} → {SUP-061x100} | {SUP-061x100} | {SUP-061x100} | SILENT / SILENT / SILENT | SILENT |  | FILL |
+| R7 | B_one: SUP-071 제한 문구 제거 | {SUP-071x100} → {SUP-071x100} | {SUP-071x100} | {SUP-072x100} | SILENT / SILENT / CONTROL | OPEN | ○ | FILL |
+| R8 | B_many: 쌍둥이 둘 다 가용량 500 | {SUP-081x100, SUP-082x100} → ⊤ | ⊤ | ⊤ | FILL / FILL / FILL | FILL |  | FILL |
+
+판정: 통과

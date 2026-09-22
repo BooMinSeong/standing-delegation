@@ -1,0 +1,1767 @@
+{
+ "m": 6,
+ "v": 2,
+ "schemes": [
+  "S1",
+  "S2",
+  "S3",
+  "S3b"
+ ],
+ "battery": 74,
+ "seconds_this_run": 789,
+ "llm_calls": 142,
+ "tokens": {
+  "prompt": 198786,
+  "completion": 819125
+ },
+ "cands": [
+  {
+   "key": "gen2|q0|S1|0",
+   "q": "q0",
+   "scheme": "S1",
+   "i": 0,
+   "finish": "stop",
+   "preds": {
+    "P1": {
+     "kind": "forbid",
+     "span": "Only order from a supplier whose contract for this product is active and permits ordering"
+    },
+    "P2": {
+     "kind": "select",
+     "span": "the lowest-cost supplier that can fulfill the quantity"
+    }
+   },
+   "g_exec": true,
+   "g_repro": true,
+   "g_ablate": true,
+   "g_ablate_set": true,
+   "ablate_pass": "2/2",
+   "ablate_set_pass": "2/2"
+  },
+  {
+   "key": "gen2|q0|S1|1",
+   "q": "q0",
+   "scheme": "S1",
+   "i": 1,
+   "finish": "stop",
+   "preds": {
+    "P1": {
+     "kind": "forbid",
+     "span": "whose contract for this product is active and permits ordering"
+    },
+    "P2": {
+     "kind": "select",
+     "span": "lowest-cost supplier that can fulfill the quantity"
+    }
+   },
+   "g_exec": true,
+   "g_repro": false
+  },
+  {
+   "key": "gen2|q0|S1|2",
+   "q": "q0",
+   "scheme": "S1",
+   "i": 2,
+   "finish": "stop",
+   "preds": {
+    "P1": {
+     "kind": "select",
+     "span": "lowest-cost supplier that can fulfill the quantity"
+    },
+    "P2": {
+     "kind": "forbid",
+     "span": "Only order from a supplier whose contract for this product is active and permits ordering"
+    }
+   },
+   "g_exec": true,
+   "g_repro": true,
+   "g_ablate": true,
+   "g_ablate_set": true,
+   "ablate_pass": "2/2",
+   "ablate_set_pass": "2/2"
+  },
+  {
+   "key": "gen2|q0|S1|3",
+   "q": "q0",
+   "scheme": "S1",
+   "i": 3,
+   "finish": "stop",
+   "preds": {
+    "P1": {
+     "kind": "forbid",
+     "span": "Only order from a supplier whose contract for this product is active and permits ordering."
+    },
+    "P2": {
+     "kind": "select",
+     "span": "lowest-cost supplier that can fulfill the quantity."
+    }
+   },
+   "g_exec": true,
+   "g_repro": true,
+   "g_ablate": true,
+   "g_ablate_set": true,
+   "ablate_pass": "2/2",
+   "ablate_set_pass": "2/2"
+  },
+  {
+   "key": "gen2|q0|S1|4",
+   "q": "q0",
+   "scheme": "S1",
+   "i": 4,
+   "finish": "stop",
+   "preds": {
+    "P1": {
+     "kind": "forbid",
+     "span": "whose contract for this product is active and permits ordering"
+    },
+    "P2": {
+     "kind": "select",
+     "span": "from the lowest-cost supplier that can fulfill the quantity"
+    }
+   },
+   "g_exec": true,
+   "g_repro": true,
+   "g_ablate": true,
+   "g_ablate_set": true,
+   "ablate_pass": "2/2",
+   "ablate_set_pass": "2/2"
+  },
+  {
+   "key": "gen2|q0|S1|5",
+   "q": "q0",
+   "scheme": "S1",
+   "i": 5,
+   "finish": "stop",
+   "preds": {
+    "P1": {
+     "kind": "forbid",
+     "span": "Only order from a supplier whose contract for this product is active and permits ordering."
+    },
+    "P2": {
+     "kind": "select",
+     "span": "the lowest-cost supplier that can fulfill the quantity"
+    }
+   },
+   "g_exec": true,
+   "g_repro": true,
+   "g_ablate": false,
+   "g_ablate_set": true,
+   "ablate_pass": "1/2",
+   "ablate_set_pass": "2/2"
+  },
+  {
+   "key": "gen2|q0|S2|0",
+   "q": "q0",
+   "scheme": "S2",
+   "i": 0,
+   "finish": "stop",
+   "preds": {
+    "P1": {
+     "kind": "forbid",
+     "span": "Only order from a supplier whose contract for this product is active and permits ordering"
+    },
+    "P2": {
+     "kind": "select",
+     "span": "lowest-cost supplier that can fulfill the quantity"
+    }
+   },
+   "g_exec": true,
+   "g_repro": true,
+   "g_ablate": true,
+   "g_ablate_set": true,
+   "ablate_pass": "2/2",
+   "ablate_set_pass": "2/2"
+  },
+  {
+   "key": "gen2|q0|S2|1",
+   "q": "q0",
+   "scheme": "S2",
+   "i": 1,
+   "finish": "stop",
+   "preds": {
+    "P1": {
+     "kind": "select",
+     "span": "for canned Coke (PROD-001)"
+    },
+    "P2": {
+     "kind": "select",
+     "span": "for 100 cans"
+    },
+    "P3": {
+     "kind": "select",
+     "span": "lowest-cost supplier that can fulfill the quantity"
+    },
+    "P4": {
+     "kind": "forbid",
+     "span": "Only order from a supplier whose contract for this product is active and permits ordering."
+    }
+   },
+   "g_exec": true,
+   "g_repro": true,
+   "g_ablate": false,
+   "g_ablate_set": false,
+   "ablate_pass": "2/4",
+   "ablate_set_pass": "0/4"
+  },
+  {
+   "key": "gen2|q0|S2|2",
+   "q": "q0",
+   "scheme": "S2",
+   "i": 2,
+   "finish": "stop",
+   "fail": "적재 실패: SyntaxError: invalid syntax (<candidate>, line 58)",
+   "g_exec": false,
+   "g_repro": false
+  },
+  {
+   "key": "gen2|q0|S2|3",
+   "q": "q0",
+   "scheme": "S2",
+   "i": 3,
+   "finish": "stop",
+   "preds": {
+    "P1": {
+     "kind": "select",
+     "span": "lowest-cost supplier that can fulfill the quantity"
+    },
+    "P2": {
+     "kind": "select",
+     "span": "Only order from a supplier whose contract for this product is active and permits ordering"
+    }
+   },
+   "g_exec": true,
+   "g_repro": true,
+   "g_ablate": false,
+   "g_ablate_set": false,
+   "ablate_pass": "1/2",
+   "ablate_set_pass": "1/2"
+  },
+  {
+   "key": "gen2|q0|S2|4",
+   "q": "q0",
+   "scheme": "S2",
+   "i": 4,
+   "finish": "stop",
+   "preds": {
+    "P1": {
+     "kind": "select",
+     "span": "lowest-cost supplier that can fulfill the quantity"
+    },
+    "P2": {
+     "kind": "forbid",
+     "span": "Only order from a supplier whose contract for this product is active and permits ordering."
+    }
+   },
+   "g_exec": true,
+   "g_repro": true,
+   "g_ablate": true,
+   "g_ablate_set": true,
+   "ablate_pass": "2/2",
+   "ablate_set_pass": "2/2"
+  },
+  {
+   "key": "gen2|q0|S2|5",
+   "q": "q0",
+   "scheme": "S2",
+   "i": 5,
+   "finish": "stop",
+   "preds": {
+    "P1": {
+     "kind": "forbid",
+     "span": "Only order from a supplier whose contract for this product is active and permits ordering."
+    },
+    "P2": {
+     "kind": "select",
+     "span": "lowest-cost supplier that can fulfill the quantity"
+    }
+   },
+   "g_exec": true,
+   "g_repro": true,
+   "g_ablate": false,
+   "g_ablate_set": true,
+   "ablate_pass": "1/2",
+   "ablate_set_pass": "2/2"
+  },
+  {
+   "key": "gen2|q0|S3|0",
+   "q": "q0",
+   "scheme": "S3",
+   "i": 0,
+   "finish": "stop",
+   "preds": {
+    "P1": {
+     "kind": "forbid",
+     "span": "Only order from a supplier whose contract for this product is active and permits ordering."
+    },
+    "P2": {
+     "kind": "select",
+     "span": "lowest-cost supplier that can fulfill the quantity"
+    }
+   },
+   "g_exec": true,
+   "g_repro": true,
+   "g_ablate": true,
+   "g_ablate_set": true,
+   "ablate_pass": "2/2",
+   "ablate_set_pass": "2/2"
+  },
+  {
+   "key": "gen2|q0|S3|1",
+   "q": "q0",
+   "scheme": "S3",
+   "i": 1,
+   "finish": "stop",
+   "preds": {
+    "P1": {
+     "kind": "select",
+     "span": "lowest-cost supplier that can fulfill the quantity"
+    },
+    "P2": {
+     "kind": "forbid",
+     "span": "Only order from a supplier whose contract for this product is active and permits ordering."
+    }
+   },
+   "g_exec": true,
+   "g_repro": false
+  },
+  {
+   "key": "gen2|q0|S3|2",
+   "q": "q0",
+   "scheme": "S3",
+   "i": 2,
+   "finish": "stop",
+   "preds": {
+    "P1": {
+     "kind": "select",
+     "span": "lowest-cost supplier that can fulfill the quantity"
+    },
+    "P2": {
+     "kind": "forbid",
+     "span": "Only order from a supplier whose contract for this product is active and permits ordering."
+    }
+   },
+   "g_exec": true,
+   "g_repro": true,
+   "g_ablate": true,
+   "g_ablate_set": true,
+   "ablate_pass": "2/2",
+   "ablate_set_pass": "2/2"
+  },
+  {
+   "key": "gen2|q0|S3|3",
+   "q": "q0",
+   "scheme": "S3",
+   "i": 3,
+   "finish": "stop",
+   "preds": {
+    "P1": {
+     "kind": "forbid",
+     "span": "Only order from a supplier whose contract for this product is active and permits ordering."
+    },
+    "P2": {
+     "kind": "select",
+     "span": "lowest-cost supplier that can fulfill the quantity"
+    }
+   },
+   "g_exec": true,
+   "g_repro": true,
+   "g_ablate": true,
+   "g_ablate_set": true,
+   "ablate_pass": "2/2",
+   "ablate_set_pass": "2/2"
+  },
+  {
+   "key": "gen2|q0|S3|4",
+   "q": "q0",
+   "scheme": "S3",
+   "i": 4,
+   "finish": "stop",
+   "preds": {
+    "P1": {
+     "kind": "forbid",
+     "span": "Only order from a supplier whose contract for this product is active and permits ordering."
+    },
+    "P2": {
+     "kind": "select",
+     "span": "lowest-cost supplier that can fulfill the quantity"
+    }
+   },
+   "g_exec": true,
+   "g_repro": true,
+   "g_ablate": true,
+   "g_ablate_set": true,
+   "ablate_pass": "2/2",
+   "ablate_set_pass": "2/2"
+  },
+  {
+   "key": "gen2|q0|S3|5",
+   "q": "q0",
+   "scheme": "S3",
+   "i": 5,
+   "finish": "stop",
+   "preds": {
+    "P1": {
+     "kind": "forbid",
+     "span": "Only order from a supplier whose contract for this product is active and permits ordering."
+    },
+    "P2": {
+     "kind": "select",
+     "span": "lowest-cost supplier that can fulfill the quantity"
+    }
+   },
+   "g_exec": true,
+   "g_repro": true,
+   "g_ablate": true,
+   "g_ablate_set": true,
+   "ablate_pass": "2/2",
+   "ablate_set_pass": "2/2"
+  },
+  {
+   "key": "gen2|q0|S3b|0",
+   "q": "q0",
+   "scheme": "S3b",
+   "i": 0,
+   "finish": "stop",
+   "preds": {
+    "P1": {
+     "kind": "select",
+     "span": "lowest-cost supplier that can fulfill the quantity"
+    },
+    "P2": {
+     "kind": "forbid",
+     "span": "Only order from a supplier whose contract for this product is active and permits ordering."
+    }
+   },
+   "g_exec": true,
+   "g_repro": false
+  },
+  {
+   "key": "gen2|q0|S3b|1",
+   "q": "q0",
+   "scheme": "S3b",
+   "i": 1,
+   "finish": "stop",
+   "preds": {
+    "P1": {
+     "kind": "forbid",
+     "span": "Only order from a supplier whose contract for this product is active and permits ordering."
+    },
+    "P2": {
+     "kind": "select",
+     "span": "lowest-cost supplier that can fulfill the quantity"
+    }
+   },
+   "g_exec": true,
+   "g_repro": false
+  },
+  {
+   "key": "gen2|q0|S3b|2",
+   "q": "q0",
+   "scheme": "S3b",
+   "i": 2,
+   "finish": "stop",
+   "preds": {
+    "P1": {
+     "kind": "forbid",
+     "span": "Only order from a supplier whose contract for this product is active and permits ordering."
+    },
+    "P2": {
+     "kind": "select",
+     "span": "lowest-cost supplier that can fulfill the quantity"
+    }
+   },
+   "g_exec": true,
+   "g_repro": false
+  },
+  {
+   "key": "gen2|q0|S3b|3",
+   "q": "q0",
+   "scheme": "S3b",
+   "i": 3,
+   "finish": "stop",
+   "preds": {
+    "P1": {
+     "kind": "select",
+     "span": "place an order for 100 cans from the lowest-cost supplier that can fulfill the quantity"
+    },
+    "P2": {
+     "kind": "forbid",
+     "span": "Only order from a supplier whose contract for this product is active and permits ordering."
+    }
+   },
+   "g_exec": true,
+   "g_repro": true,
+   "g_ablate": false,
+   "g_ablate_set": true,
+   "ablate_pass": "0/2",
+   "ablate_set_pass": "2/2"
+  },
+  {
+   "key": "gen2|q0|S3b|4",
+   "q": "q0",
+   "scheme": "S3b",
+   "i": 4,
+   "finish": "stop",
+   "preds": {
+    "P1": {
+     "kind": "forbid",
+     "span": "Only order from a supplier whose contract for this product is active and permits ordering."
+    },
+    "P2": {
+     "kind": "select",
+     "span": "lowest-cost supplier that can fulfill the quantity"
+    }
+   },
+   "g_exec": true,
+   "g_repro": true,
+   "g_ablate": false,
+   "g_ablate_set": true,
+   "ablate_pass": "1/2",
+   "ablate_set_pass": "2/2"
+  },
+  {
+   "key": "gen2|q0|S3b|5",
+   "q": "q0",
+   "scheme": "S3b",
+   "i": 5,
+   "finish": "stop",
+   "preds": {
+    "P1": {
+     "kind": "forbid",
+     "span": "Only order from a supplier whose contract for this product is active and permits ordering."
+    },
+    "P2": {
+     "kind": "select",
+     "span": "from the lowest-cost supplier that can fulfill the quantity"
+    }
+   },
+   "g_exec": true,
+   "g_repro": false
+  },
+  {
+   "key": "gen2|qm|S1|0",
+   "q": "qm",
+   "scheme": "S1",
+   "i": 0,
+   "finish": "stop",
+   "preds": {
+    "P1": {
+     "kind": "forbid",
+     "span": "Only order from a supplier whose contract for this product is active and permits ordering."
+    }
+   },
+   "g_exec": true,
+   "g_weaken": false,
+   "weaken_bad": [
+    "case_R3",
+    "case_R8",
+    "gv0_P38",
+    "gv0_P46",
+    "gv0_P47"
+   ],
+   "weaken_pairs": 0,
+   "g_weaken_local": false,
+   "weaken_local_bad": [
+    "gv0_P38",
+    "V08_answer_inactive",
+    "V09_answer_ordering_forbidden"
+   ]
+  },
+  {
+   "key": "gen2|qm|S1|1",
+   "q": "qm",
+   "scheme": "S1",
+   "i": 1,
+   "finish": "stop",
+   "preds": {
+    "P1": {
+     "kind": "forbid",
+     "span": "Only order from a supplier whose contract for this product is active and permits ordering."
+    }
+   },
+   "g_exec": true,
+   "g_weaken": false,
+   "weaken_bad": [
+    "case_R3",
+    "case_R8",
+    "gv0_P38",
+    "gv0_P46",
+    "gv0_P47"
+   ],
+   "weaken_pairs": 0,
+   "g_weaken_local": false,
+   "weaken_local_bad": [
+    "gv0_P38",
+    "V08_answer_inactive",
+    "V09_answer_ordering_forbidden"
+   ]
+  },
+  {
+   "key": "gen2|qm|S1|2",
+   "q": "qm",
+   "scheme": "S1",
+   "i": 2,
+   "finish": "stop",
+   "fail": "적재 실패: SyntaxError: unterminated string literal (detected at line 41) (<candidate>, line 41)",
+   "g_exec": false
+  },
+  {
+   "key": "gen2|qm|S2|0",
+   "q": "qm",
+   "scheme": "S2",
+   "i": 0,
+   "finish": "stop",
+   "preds": {
+    "P1": {
+     "kind": "select",
+     "span": "place an order for 100 cans."
+    },
+    "P2": {
+     "kind": "forbid",
+     "span": "Only order from a supplier whose contract for this product is active and permits ordering."
+    }
+   },
+   "g_exec": true,
+   "g_weaken": false,
+   "weaken_bad": [
+    "case_R3",
+    "case_R8",
+    "gv0_P38",
+    "gv0_P46",
+    "gv0_P47"
+   ],
+   "weaken_pairs": 0,
+   "g_weaken_local": false,
+   "weaken_local_bad": [
+    "gv0_P38",
+    "V08_answer_inactive",
+    "V09_answer_ordering_forbidden"
+   ]
+  },
+  {
+   "key": "gen2|qm|S2|1",
+   "q": "qm",
+   "scheme": "S2",
+   "i": 1,
+   "finish": "stop",
+   "preds": {
+    "P1": {
+     "kind": "select",
+     "span": "Only order from a supplier whose contract for this product is active and permits ordering."
+    }
+   },
+   "g_exec": true,
+   "g_weaken": false,
+   "weaken_bad": [
+    "case_R3",
+    "case_R8",
+    "gv0_P38",
+    "gv0_P46",
+    "gv0_P47"
+   ],
+   "weaken_pairs": 0,
+   "g_weaken_local": false,
+   "weaken_local_bad": [
+    "gv0_P38",
+    "V08_answer_inactive",
+    "V09_answer_ordering_forbidden"
+   ]
+  },
+  {
+   "key": "gen2|qm|S2|2",
+   "q": "qm",
+   "scheme": "S2",
+   "i": 2,
+   "finish": "stop",
+   "preds": {
+    "P1": {
+     "kind": "select",
+     "span": "Only order from a supplier whose contract for this product is active and permits ordering."
+    }
+   },
+   "g_exec": true,
+   "g_weaken": false,
+   "weaken_bad": [
+    "case_R3",
+    "case_R8",
+    "gv0_P38",
+    "gv0_P46",
+    "gv0_P47"
+   ],
+   "weaken_pairs": 0,
+   "g_weaken_local": false,
+   "weaken_local_bad": [
+    "gv0_P38",
+    "V08_answer_inactive",
+    "V09_answer_ordering_forbidden"
+   ]
+  },
+  {
+   "key": "gen2|qm|S3|0",
+   "q": "qm",
+   "scheme": "S3",
+   "i": 0,
+   "finish": "stop",
+   "preds": {
+    "P1": {
+     "kind": "forbid",
+     "span": "Only order from a supplier whose contract for this product is active and permits ordering."
+    }
+   },
+   "g_exec": true,
+   "g_weaken": false,
+   "weaken_bad": [
+    "case_R3",
+    "case_R8",
+    "gv0_P38",
+    "gv0_P46",
+    "gv0_P47"
+   ],
+   "weaken_pairs": 0,
+   "g_weaken_local": false,
+   "weaken_local_bad": [
+    "gv0_P38",
+    "V08_answer_inactive",
+    "V09_answer_ordering_forbidden"
+   ]
+  },
+  {
+   "key": "gen2|qm|S3|1",
+   "q": "qm",
+   "scheme": "S3",
+   "i": 1,
+   "finish": "stop",
+   "preds": {
+    "P1": {
+     "kind": "forbid",
+     "span": "Only order from a supplier whose contract for this product is active and permits ordering."
+    },
+    "P2": {
+     "kind": "select",
+     "span": "compare their current unit prices and availability, and place an order for 100 cans."
+    }
+   },
+   "g_exec": true,
+   "g_weaken": false,
+   "weaken_bad": [
+    "seed",
+    "case_R3",
+    "case_R8",
+    "gv0_P01",
+    "gv0_P02"
+   ],
+   "weaken_pairs": 0,
+   "g_weaken_local": false,
+   "weaken_local_bad": [
+    "seed",
+    "case_R3",
+    "case_R8",
+    "gv0_P01",
+    "gv0_P02"
+   ]
+  },
+  {
+   "key": "gen2|qm|S3|2",
+   "q": "qm",
+   "scheme": "S3",
+   "i": 2,
+   "finish": "stop",
+   "preds": {
+    "P1": {
+     "kind": "forbid",
+     "span": "Only order from a supplier whose contract for this product is active and permits ordering."
+    }
+   },
+   "g_exec": true,
+   "g_weaken": false,
+   "weaken_bad": [
+    "case_R3",
+    "case_R8",
+    "gv0_P38",
+    "gv0_P46",
+    "gv0_P47"
+   ],
+   "weaken_pairs": 0,
+   "g_weaken_local": false,
+   "weaken_local_bad": [
+    "gv0_P38",
+    "V08_answer_inactive",
+    "V09_answer_ordering_forbidden"
+   ]
+  },
+  {
+   "key": "gen2|qm|S3b|0",
+   "q": "qm",
+   "scheme": "S3b",
+   "i": 0,
+   "finish": "stop",
+   "preds": {
+    "P1": {
+     "kind": "select",
+     "span": "Only order from a supplier whose contract for this product is active and permits ordering."
+    }
+   },
+   "g_exec": true,
+   "g_weaken": false,
+   "weaken_bad": [
+    "case_R3",
+    "case_R8",
+    "gv0_P38",
+    "gv0_P46",
+    "gv0_P47"
+   ],
+   "weaken_pairs": 0,
+   "g_weaken_local": false,
+   "weaken_local_bad": [
+    "gv0_P38",
+    "V08_answer_inactive",
+    "V09_answer_ordering_forbidden"
+   ]
+  },
+  {
+   "key": "gen2|qm|S3b|1",
+   "q": "qm",
+   "scheme": "S3b",
+   "i": 1,
+   "finish": "stop",
+   "preds": {
+    "P1": {
+     "kind": "forbid",
+     "span": "Only order from a supplier whose contract for this product is active and permits ordering."
+    },
+    "P2": {
+     "kind": "select",
+     "span": "compare their current unit prices and availability, and place an order for 100 cans."
+    }
+   },
+   "g_exec": true,
+   "g_weaken": false,
+   "weaken_bad": [
+    "seed",
+    "case_R3",
+    "case_R8",
+    "gv0_P01",
+    "gv0_P02"
+   ],
+   "weaken_pairs": 0,
+   "g_weaken_local": false,
+   "weaken_local_bad": [
+    "seed",
+    "case_R3",
+    "case_R8",
+    "gv0_P01",
+    "gv0_P02"
+   ]
+  },
+  {
+   "key": "gen2|qm|S3b|2",
+   "q": "qm",
+   "scheme": "S3b",
+   "i": 2,
+   "finish": "stop",
+   "preds": {
+    "P1": {
+     "kind": "select",
+     "span": "Only order from a supplier whose contract for this product is active and permits ordering."
+    }
+   },
+   "g_exec": true,
+   "g_weaken": false,
+   "weaken_bad": [
+    "case_R3",
+    "case_R8",
+    "gv0_P38",
+    "gv0_P46",
+    "gv0_P47"
+   ],
+   "weaken_pairs": 0,
+   "g_weaken_local": false,
+   "weaken_local_bad": [
+    "gv0_P38",
+    "V08_answer_inactive",
+    "V09_answer_ordering_forbidden"
+   ]
+  }
+ ],
+ "ablation": [
+  {
+   "cand": "gen2|q0|S1|0",
+   "pred": "P1",
+   "kind": "forbid",
+   "span": "Only order from a supplier whose contract for this product is active and permits ordering",
+   "rewrite": "Standing order on file for the procurement assistant: written once, applied again\non every scheduled run against whatever the supplier and warehouse records show\nat that moment.\n\nCheck the available suppliers for canned Coke (PROD-001), compare their current\nunit prices and availability, and place an order for 100 cans from the lowest-cost\nsupplier that can fulfill the quantity.",
+   "pass": true,
+   "why": "",
+   "set_pass": true,
+   "set_why": "",
+   "attempt": 0
+  },
+  {
+   "cand": "gen2|q0|S1|0",
+   "pred": "P2",
+   "kind": "select",
+   "span": "the lowest-cost supplier that can fulfill the quantity",
+   "rewrite": "Standing order on file for the procurement assistant: written once, applied again\non every scheduled run against whatever the supplier and warehouse records show\nat that moment.\n\nCheck the available suppliers for canned Coke (PROD-001), compare their current\nunit prices and availability, and place an order for 100 cans.\n\nOnly order from a supplier whose contract for this product is active and permits\nordering.",
+   "pass": true,
+   "why": "",
+   "set_pass": true,
+   "set_why": "",
+   "attempt": 2
+  },
+  {
+   "cand": "gen2|q0|S1|2",
+   "pred": "P1",
+   "kind": "select",
+   "span": "lowest-cost supplier that can fulfill the quantity",
+   "rewrite": "Standing order on file for the procurement assistant: written once, applied again\non every scheduled run against whatever the supplier and warehouse records show\nat that moment.\n\nCheck the available suppliers for canned Coke (PROD-001), compare their current\nunit prices and availability, and place an order for 100 cans.\n\nOnly order from a supplier whose contract for this product is active and permits\nordering.",
+   "pass": true,
+   "why": "",
+   "set_pass": true,
+   "set_why": "",
+   "attempt": 2
+  },
+  {
+   "cand": "gen2|q0|S1|2",
+   "pred": "P2",
+   "kind": "forbid",
+   "span": "Only order from a supplier whose contract for this product is active and permits ordering",
+   "rewrite": "Standing order on file for the procurement assistant: written once, applied again\non every scheduled run against whatever the supplier and warehouse records show\nat that moment.\n\nCheck the available suppliers for canned Coke (PROD-001), compare their current\nunit prices and availability, and place an order for 100 cans from the lowest-cost\nsupplier that can fulfill the quantity.",
+   "pass": true,
+   "why": "",
+   "set_pass": true,
+   "set_why": "",
+   "attempt": 0
+  },
+  {
+   "cand": "gen2|q0|S1|3",
+   "pred": "P1",
+   "kind": "forbid",
+   "span": "Only order from a supplier whose contract for this product is active and permits ordering.",
+   "rewrite": "Standing order on file for the procurement assistant: written once, applied again\non every scheduled run against whatever the supplier and warehouse records show\nat that moment.\n\nCheck the available suppliers for canned Coke (PROD-001), compare their current\nunit prices and availability, and place an order for 100 cans from the lowest-cost\nsupplier that can fulfill the quantity.",
+   "pass": true,
+   "why": "",
+   "set_pass": true,
+   "set_why": "",
+   "attempt": 0
+  },
+  {
+   "cand": "gen2|q0|S1|3",
+   "pred": "P2",
+   "kind": "select",
+   "span": "lowest-cost supplier that can fulfill the quantity.",
+   "rewrite": "Standing order on file for the procurement assistant: written once, applied again\non every scheduled run against whatever the supplier and warehouse records show\nat that moment.\n\nCheck the available suppliers for canned Coke (PROD-001), compare their current\nunit prices and availability, and place an order for 100 cans.\n\nOnly order from a supplier whose contract for this product is active and permits\nordering.",
+   "pass": true,
+   "why": "",
+   "set_pass": true,
+   "set_why": "",
+   "attempt": 2
+  },
+  {
+   "cand": "gen2|q0|S1|4",
+   "pred": "P1",
+   "kind": "forbid",
+   "span": "whose contract for this product is active and permits ordering",
+   "rewrite": "Standing order on file for the procurement assistant: written once, applied again\non every scheduled run against whatever the supplier and warehouse records show\nat that moment.\n\nCheck the available suppliers for canned Coke (PROD-001), compare their current\nunit prices and availability, and place an order for 100 cans from the lowest-cost\nsupplier that can fulfill the quantity.\n\nOnly order from a supplier.",
+   "pass": true,
+   "why": "",
+   "set_pass": true,
+   "set_why": "",
+   "attempt": 2
+  },
+  {
+   "cand": "gen2|q0|S1|4",
+   "pred": "P2",
+   "kind": "select",
+   "span": "from the lowest-cost supplier that can fulfill the quantity",
+   "rewrite": "Standing order on file for the procurement assistant: written once, applied again\non every scheduled run against whatever the supplier and warehouse records show\nat that moment.\n\nCheck the available suppliers for canned Coke (PROD-001), compare their current\nunit prices and availability, and place an order for 100 cans.\n\nOnly order from a supplier whose contract for this product is active and permits\nordering.",
+   "pass": true,
+   "why": "",
+   "set_pass": true,
+   "set_why": "",
+   "attempt": 2
+  },
+  {
+   "cand": "gen2|q0|S1|5",
+   "pred": "P1",
+   "kind": "forbid",
+   "span": "Only order from a supplier whose contract for this product is active and permits ordering.",
+   "rewrite": "Standing order on file for the procurement assistant: written once, applied again\non every scheduled run against whatever the supplier and warehouse records show\nat that moment.\n\nCheck the available suppliers for canned Coke (PROD-001), compare their current\nunit prices and availability, and place an order for 100 cans from the lowest-cost\nsupplier that can fulfill the quantity.",
+   "pass": true,
+   "why": "",
+   "set_pass": true,
+   "set_why": "",
+   "attempt": 0
+  },
+  {
+   "cand": "gen2|q0|S1|5",
+   "pred": "P2",
+   "kind": "select",
+   "span": "the lowest-cost supplier that can fulfill the quantity",
+   "rewrite": "Standing order on file for the procurement assistant: written once, applied again\non every scheduled run against whatever the supplier and warehouse records show\nat that moment.\n\nCheck the available suppliers for canned Coke (PROD-001), compare their current\nunit prices and availability, and place an order for 100 cans.\n\nOnly order from a supplier whose contract for this product is active and permits\nordering.",
+   "pass": false,
+   "why": "재추출 3: 1상태 불일치 (예 gv0_P38: Q'={001×100} Q∖P={001×100, 002×100, 003×100})",
+   "set_pass": true,
+   "set_why": ""
+  },
+  {
+   "cand": "gen2|q0|S2|0",
+   "pred": "P1",
+   "kind": "forbid",
+   "span": "Only order from a supplier whose contract for this product is active and permits ordering",
+   "rewrite": "Standing order on file for the procurement assistant: written once, applied again\non every scheduled run against whatever the supplier and warehouse records show\nat that moment.\n\nCheck the available suppliers for canned Coke (PROD-001), compare their current\nunit prices and availability, and place an order for 100 cans from the lowest-cost\nsupplier that can fulfill the quantity.",
+   "pass": true,
+   "why": "",
+   "set_pass": true,
+   "set_why": "",
+   "attempt": 0
+  },
+  {
+   "cand": "gen2|q0|S2|0",
+   "pred": "P2",
+   "kind": "select",
+   "span": "lowest-cost supplier that can fulfill the quantity",
+   "rewrite": "Standing order on file for the procurement assistant: written once, applied again\non every scheduled run against whatever the supplier and warehouse records show\nat that moment.\n\nCheck the available suppliers for canned Coke (PROD-001), compare their current\nunit prices and availability, and place an order for 100 cans.\n\nOnly order from a supplier whose contract for this product is active and permits\nordering.",
+   "pass": true,
+   "why": "",
+   "set_pass": true,
+   "set_why": "",
+   "attempt": 2
+  },
+  {
+   "cand": "gen2|q0|S2|1",
+   "pred": "P1",
+   "kind": "select",
+   "span": "for canned Coke (PROD-001)",
+   "rewrite": "Standing order on file for the procurement assistant: written once, applied again\non every scheduled run against whatever the supplier and warehouse records show\nat that moment.\n\nCheck the available suppliers, compare their current\nunit prices and availability, and place an order for 100 cans from the lowest-cost\nsupplier that can fulfill the quantity.\n\nOnly order from a supplier whose contract for this product is active and permits\nordering.",
+   "pass": false,
+   "why": "재추출 3: 65상태 불일치 (예 seed: Q'={002×100} Q∖P={002×100})",
+   "set_pass": false,
+   "set_why": "다른 술어 P2 사라짐"
+  },
+  {
+   "cand": "gen2|q0|S2|1",
+   "pred": "P2",
+   "kind": "select",
+   "span": "for 100 cans",
+   "rewrite": "Standing order on file for the procurement assistant: written once, applied again\non every scheduled run against whatever the supplier and warehouse records show\nat that moment.\n\nCheck the available suppliers for canned Coke (PROD-001), compare their current\nunit prices and availability, and place an order from the lowest-cost\nsupplier that can fulfill the quantity.\n\nOnly order from a supplier whose contract for this product is active and permits\nordering.",
+   "pass": false,
+   "why": "재추출 3: 60상태 불일치 (예 seed: Q'={001×*} Q∖P={002×*})",
+   "set_pass": false,
+   "set_why": "다른 술어 P1 사라짐"
+  },
+  {
+   "cand": "gen2|q0|S2|1",
+   "pred": "P3",
+   "kind": "select",
+   "span": "lowest-cost supplier that can fulfill the quantity",
+   "rewrite": "Standing order on file for the procurement assistant: written once, applied again\non every scheduled run against whatever the supplier and warehouse records show\nat that moment.\n\nCheck the available suppliers for canned Coke (PROD-001), compare their current\nunit prices and availability, and place an order for 100 cans.\n\nOnly order from a supplier whose contract for this product is active and permits\nordering.",
+   "pass": true,
+   "why": "",
+   "set_pass": false,
+   "set_why": "다른 술어 P1 사라짐",
+   "attempt": 2
+  },
+  {
+   "cand": "gen2|q0|S2|1",
+   "pred": "P4",
+   "kind": "forbid",
+   "span": "Only order from a supplier whose contract for this product is active and permits ordering.",
+   "rewrite": "Standing order on file for the procurement assistant: written once, applied again\non every scheduled run against whatever the supplier and warehouse records show\nat that moment.\n\nCheck the available suppliers for canned Coke (PROD-001), compare their current\nunit prices and availability, and place an order for 100 cans from the lowest-cost\nsupplier that can fulfill the quantity.",
+   "pass": true,
+   "why": "",
+   "set_pass": false,
+   "set_why": "다른 술어 P1 사라짐",
+   "attempt": 0
+  },
+  {
+   "cand": "gen2|q0|S2|3",
+   "pred": "P1",
+   "kind": "select",
+   "span": "lowest-cost supplier that can fulfill the quantity",
+   "rewrite": "Standing order on file for the procurement assistant: written once, applied again\non every scheduled run against whatever the supplier and warehouse records show\nat that moment.\n\nCheck the available suppliers for canned Coke (PROD-001), compare their current\nunit prices and availability, and place an order for 100 cans.\n\nOnly order from a supplier whose contract for this product is active and permits\nordering.",
+   "pass": false,
+   "why": "재추출 3: 1상태 불일치 (예 V07_all_inactive: Q'={NONE} Q∖P=⊤)",
+   "set_pass": false,
+   "set_why": "다른 술어 P2 사라짐"
+  },
+  {
+   "cand": "gen2|q0|S2|3",
+   "pred": "P2",
+   "kind": "select",
+   "span": "Only order from a supplier whose contract for this product is active and permits ordering",
+   "rewrite": "Standing order on file for the procurement assistant: written once, applied again\non every scheduled run against whatever the supplier and warehouse records show\nat that moment.\n\nCheck the available suppliers for canned Coke (PROD-001), compare their current\nunit prices and availability, and place an order for 100 cans from the lowest-cost\nsupplier that can fulfill the quantity.",
+   "pass": true,
+   "why": "",
+   "set_pass": true,
+   "set_why": "",
+   "attempt": 0
+  },
+  {
+   "cand": "gen2|q0|S2|4",
+   "pred": "P1",
+   "kind": "select",
+   "span": "lowest-cost supplier that can fulfill the quantity",
+   "rewrite": "Standing order on file for the procurement assistant: written once, applied again\non every scheduled run against whatever the supplier and warehouse records show\nat that moment.\n\nCheck the available suppliers for canned Coke (PROD-001), compare their current\nunit prices and availability, and place an order for 100 cans.\n\nOnly order from a supplier whose contract for this product is active and permits\nordering.",
+   "pass": true,
+   "why": "",
+   "set_pass": true,
+   "set_why": "",
+   "attempt": 2
+  },
+  {
+   "cand": "gen2|q0|S2|4",
+   "pred": "P2",
+   "kind": "forbid",
+   "span": "Only order from a supplier whose contract for this product is active and permits ordering.",
+   "rewrite": "Standing order on file for the procurement assistant: written once, applied again\non every scheduled run against whatever the supplier and warehouse records show\nat that moment.\n\nCheck the available suppliers for canned Coke (PROD-001), compare their current\nunit prices and availability, and place an order for 100 cans from the lowest-cost\nsupplier that can fulfill the quantity.",
+   "pass": true,
+   "why": "",
+   "set_pass": true,
+   "set_why": "",
+   "attempt": 0
+  },
+  {
+   "cand": "gen2|q0|S2|5",
+   "pred": "P1",
+   "kind": "forbid",
+   "span": "Only order from a supplier whose contract for this product is active and permits ordering.",
+   "rewrite": "Standing order on file for the procurement assistant: written once, applied again\non every scheduled run against whatever the supplier and warehouse records show\nat that moment.\n\nCheck the available suppliers for canned Coke (PROD-001), compare their current\nunit prices and availability, and place an order for 100 cans from the lowest-cost\nsupplier that can fulfill the quantity.",
+   "pass": true,
+   "why": "",
+   "set_pass": true,
+   "set_why": "",
+   "attempt": 0
+  },
+  {
+   "cand": "gen2|q0|S2|5",
+   "pred": "P2",
+   "kind": "select",
+   "span": "lowest-cost supplier that can fulfill the quantity",
+   "rewrite": "Standing order on file for the procurement assistant: written once, applied again\non every scheduled run against whatever the supplier and warehouse records show\nat that moment.\n\nCheck the available suppliers for canned Coke (PROD-001), compare their current\nunit prices and availability, and place an order for 100 cans.\n\nOnly order from a supplier whose contract for this product is active and permits\nordering.",
+   "pass": false,
+   "why": "재추출 3: 1상태 불일치 (예 V07_all_inactive: Q'={NONE} Q∖P={})",
+   "set_pass": true,
+   "set_why": ""
+  },
+  {
+   "cand": "gen2|q0|S3|0",
+   "pred": "P1",
+   "kind": "forbid",
+   "span": "Only order from a supplier whose contract for this product is active and permits ordering.",
+   "rewrite": "Standing order on file for the procurement assistant: written once, applied again\non every scheduled run against whatever the supplier and warehouse records show\nat that moment.\n\nCheck the available suppliers for canned Coke (PROD-001), compare their current\nunit prices and availability, and place an order for 100 cans from the lowest-cost\nsupplier that can fulfill the quantity.",
+   "pass": true,
+   "why": "",
+   "set_pass": true,
+   "set_why": "",
+   "attempt": 0
+  },
+  {
+   "cand": "gen2|q0|S3|0",
+   "pred": "P2",
+   "kind": "select",
+   "span": "lowest-cost supplier that can fulfill the quantity",
+   "rewrite": "Standing order on file for the procurement assistant: written once, applied again\non every scheduled run against whatever the supplier and warehouse records show\nat that moment.\n\nCheck the available suppliers for canned Coke (PROD-001), compare their current\nunit prices and availability, and place an order for 100 cans.\n\nOnly order from a supplier whose contract for this product is active and permits\nordering.",
+   "pass": true,
+   "why": "",
+   "set_pass": true,
+   "set_why": "",
+   "attempt": 2
+  },
+  {
+   "cand": "gen2|q0|S3|2",
+   "pred": "P1",
+   "kind": "select",
+   "span": "lowest-cost supplier that can fulfill the quantity",
+   "rewrite": "Standing order on file for the procurement assistant: written once, applied again\non every scheduled run against whatever the supplier and warehouse records show\nat that moment.\n\nCheck the available suppliers for canned Coke (PROD-001), compare their current\nunit prices and availability, and place an order for 100 cans.\n\nOnly order from a supplier whose contract for this product is active and permits\nordering.",
+   "pass": true,
+   "why": "",
+   "set_pass": true,
+   "set_why": "",
+   "attempt": 2
+  },
+  {
+   "cand": "gen2|q0|S3|2",
+   "pred": "P2",
+   "kind": "forbid",
+   "span": "Only order from a supplier whose contract for this product is active and permits ordering.",
+   "rewrite": "Standing order on file for the procurement assistant: written once, applied again\non every scheduled run against whatever the supplier and warehouse records show\nat that moment.\n\nCheck the available suppliers for canned Coke (PROD-001), compare their current\nunit prices and availability, and place an order for 100 cans from the lowest-cost\nsupplier that can fulfill the quantity.",
+   "pass": true,
+   "why": "",
+   "set_pass": true,
+   "set_why": "",
+   "attempt": 0
+  },
+  {
+   "cand": "gen2|q0|S3|3",
+   "pred": "P1",
+   "kind": "forbid",
+   "span": "Only order from a supplier whose contract for this product is active and permits ordering.",
+   "rewrite": "Standing order on file for the procurement assistant: written once, applied again\non every scheduled run against whatever the supplier and warehouse records show\nat that moment.\n\nCheck the available suppliers for canned Coke (PROD-001), compare their current\nunit prices and availability, and place an order for 100 cans from the lowest-cost\nsupplier that can fulfill the quantity.",
+   "pass": true,
+   "why": "",
+   "set_pass": true,
+   "set_why": "",
+   "attempt": 0
+  },
+  {
+   "cand": "gen2|q0|S3|3",
+   "pred": "P2",
+   "kind": "select",
+   "span": "lowest-cost supplier that can fulfill the quantity",
+   "rewrite": "Standing order on file for the procurement assistant: written once, applied again\non every scheduled run against whatever the supplier and warehouse records show\nat that moment.\n\nCheck the available suppliers for canned Coke (PROD-001), compare their current\nunit prices and availability, and place an order for 100 cans.\n\nOnly order from a supplier whose contract for this product is active and permits\nordering.",
+   "pass": true,
+   "why": "",
+   "set_pass": true,
+   "set_why": "",
+   "attempt": 2
+  },
+  {
+   "cand": "gen2|q0|S3|4",
+   "pred": "P1",
+   "kind": "forbid",
+   "span": "Only order from a supplier whose contract for this product is active and permits ordering.",
+   "rewrite": "Standing order on file for the procurement assistant: written once, applied again\non every scheduled run against whatever the supplier and warehouse records show\nat that moment.\n\nCheck the available suppliers for canned Coke (PROD-001), compare their current\nunit prices and availability, and place an order for 100 cans from the lowest-cost\nsupplier that can fulfill the quantity.",
+   "pass": true,
+   "why": "",
+   "set_pass": true,
+   "set_why": "",
+   "attempt": 0
+  },
+  {
+   "cand": "gen2|q0|S3|4",
+   "pred": "P2",
+   "kind": "select",
+   "span": "lowest-cost supplier that can fulfill the quantity",
+   "rewrite": "Standing order on file for the procurement assistant: written once, applied again\non every scheduled run against whatever the supplier and warehouse records show\nat that moment.\n\nCheck the available suppliers for canned Coke (PROD-001), compare their current\nunit prices and availability, and place an order for 100 cans.\n\nOnly order from a supplier whose contract for this product is active and permits\nordering.",
+   "pass": true,
+   "why": "",
+   "set_pass": true,
+   "set_why": "",
+   "attempt": 2
+  },
+  {
+   "cand": "gen2|q0|S3|5",
+   "pred": "P1",
+   "kind": "forbid",
+   "span": "Only order from a supplier whose contract for this product is active and permits ordering.",
+   "rewrite": "Standing order on file for the procurement assistant: written once, applied again\non every scheduled run against whatever the supplier and warehouse records show\nat that moment.\n\nCheck the available suppliers for canned Coke (PROD-001), compare their current\nunit prices and availability, and place an order for 100 cans from the lowest-cost\nsupplier that can fulfill the quantity.",
+   "pass": true,
+   "why": "",
+   "set_pass": true,
+   "set_why": "",
+   "attempt": 0
+  },
+  {
+   "cand": "gen2|q0|S3|5",
+   "pred": "P2",
+   "kind": "select",
+   "span": "lowest-cost supplier that can fulfill the quantity",
+   "rewrite": "Standing order on file for the procurement assistant: written once, applied again\non every scheduled run against whatever the supplier and warehouse records show\nat that moment.\n\nCheck the available suppliers for canned Coke (PROD-001), compare their current\nunit prices and availability, and place an order for 100 cans.\n\nOnly order from a supplier whose contract for this product is active and permits\nordering.",
+   "pass": true,
+   "why": "",
+   "set_pass": true,
+   "set_why": "",
+   "attempt": 2
+  },
+  {
+   "cand": "gen2|q0|S3b|3",
+   "pred": "P1",
+   "kind": "select",
+   "span": "place an order for 100 cans from the lowest-cost supplier that can fulfill the quantity",
+   "rewrite": "Standing order on file for the procurement assistant: written once, applied again\non every scheduled run against whatever the supplier and warehouse records show\nat that moment.\n\nCheck the available suppliers for canned Coke (PROD-001), compare their current\nunit prices and availability.\n\nOnly order from a supplier whose contract for this product is active and permits\nordering.",
+   "pass": false,
+   "why": "재추출 3: 73상태 불일치 (예 seed: Q'={001×*, 002×*, 003×*} Q∖P=⊤)",
+   "set_pass": true,
+   "set_why": ""
+  },
+  {
+   "cand": "gen2|q0|S3b|3",
+   "pred": "P2",
+   "kind": "forbid",
+   "span": "Only order from a supplier whose contract for this product is active and permits ordering.",
+   "rewrite": "Standing order on file for the procurement assistant: written once, applied again\non every scheduled run against whatever the supplier and warehouse records show\nat that moment.\n\nCheck the available suppliers for canned Coke (PROD-001), compare their current\nunit prices and availability, and place an order for 100 cans from the lowest-cost\nsupplier that can fulfill the quantity.",
+   "pass": false,
+   "why": "재추출 3: 1상태 불일치 (예 V06_tie_among_fulfillers: Q'={002×100, 003×100} Q∖P={003×100})",
+   "set_pass": true,
+   "set_why": ""
+  },
+  {
+   "cand": "gen2|q0|S3b|4",
+   "pred": "P1",
+   "kind": "forbid",
+   "span": "Only order from a supplier whose contract for this product is active and permits ordering.",
+   "rewrite": "Standing order on file for the procurement assistant: written once, applied again\non every scheduled run against whatever the supplier and warehouse records show\nat that moment.\n\nCheck the available suppliers for canned Coke (PROD-001), compare their current\nunit prices and availability, and place an order for 100 cans from the lowest-cost\nsupplier that can fulfill the quantity.",
+   "pass": true,
+   "why": "",
+   "set_pass": true,
+   "set_why": "",
+   "attempt": 0
+  },
+  {
+   "cand": "gen2|q0|S3b|4",
+   "pred": "P2",
+   "kind": "select",
+   "span": "lowest-cost supplier that can fulfill the quantity",
+   "rewrite": "Standing order on file for the procurement assistant: written once, applied again\non every scheduled run against whatever the supplier and warehouse records show\nat that moment.\n\nCheck the available suppliers for canned Coke (PROD-001), compare their current\nunit prices and availability, and place an order for 100 cans.\n\nOnly order from a supplier whose contract for this product is active and permits\nordering.",
+   "pass": false,
+   "why": "재추출 3: 5상태 불일치 (예 gv0_P29: Q'={002×100, 003×100} Q∖P={001×100, 002×100, 003×100})",
+   "set_pass": true,
+   "set_why": ""
+  }
+ ],
+ "Q0": {
+  "ba90baac4c": [
+   "gen2|q0|S1|0",
+   "gen2|q0|S1|3",
+   "gen2|q0|S1|4",
+   "gen2|q0|S2|0",
+   "gen2|q0|S2|4",
+   "gen2|q0|S3|0",
+   "gen2|q0|S3|4",
+   "gen2|q0|S3|5"
+  ],
+  "b0622e3625": [
+   "gen2|q0|S1|2",
+   "gen2|q0|S3|2"
+  ],
+  "008e537940": [
+   "gen2|q0|S3|3"
+  ]
+ },
+ "Q0_before_ablation": {
+  "ba90baac4c": [
+   "gen2|q0|S1|0",
+   "gen2|q0|S1|3",
+   "gen2|q0|S1|4",
+   "gen2|q0|S2|0",
+   "gen2|q0|S2|4",
+   "gen2|q0|S3|0",
+   "gen2|q0|S3|4",
+   "gen2|q0|S3|5"
+  ],
+  "b0622e3625": [
+   "gen2|q0|S1|2",
+   "gen2|q0|S2|1",
+   "gen2|q0|S3|2"
+  ],
+  "c2c27ca968": [
+   "gen2|q0|S1|5"
+  ],
+  "008e537940": [
+   "gen2|q0|S2|3",
+   "gen2|q0|S2|5",
+   "gen2|q0|S3|3"
+  ],
+  "35c5d0d57e": [
+   "gen2|q0|S3b|3"
+  ],
+  "c3c3c3556d": [
+   "gen2|q0|S3b|4"
+  ]
+ },
+ "Q0_set_ablation": {
+  "ba90baac4c": [
+   "gen2|q0|S1|0",
+   "gen2|q0|S1|3",
+   "gen2|q0|S1|4",
+   "gen2|q0|S2|0",
+   "gen2|q0|S2|4",
+   "gen2|q0|S3|0",
+   "gen2|q0|S3|4",
+   "gen2|q0|S3|5"
+  ],
+  "b0622e3625": [
+   "gen2|q0|S1|2",
+   "gen2|q0|S3|2"
+  ],
+  "c2c27ca968": [
+   "gen2|q0|S1|5"
+  ],
+  "008e537940": [
+   "gen2|q0|S2|5",
+   "gen2|q0|S3|3"
+  ],
+  "35c5d0d57e": [
+   "gen2|q0|S3b|3"
+  ],
+  "c3c3c3556d": [
+   "gen2|q0|S3b|4"
+  ]
+ },
+ "Qm": {},
+ "hand_compare": {
+  "A": [
+   {
+    "class": "ba90baac4c",
+    "match": true,
+    "n_diff": 0,
+    "diff": [],
+    "in_Q": true
+   },
+   {
+    "class": "b0622e3625",
+    "match": false,
+    "n_diff": 3,
+    "diff": [
+     "gv0_P38",
+     "V08_answer_inactive",
+     "V09_answer_ordering_forbidden"
+    ],
+    "in_Q": true
+   },
+   {
+    "class": "c2c27ca968",
+    "match": false,
+    "n_diff": 1,
+    "diff": [
+     "gv0_P38"
+    ],
+    "in_Q": false
+   },
+   {
+    "class": "008e537940",
+    "match": false,
+    "n_diff": 1,
+    "diff": [
+     "V07_all_inactive"
+    ],
+    "in_Q": true
+   },
+   {
+    "class": "35c5d0d57e",
+    "match": false,
+    "n_diff": 4,
+    "diff": [
+     "gv0_P38",
+     "V06_tie_among_fulfillers",
+     "V08_answer_inactive",
+     "V09_answer_ordering_forbidden"
+    ],
+    "in_Q": false
+   },
+   {
+    "class": "c3c3c3556d",
+    "match": false,
+    "n_diff": 3,
+    "diff": [
+     "V07_all_inactive",
+     "V08_answer_inactive",
+     "V09_answer_ordering_forbidden"
+    ],
+    "in_Q": false
+   }
+  ],
+  "B": [
+   {
+    "class": "ba90baac4c",
+    "match": false,
+    "n_diff": 54,
+    "diff": [
+     "seed",
+     "case_R3",
+     "gv0_P01",
+     "gv0_P02",
+     "gv0_P03",
+     "gv0_P04"
+    ],
+    "in_Q": true
+   },
+   {
+    "class": "b0622e3625",
+    "match": false,
+    "n_diff": 55,
+    "diff": [
+     "seed",
+     "case_R3",
+     "gv0_P01",
+     "gv0_P02",
+     "gv0_P03",
+     "gv0_P04"
+    ],
+    "in_Q": true
+   },
+   {
+    "class": "c2c27ca968",
+    "match": false,
+    "n_diff": 55,
+    "diff": [
+     "seed",
+     "case_R3",
+     "gv0_P01",
+     "gv0_P02",
+     "gv0_P03",
+     "gv0_P04"
+    ],
+    "in_Q": false
+   },
+   {
+    "class": "008e537940",
+    "match": false,
+    "n_diff": 55,
+    "diff": [
+     "seed",
+     "case_R3",
+     "gv0_P01",
+     "gv0_P02",
+     "gv0_P03",
+     "gv0_P04"
+    ],
+    "in_Q": true
+   },
+   {
+    "class": "35c5d0d57e",
+    "match": false,
+    "n_diff": 56,
+    "diff": [
+     "seed",
+     "case_R3",
+     "gv0_P01",
+     "gv0_P02",
+     "gv0_P03",
+     "gv0_P04"
+    ],
+    "in_Q": false
+   },
+   {
+    "class": "c3c3c3556d",
+    "match": false,
+    "n_diff": 55,
+    "diff": [
+     "seed",
+     "case_R3",
+     "gv0_P01",
+     "gv0_P02",
+     "gv0_P03",
+     "gv0_P04"
+    ],
+    "in_Q": false
+   }
+  ],
+  "C": [
+   {
+    "class": "ba90baac4c",
+    "match": false,
+    "n_diff": 2,
+    "diff": [
+     "case_R7",
+     "V04_answer_min_order_200"
+    ],
+    "in_Q": true
+   },
+   {
+    "class": "b0622e3625",
+    "match": false,
+    "n_diff": 5,
+    "diff": [
+     "case_R7",
+     "gv0_P38",
+     "V04_answer_min_order_200",
+     "V08_answer_inactive",
+     "V09_answer_ordering_forbidden"
+    ],
+    "in_Q": true
+   },
+   {
+    "class": "c2c27ca968",
+    "match": false,
+    "n_diff": 3,
+    "diff": [
+     "case_R7",
+     "gv0_P38",
+     "V04_answer_min_order_200"
+    ],
+    "in_Q": false
+   },
+   {
+    "class": "008e537940",
+    "match": false,
+    "n_diff": 3,
+    "diff": [
+     "case_R7",
+     "V04_answer_min_order_200",
+     "V07_all_inactive"
+    ],
+    "in_Q": true
+   },
+   {
+    "class": "35c5d0d57e",
+    "match": false,
+    "n_diff": 6,
+    "diff": [
+     "case_R7",
+     "gv0_P38",
+     "V04_answer_min_order_200",
+     "V06_tie_among_fulfillers",
+     "V08_answer_inactive",
+     "V09_answer_ordering_forbidden"
+    ],
+    "in_Q": false
+   },
+   {
+    "class": "c3c3c3556d",
+    "match": false,
+    "n_diff": 5,
+    "diff": [
+     "case_R7",
+     "V04_answer_min_order_200",
+     "V07_all_inactive",
+     "V08_answer_inactive",
+     "V09_answer_ordering_forbidden"
+    ],
+    "in_Q": false
+   }
+  ]
+ },
+ "literal": [
+  {
+   "X": "ba90baac4c",
+   "Y": "b0622e3625",
+   "state": "gv0_P38",
+   "n_diff_states": 3,
+   "X_literal": true,
+   "Y_literal": true,
+   "X_span": "place an order for 100 cans from the lowest-cost supplier that can fulfill the quantity",
+   "Y_span": "Only order from a supplier whose contract for this product is active and permits ordering"
+  },
+  {
+   "X": "ba90baac4c",
+   "Y": "c2c27ca968",
+   "state": "gv0_P38",
+   "n_diff_states": 1,
+   "X_literal": false,
+   "Y_literal": true,
+   "X_span": "N/A",
+   "Y_span": "place an order for 100 cans from the lowest-cost supplier that can fulfill the quantity"
+  },
+  {
+   "X": "ba90baac4c",
+   "Y": "008e537940",
+   "state": "V07_all_inactive",
+   "n_diff_states": 1,
+   "X_literal": true,
+   "Y_literal": false,
+   "X_span": "Only order from a supplier whose contract for this product is active and permits ordering.",
+   "Y_span": "Only order from a supplier whose contract for this product is active and permits ordering."
+  },
+  {
+   "X": "ba90baac4c",
+   "Y": "35c5d0d57e",
+   "state": "gv0_P38",
+   "n_diff_states": 4,
+   "X_literal": false,
+   "Y_literal": true,
+   "X_span": "Only order from a supplier whose contract for this product is active and permits ordering.",
+   "Y_span": "lowest-cost supplier that can fulfill the quantity. Only order from a supplier whose contract for this product is active and permits ordering."
+  },
+  {
+   "X": "ba90baac4c",
+   "Y": "c3c3c3556d",
+   "state": "V07_all_inactive",
+   "n_diff_states": 3,
+   "X_literal": true,
+   "Y_literal": true,
+   "X_span": "Only order from a supplier whose contract for this product is active and permits ordering.",
+   "Y_span": "place an order for 100 cans from the lowest-cost supplier that can fulfill the quantity."
+  },
+  {
+   "X": "b0622e3625",
+   "Y": "c2c27ca968",
+   "state": "gv0_P38",
+   "n_diff_states": 3,
+   "X_literal": true,
+   "Y_literal": false,
+   "X_span": "Only order from a supplier whose contract for this product is active and permits ordering.",
+   "Y_span": "place an order for 100 cans from the lowest-cost supplier that can fulfill the quantity."
+  },
+  {
+   "X": "b0622e3625",
+   "Y": "008e537940",
+   "state": "gv0_P38",
+   "n_diff_states": 4,
+   "X_literal": true,
+   "Y_literal": false,
+   "X_span": "lowest-cost supplier that can fulfill the quantity. Only order from a supplier whose contract for this product is active and permits ordering.",
+   "Y_span": "Only order from a supplier whose contract for this product is active and permits ordering."
+  },
+  {
+   "X": "b0622e3625",
+   "Y": "35c5d0d57e",
+   "state": "V06_tie_among_fulfillers",
+   "n_diff_states": 1,
+   "X_literal": true,
+   "Y_literal": true,
+   "X_span": "lowest-cost supplier that can fulfill the quantity",
+   "Y_span": "the lowest-cost supplier"
+  },
+  {
+   "X": "b0622e3625",
+   "Y": "c3c3c3556d",
+   "state": "gv0_P38",
+   "n_diff_states": 4,
+   "X_literal": true,
+   "Y_literal": false,
+   "X_span": "place an order for 100 cans from the lowest-cost supplier that can fulfill the quantity. Only order from a supplier whose contract for this product is active and permits ordering.",
+   "Y_span": "Only order from a supplier whose contract for this product is active and permits ordering."
+  },
+  {
+   "X": "c2c27ca968",
+   "Y": "008e537940",
+   "state": "gv0_P38",
+   "n_diff_states": 2,
+   "X_literal": false,
+   "Y_literal": false,
+   "X_span": "Only order from a supplier whose contract for this product is active and permits ordering.",
+   "Y_span": "place an order for 100 cans from the lowest-cost supplier that can fulfill the quantity."
+  },
+  {
+   "X": "c2c27ca968",
+   "Y": "35c5d0d57e",
+   "state": "gv0_P38",
+   "n_diff_states": 4,
+   "X_literal": false,
+   "Y_literal": true,
+   "X_span": "lowest-cost supplier that can fulfill the quantity",
+   "Y_span": "Only order from a supplier whose contract for this product is active and permits ordering."
+  },
+  {
+   "X": "c2c27ca968",
+   "Y": "c3c3c3556d",
+   "state": "gv0_P38",
+   "n_diff_states": 4,
+   "X_literal": true,
+   "Y_literal": false,
+   "X_span": "place an order for 100 cans from the lowest-cost supplier that can fulfill the quantity",
+   "Y_span": "n/a"
+  },
+  {
+   "X": "008e537940",
+   "Y": "35c5d0d57e",
+   "state": "gv0_P38",
+   "n_diff_states": 5,
+   "X_literal": false,
+   "Y_literal": true,
+   "X_span": "place an order for 100 cans from the lowest-cost supplier that can fulfill the quantity.",
+   "Y_span": "Only order from a supplier whose contract for this product is active and permits ordering."
+  },
+  {
+   "X": "008e537940",
+   "Y": "c3c3c3556d",
+   "state": "V07_all_inactive",
+   "n_diff_states": 3,
+   "X_literal": false,
+   "Y_literal": false,
+   "X_span": "Only order from a supplier whose contract for this product is active and permits ordering.",
+   "Y_span": "Only order from a supplier whose contract for this product is active and permits ordering."
+  },
+  {
+   "X": "35c5d0d57e",
+   "Y": "c3c3c3556d",
+   "state": "gv0_P38",
+   "n_diff_states": 5,
+   "X_literal": true,
+   "Y_literal": true,
+   "X_span": "Only order from a supplier whose contract for this product is active and permits ordering.",
+   "Y_span": "place an order for 100 cans from the lowest-cost supplier that can fulfill the quantity."
+  }
+ ]
+}

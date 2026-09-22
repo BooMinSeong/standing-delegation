@@ -1,0 +1,236 @@
+[
+ {
+  "what": "CASE R1",
+  "rules": [],
+  "rules_eq": [],
+  "replay": null,
+  "reach": [
+   true,
+   true
+  ],
+  "note": ""
+ },
+ {
+  "what": "CASE R2",
+  "rules": [],
+  "rules_eq": [],
+  "replay": null,
+  "reach": [
+   true,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "note": ""
+ },
+ {
+  "what": "CASE R3",
+  "rules": [],
+  "rules_eq": [],
+  "replay": null,
+  "reach": [
+   true,
+   true,
+   true,
+   true
+  ],
+  "note": ""
+ },
+ {
+  "what": "CASE R4",
+  "rules": [],
+  "rules_eq": [],
+  "replay": null,
+  "reach": [
+   true,
+   true,
+   true,
+   true
+  ],
+  "note": ""
+ },
+ {
+  "what": "CASE R5",
+  "rules": [],
+  "rules_eq": [],
+  "replay": null,
+  "reach": [
+   true,
+   true,
+   true
+  ],
+  "note": ""
+ },
+ {
+  "what": "CASE R6",
+  "rules": [],
+  "rules_eq": [],
+  "replay": null,
+  "reach": [
+   true,
+   true,
+   true,
+   true
+  ],
+  "note": ""
+ },
+ {
+  "what": "CASE R7",
+  "rules": [],
+  "rules_eq": [],
+  "replay": null,
+  "reach": [
+   true,
+   true,
+   true,
+   true
+  ],
+  "note": ""
+ },
+ {
+  "what": "CASE R8",
+  "rules": [],
+  "rules_eq": [],
+  "replay": null,
+  "reach": [
+   true,
+   true,
+   true,
+   true
+  ],
+  "note": ""
+ },
+ {
+  "what": "할당 01 CONTROL B_one: 답 업체 계약 비활성",
+  "rules": [],
+  "rules_eq": [],
+  "replay": null,
+  "reach": [
+   true
+  ],
+  "note": ""
+ },
+ {
+  "what": "할당 02 CONTROL B_one: 답 업체 가용량 60",
+  "rules": [],
+  "rules_eq": [],
+  "replay": null,
+  "reach": [
+   true
+  ],
+  "note": ""
+ },
+ {
+  "what": "할당 03 CLOSE B_many: 쌍둥이 한쪽 계약 비활성",
+  "rules": [],
+  "rules_eq": [],
+  "replay": null,
+  "reach": [
+   true
+  ],
+  "note": ""
+ },
+ {
+  "what": "할당 04 OPEN B_one: SUP-003 가격 0.75 (동률) (R2)",
+  "rules": [],
+  "rules_eq": [],
+  "replay": null,
+  "reach": [
+   true
+  ],
+  "note": ""
+ },
+ {
+  "what": "할당 05 OPEN B_one: 후보 업체 0 (FK 연쇄 삭제)",
+  "rules": [],
+  "rules_eq": [],
+  "replay": null,
+  "reach": [],
+  "note": ""
+ },
+ {
+  "what": "할당 06 FILL B_many: 쌍둥이 둘 다 가용량 60 (R3)",
+  "rules": [],
+  "rules_eq": [],
+  "replay": null,
+  "reach": [
+   true,
+   true
+  ],
+  "note": ""
+ },
+ {
+  "what": "할당 07 FILL B_many: 쌍둥이 둘 다 가용량 40 (R8)",
+  "rules": [],
+  "rules_eq": [],
+  "replay": null,
+  "reach": [
+   true,
+   true
+  ],
+  "note": ""
+ },
+ {
+  "what": "할당 08 SILENT B_one: 답 업체 가용량 = 100 (R6)",
+  "rules": [],
+  "rules_eq": [],
+  "replay": null,
+  "reach": [
+   true
+  ],
+  "note": ""
+ },
+ {
+  "what": "할당 09 SILENT B_one: 답 업체 리드타임 3→10 (R4)",
+  "rules": [],
+  "rules_eq": [],
+  "replay": null,
+  "reach": [
+   true
+  ],
+  "note": ""
+ },
+ {
+  "what": "할당 10 SILENT B_one: 답 업체 계약 만료일 2025-12-31 (active 그대로)",
+  "rules": [],
+  "rules_eq": [],
+  "replay": null,
+  "reach": [
+   true
+  ],
+  "note": "실행 시각 패치 없음"
+ },
+ {
+  "what": "할당 11 SILENT B_one: 답 업체 제한 문구: 200캔 이상 (R7)",
+  "rules": [],
+  "rules_eq": [],
+  "replay": null,
+  "reach": [
+   true
+  ],
+  "note": ""
+ },
+ {
+  "what": "할당 12 SILENT B_one: 재고 450 (R5)",
+  "rules": [],
+  "rules_eq": [],
+  "replay": null,
+  "reach": [
+   true
+  ],
+  "note": ""
+ },
+ {
+  "what": "할당 13 SILENT B_one: 지난 실행의 미입고 발주 100",
+  "rules": [],
+  "rules_eq": [],
+  "replay": null,
+  "reach": [
+   null,
+   false
+  ],
+  "note": "자기 커밋 읽기 패치 없음"
+ }
+]

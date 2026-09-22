@@ -1,0 +1,7 @@
+| commit 툴 | 바뀐 도메인 경로 | 기대 | 판정 | 근거 |
+|---|---|---|---|---|
+| create_purchase_order | store_procurement_and_inventory:purchase_orders | 비가역 | 비가역 | undo: 없다고 답함; restore: 없다고 답함 |
+| update_inventory_quantity | store_procurement_and_inventory:inventory_items | 가역 | 가역 | [{"tool": "update_inventory_quantity", "args": {"item_id": "INV-001", "new_quantity": "42", "reason": "revert"}}] |
+| mark_item_counterfeit | store_procurement_and_inventory:inventory_items | — | 비가역 | undo: 없다고 답함; restore: 없다고 답함 |
+
+판정: 통과

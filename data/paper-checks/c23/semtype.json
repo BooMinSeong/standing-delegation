@@ -1,0 +1,3081 @@
+{
+ "store_procurement_and_inventory": {
+  "fields": {
+   "catalog_products.product_id": {
+    "kind": "identifier",
+    "of": "product",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "identifier",
+     "of": "product",
+     "unit": ""
+    },
+    "R": {
+     "kind": "identifier",
+     "of": "product",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "catalog_products.name": {
+    "kind": "name",
+    "of": "product",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "name",
+     "of": "product",
+     "unit": ""
+    },
+    "R": {
+     "kind": "name",
+     "of": "product name",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "catalog_products.brand": {
+    "kind": "name",
+    "of": "brand",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "name",
+     "of": "brand",
+     "unit": ""
+    },
+    "R": {
+     "kind": "name",
+     "of": "brand name",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "catalog_products.package_details": {
+    "kind": "free_text",
+    "of": "packaging details",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "free_text",
+     "of": "packaging details",
+     "unit": ""
+    },
+    "R": {
+     "kind": "free_text",
+     "of": "package details",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "catalog_products.ingredients": {
+    "kind": "free_text",
+    "of": "product ingredients",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "free_text",
+     "of": "product ingredients",
+     "unit": ""
+    },
+    "R": {
+     "kind": "free_text",
+     "of": "ingredient list",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "catalog_products.allergen_info": {
+    "kind": "free_text",
+    "of": "allergen information",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "free_text",
+     "of": "allergen information",
+     "unit": ""
+    },
+    "R": {
+     "kind": "free_text",
+     "of": "allergen information",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "catalog_products.category": {
+    "kind": "category",
+    "of": "product category",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "category",
+     "of": "product category",
+     "unit": ""
+    },
+    "R": {
+     "kind": "category",
+     "of": "product category",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "catalog_products.listing_status": {
+    "kind": "category",
+    "of": "product listing status",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "category",
+     "of": "product listing status",
+     "unit": ""
+    },
+    "R": {
+     "kind": "category",
+     "of": "listing status",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "inventory_items.item_id": {
+    "kind": "identifier",
+    "of": "inventory item",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "identifier",
+     "of": "inventory item",
+     "unit": ""
+    },
+    "R": {
+     "kind": "identifier",
+     "of": "inventory item",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "inventory_items.product_id": {
+    "kind": "identifier",
+    "of": "product",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "identifier",
+     "of": "product",
+     "unit": ""
+    },
+    "R": {
+     "kind": "identifier",
+     "of": "product",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "inventory_items.sku": {
+    "kind": "code",
+    "of": "product",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "code",
+     "of": "product",
+     "unit": ""
+    },
+    "R": {
+     "kind": "code",
+     "of": "stock keeping unit",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "inventory_items.name": {
+    "kind": "name",
+    "of": "inventory item",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "name",
+     "of": "inventory item",
+     "unit": ""
+    },
+    "R": {
+     "kind": "name",
+     "of": "inventory item",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "inventory_items.quantity_on_hand": {
+    "kind": "count",
+    "of": "inventory items",
+    "units": [
+     "items"
+    ],
+    "how": "일치",
+    "F": {
+     "kind": "count",
+     "of": "inventory items",
+     "unit": "items"
+    },
+    "R": {
+     "kind": "count",
+     "of": "inventory items",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "inventory_items.unit": {
+    "kind": "unit",
+    "of": "inventory quantity",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "unit",
+     "of": "inventory quantity",
+     "unit": ""
+    },
+    "R": {
+     "kind": "unit",
+     "of": "quantity measurement",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "inventory_items.location": {
+    "kind": "identifier",
+    "of": "warehouse location",
+    "units": [],
+    "how": "갈림 F=identifier R=free_text → 둘 다 무제약, F",
+    "F": {
+     "kind": "identifier",
+     "of": "warehouse location",
+     "unit": ""
+    },
+    "R": {
+     "kind": "free_text",
+     "of": "storage location",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "inventory_items.status": {
+    "kind": "category",
+    "of": "inventory item status",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "category",
+     "of": "inventory item status",
+     "unit": ""
+    },
+    "R": {
+     "kind": "category",
+     "of": "inventory status",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "inventory_items.counterfeit_flag": {
+    "kind": "boolean",
+    "of": "counterfeit status",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "boolean",
+     "of": "counterfeit status",
+     "unit": ""
+    },
+    "R": {
+     "kind": "boolean",
+     "of": "counterfeit status",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "inventory_items.handling_notes": {
+    "kind": "free_text",
+    "of": "handling instructions",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "free_text",
+     "of": "handling instructions",
+     "unit": ""
+    },
+    "R": {
+     "kind": "free_text",
+     "of": "handling instructions",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "inventory_items.authenticity_record_id": {
+    "kind": "identifier",
+    "of": "authenticity record",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "identifier",
+     "of": "authenticity record",
+     "unit": ""
+    },
+    "R": {
+     "kind": "identifier",
+     "of": "authenticity record",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "supplier_listings.supplier_id": {
+    "kind": "identifier",
+    "of": "supplier",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "identifier",
+     "of": "supplier",
+     "unit": ""
+    },
+    "R": {
+     "kind": "identifier",
+     "of": "supplier",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "supplier_listings.supplier_name": {
+    "kind": "name",
+    "of": "supplier",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "name",
+     "of": "supplier",
+     "unit": ""
+    },
+    "R": {
+     "kind": "name",
+     "of": "supplier",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "supplier_listings.product_id": {
+    "kind": "identifier",
+    "of": "product",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "identifier",
+     "of": "product",
+     "unit": ""
+    },
+    "R": {
+     "kind": "identifier",
+     "of": "product",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "supplier_listings.supplier_sku": {
+    "kind": "code",
+    "of": "product",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "code",
+     "of": "product",
+     "unit": ""
+    },
+    "R": {
+     "kind": "code",
+     "of": "supplier stock keeping unit",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "supplier_listings.price": {
+    "kind": "money",
+    "of": "product price",
+    "units": [
+     "usd"
+    ],
+    "how": "일치",
+    "F": {
+     "kind": "money",
+     "of": "product price",
+     "unit": ""
+    },
+    "R": {
+     "kind": "money",
+     "of": "product cost",
+     "unit": "USD"
+    },
+    "returned": true
+   },
+   "supplier_listings.currency": {
+    "kind": "currency",
+    "of": "price",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "currency",
+     "of": "price",
+     "unit": ""
+    },
+    "R": {
+     "kind": "currency",
+     "of": "price denomination",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "supplier_listings.available_quantity": {
+    "kind": "count",
+    "of": "products",
+    "units": [
+     "items",
+     "units"
+    ],
+    "how": "일치",
+    "F": {
+     "kind": "count",
+     "of": "products",
+     "unit": "items"
+    },
+    "R": {
+     "kind": "count",
+     "of": "items in stock",
+     "unit": "units"
+    },
+    "returned": true
+   },
+   "supplier_listings.lead_time_days": {
+    "kind": "duration",
+    "of": "lead time",
+    "units": [
+     "days"
+    ],
+    "how": "일치",
+    "F": {
+     "kind": "duration",
+     "of": "lead time",
+     "unit": "days"
+    },
+    "R": {
+     "kind": "duration",
+     "of": "order fulfillment time",
+     "unit": "days"
+    },
+    "returned": true
+   },
+   "supplier_listings.contact_details": {
+    "kind": "contact",
+    "of": "supplier contact details",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "contact",
+     "of": "supplier contact details",
+     "unit": ""
+    },
+    "R": {
+     "kind": "contact",
+     "of": "supplier contact information",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "supplier_contracts.contract_id": {
+    "kind": "identifier",
+    "of": "supplier contract",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "identifier",
+     "of": "supplier contract",
+     "unit": ""
+    },
+    "R": {
+     "kind": "identifier",
+     "of": "supplier contract",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "supplier_contracts.supplier_id": {
+    "kind": "identifier",
+    "of": "supplier",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "identifier",
+     "of": "supplier",
+     "unit": ""
+    },
+    "R": {
+     "kind": "identifier",
+     "of": "supplier",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "supplier_contracts.product_id": {
+    "kind": "identifier",
+    "of": "product",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "identifier",
+     "of": "product",
+     "unit": ""
+    },
+    "R": {
+     "kind": "identifier",
+     "of": "product",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "supplier_contracts.active": {
+    "kind": "boolean",
+    "of": "contract active status",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "boolean",
+     "of": "contract active status",
+     "unit": ""
+    },
+    "R": {
+     "kind": "boolean",
+     "of": "contract activation status",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "supplier_contracts.start_date": {
+    "kind": "date",
+    "of": "contract start",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "date",
+     "of": "contract start",
+     "unit": ""
+    },
+    "R": {
+     "kind": "date",
+     "of": "contract commencement",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "supplier_contracts.end_date": {
+    "kind": "date",
+    "of": "supplier contract expiration",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "date",
+     "of": "supplier contract expiration",
+     "unit": ""
+    },
+    "R": {
+     "kind": "date",
+     "of": "contract expiration",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "supplier_contracts.ordering_permitted": {
+    "kind": "boolean",
+    "of": "ordering permission",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "boolean",
+     "of": "ordering permission",
+     "unit": ""
+    },
+    "R": {
+     "kind": "boolean",
+     "of": "ordering permission status",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "supplier_contracts.restrictions": {
+    "kind": "free_text",
+    "of": "contract restrictions",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "free_text",
+     "of": "contract restrictions",
+     "unit": ""
+    },
+    "R": {
+     "kind": "free_text",
+     "of": "contractual restrictions",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "sales_history.record_id": {
+    "kind": "identifier",
+    "of": "sales record",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "identifier",
+     "of": "sales record",
+     "unit": ""
+    },
+    "R": {
+     "kind": "identifier",
+     "of": "sales record",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "sales_history.product_id": {
+    "kind": "identifier",
+    "of": "product",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "identifier",
+     "of": "product",
+     "unit": ""
+    },
+    "R": {
+     "kind": "identifier",
+     "of": "product",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "sales_history.year": {
+    "kind": "year",
+    "of": "calendar year of the sales record",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "year",
+     "of": "calendar year of the sales record",
+     "unit": ""
+    },
+    "R": {
+     "kind": "year",
+     "of": "calendar year",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "sales_history.units_sold": {
+    "kind": "count",
+    "of": "products sold",
+    "units": [
+     "units"
+    ],
+    "how": "일치",
+    "F": {
+     "kind": "count",
+     "of": "products sold",
+     "unit": "units"
+    },
+    "R": {
+     "kind": "count",
+     "of": "total units sold",
+     "unit": "units"
+    },
+    "returned": true
+   },
+   "sales_history.revenue": {
+    "kind": "money",
+    "of": "sales",
+    "units": [
+     "usd"
+    ],
+    "how": "일치",
+    "F": {
+     "kind": "money",
+     "of": "sales",
+     "unit": "USD"
+    },
+    "R": {
+     "kind": "money",
+     "of": "total sales revenue",
+     "unit": "USD"
+    },
+    "returned": true
+   },
+   "sales_history.monthly_breakdown[].month": {
+    "kind": "month",
+    "of": "calendar month",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "month",
+     "of": "calendar month",
+     "unit": ""
+    },
+    "R": {
+     "kind": "month",
+     "of": "calendar month",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "sales_history.monthly_breakdown[].units_sold": {
+    "kind": "count",
+    "of": "products sold",
+    "units": [
+     "units"
+    ],
+    "how": "일치",
+    "F": {
+     "kind": "count",
+     "of": "products sold",
+     "unit": "units"
+    },
+    "R": {
+     "kind": "count",
+     "of": "monthly units sold",
+     "unit": "units"
+    },
+    "returned": true
+   },
+   "sales_history.monthly_breakdown[].revenue": {
+    "kind": "money",
+    "of": "monthly product sales",
+    "units": [
+     "usd"
+    ],
+    "how": "일치",
+    "F": {
+     "kind": "money",
+     "of": "monthly product sales",
+     "unit": "USD"
+    },
+    "R": {
+     "kind": "money",
+     "of": "monthly sales revenue",
+     "unit": "USD"
+    },
+    "returned": true
+   },
+   "authenticity_records.authenticity_record_id": {
+    "kind": "identifier",
+    "of": "authenticity record",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "identifier",
+     "of": "authenticity record",
+     "unit": ""
+    },
+    "R": {
+     "kind": "identifier",
+     "of": "authenticity record",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "authenticity_records.product_id": {
+    "kind": "identifier",
+    "of": "product",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "identifier",
+     "of": "product",
+     "unit": ""
+    },
+    "R": {
+     "kind": "identifier",
+     "of": "product",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "authenticity_records.brand": {
+    "kind": "name",
+    "of": "brand",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "name",
+     "of": "brand",
+     "unit": ""
+    },
+    "R": {
+     "kind": "name",
+     "of": "brand",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "authenticity_records.official_identifier": {
+    "kind": "identifier",
+    "of": "product",
+    "units": [],
+    "how": "갈림 F=identifier R=code → 둘 다 무제약, F",
+    "F": {
+     "kind": "identifier",
+     "of": "product",
+     "unit": ""
+    },
+    "R": {
+     "kind": "code",
+     "of": "official product identifier",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "authenticity_records.packaging_signature": {
+    "kind": "free_text",
+    "of": "product packaging description",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "free_text",
+     "of": "product packaging description",
+     "unit": ""
+    },
+    "R": {
+     "kind": "free_text",
+     "of": "packaging description",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "authenticity_records.status": {
+    "kind": "category",
+    "of": "authenticity status",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "category",
+     "of": "authenticity status",
+     "unit": ""
+    },
+    "R": {
+     "kind": "category",
+     "of": "verification status",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "counterfeit_reports.report_id": {
+    "kind": "identifier",
+    "of": "counterfeit report",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "identifier",
+     "of": "counterfeit report",
+     "unit": ""
+    },
+    "R": {
+     "kind": "identifier",
+     "of": "counterfeit report",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "counterfeit_reports.product_id": {
+    "kind": "identifier",
+    "of": "product",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "identifier",
+     "of": "product",
+     "unit": ""
+    },
+    "R": {
+     "kind": "identifier",
+     "of": "product",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "counterfeit_reports.product_name": {
+    "kind": "name",
+    "of": "product",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "name",
+     "of": "product",
+     "unit": ""
+    },
+    "R": {
+     "kind": "name",
+     "of": "product",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "counterfeit_reports.reported_brand": {
+    "kind": "name",
+    "of": "reported brand",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "name",
+     "of": "reported brand",
+     "unit": ""
+    },
+    "R": {
+     "kind": "name",
+     "of": "brand",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "counterfeit_reports.identifying_details": {
+    "kind": "free_text",
+    "of": "counterfeit indicators",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "free_text",
+     "of": "counterfeit indicators",
+     "unit": ""
+    },
+    "R": {
+     "kind": "free_text",
+     "of": "counterfeit identifying characteristics",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "counterfeit_reports.reported_issue": {
+    "kind": "free_text",
+    "of": "reported issue",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "free_text",
+     "of": "reported issue",
+     "unit": ""
+    },
+    "R": {
+     "kind": "free_text",
+     "of": "reported issue",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "counterfeit_reports.report_date": {
+    "kind": "date",
+    "of": "counterfeit report",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "date",
+     "of": "counterfeit report",
+     "unit": ""
+    },
+    "R": {
+     "kind": "date",
+     "of": "report submission",
+     "unit": ""
+    },
+    "returned": true
+   }
+  },
+  "qconst": {
+   "kind": "count",
+   "of": "canned Coke",
+   "unit": "cans"
+  }
+ },
+ "flight_and_travel_management": {
+  "fields": {
+   "users.user_id": {
+    "kind": "identifier",
+    "of": "user account",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "identifier",
+     "of": "user account",
+     "unit": ""
+    },
+    "R": {
+     "kind": "identifier",
+     "of": "user account",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "users.full_name": {
+    "kind": "name",
+    "of": "user",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "name",
+     "of": "user",
+     "unit": ""
+    },
+    "R": {
+     "kind": "name",
+     "of": "user full name",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "users.zip_code": {
+    "kind": "code",
+    "of": "postal code",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "code",
+     "of": "postal code",
+     "unit": ""
+    },
+    "R": {
+     "kind": "code",
+     "of": "postal code",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "users.email": {
+    "kind": "contact",
+    "of": "email address",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "contact",
+     "of": "email address",
+     "unit": ""
+    },
+    "R": {
+     "kind": "contact",
+     "of": "user email address",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "users.phone": {
+    "kind": "contact",
+    "of": "phone number",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "contact",
+     "of": "phone number",
+     "unit": ""
+    },
+    "R": {
+     "kind": "contact",
+     "of": "user phone number",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "users.loyalty_tier": {
+    "kind": "category",
+    "of": "loyalty tier",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "category",
+     "of": "loyalty tier",
+     "unit": ""
+    },
+    "R": {
+     "kind": "category",
+     "of": "loyalty program tier",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "users.home_airport": {
+    "kind": "code",
+    "of": "home airport",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "code",
+     "of": "home airport",
+     "unit": ""
+    },
+    "R": {
+     "kind": "code",
+     "of": "home airport",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "users.access_tokens": {
+    "kind": "identifier",
+    "of": "access tokens",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "identifier",
+     "of": "access tokens",
+     "unit": ""
+    },
+    "R": {
+     "kind": "identifier",
+     "of": "authentication token",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "users.default_currency": {
+    "kind": "currency",
+    "of": "default currency",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "currency",
+     "of": "default currency",
+     "unit": ""
+    },
+    "R": {
+     "kind": "currency",
+     "of": "account default currency",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "users.budget_limits": {
+    "kind": "other",
+    "of": "budget limit configuration",
+    "units": [],
+    "how": "F 되받기 실패 → R",
+    "F": {
+     "kind": "money",
+     "of": "budget limits",
+     "unit": "USD"
+    },
+    "R": {
+     "kind": "other",
+     "of": "budget limit configuration",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "users.budget_limits[].budget_id": {
+    "kind": "identifier",
+    "of": "budget limit",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "identifier",
+     "of": "budget limit",
+     "unit": ""
+    },
+    "R": {
+     "kind": "identifier",
+     "of": "budget limit",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "users.budget_limits[].scope": {
+    "kind": "category",
+    "of": "budget scope",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "category",
+     "of": "budget scope",
+     "unit": ""
+    },
+    "R": {
+     "kind": "category",
+     "of": "budget application scope",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "users.budget_limits[].trip_id": {
+    "kind": "identifier",
+    "of": "trip",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "identifier",
+     "of": "trip",
+     "unit": ""
+    },
+    "R": {
+     "kind": "identifier",
+     "of": "travel reservation",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "users.budget_limits[].amount": {
+    "kind": "money",
+    "of": "budget limit",
+    "units": [
+     "usd"
+    ],
+    "how": "일치",
+    "F": {
+     "kind": "money",
+     "of": "budget limit",
+     "unit": "USD"
+    },
+    "R": {
+     "kind": "money",
+     "of": "budget limit",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "users.budget_limits[].currency": {
+    "kind": "currency",
+    "of": "currency",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "currency",
+     "of": "currency",
+     "unit": ""
+    },
+    "R": {
+     "kind": "currency",
+     "of": "budget limit",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "traveler_profiles.traveler_id": {
+    "kind": "identifier",
+    "of": "traveler",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "identifier",
+     "of": "traveler",
+     "unit": ""
+    },
+    "R": {
+     "kind": "identifier",
+     "of": "traveler profile record",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "traveler_profiles.user_id": {
+    "kind": "identifier",
+    "of": "user account",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "identifier",
+     "of": "user account",
+     "unit": ""
+    },
+    "R": {
+     "kind": "identifier",
+     "of": "user account record",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "traveler_profiles.full_name": {
+    "kind": "name",
+    "of": "traveler",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "name",
+     "of": "traveler",
+     "unit": ""
+    },
+    "R": {
+     "kind": "name",
+     "of": "traveler",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "traveler_profiles.date_of_birth": {
+    "kind": "date",
+    "of": "birth",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "date",
+     "of": "birth",
+     "unit": ""
+    },
+    "R": {
+     "kind": "date",
+     "of": "birth date",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "traveler_profiles.passport_number": {
+    "kind": "identifier",
+    "of": "passport",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "identifier",
+     "of": "passport",
+     "unit": ""
+    },
+    "R": {
+     "kind": "identifier",
+     "of": "passport serial number",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "traveler_profiles.passport_country": {
+    "kind": "code",
+    "of": "passport country",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "code",
+     "of": "passport country",
+     "unit": ""
+    },
+    "R": {
+     "kind": "code",
+     "of": "issuing nation",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "traveler_profiles.passport_expiry": {
+    "kind": "date",
+    "of": "passport expiry",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "date",
+     "of": "passport expiry",
+     "unit": ""
+    },
+    "R": {
+     "kind": "date",
+     "of": "passport expiration",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "traveler_profiles.known_traveler_number": {
+    "kind": "identifier",
+    "of": "known traveler number",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "identifier",
+     "of": "known traveler number",
+     "unit": ""
+    },
+    "R": {
+     "kind": "identifier",
+     "of": "trusted traveler ID",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "traveler_profiles.meal_selection": {
+    "kind": "category",
+    "of": "meal preference",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "category",
+     "of": "meal preference",
+     "unit": ""
+    },
+    "R": {
+     "kind": "category",
+     "of": "meal preference",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "traveler_profiles.documents[].document_id": {
+    "kind": "identifier",
+    "of": "document",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "identifier",
+     "of": "document",
+     "unit": ""
+    },
+    "R": {
+     "kind": "identifier",
+     "of": "document record",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "traveler_profiles.documents[].type": {
+    "kind": "category",
+    "of": "document type",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "category",
+     "of": "document type",
+     "unit": ""
+    },
+    "R": {
+     "kind": "category",
+     "of": "document classification",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "traveler_profiles.documents[].country": {
+    "kind": "code",
+    "of": "document issuing country",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "code",
+     "of": "document issuing country",
+     "unit": ""
+    },
+    "R": {
+     "kind": "code",
+     "of": "issuing country",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "traveler_profiles.documents[].number": {
+    "kind": "identifier",
+    "of": "travel document",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "identifier",
+     "of": "travel document",
+     "unit": ""
+    },
+    "R": {
+     "kind": "identifier",
+     "of": "document serial number",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "traveler_profiles.documents[].expiry_date": {
+    "kind": "date",
+    "of": "document expiration",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "date",
+     "of": "document expiration",
+     "unit": ""
+    },
+    "R": {
+     "kind": "date",
+     "of": "document expiration",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "traveler_profiles.documents[].status": {
+    "kind": "category",
+    "of": "document status",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "category",
+     "of": "document status",
+     "unit": ""
+    },
+    "R": {
+     "kind": "category",
+     "of": "validation status",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "traveler_profiles.documents": {
+    "kind": "other",
+    "of": "traveler documents",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "other",
+     "of": "traveler documents",
+     "unit": ""
+    },
+    "R": {
+     "kind": "other",
+     "of": "attached documents list",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "payment_instruments.payment_instrument_id": {
+    "kind": "identifier",
+    "of": "payment instrument",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "identifier",
+     "of": "payment instrument",
+     "unit": ""
+    },
+    "R": {
+     "kind": "identifier",
+     "of": "payment instrument record",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "payment_instruments.user_id": {
+    "kind": "identifier",
+    "of": "user account",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "identifier",
+     "of": "user account",
+     "unit": ""
+    },
+    "R": {
+     "kind": "identifier",
+     "of": "account owner",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "payment_instruments.type": {
+    "kind": "category",
+    "of": "payment instrument",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "category",
+     "of": "payment instrument",
+     "unit": ""
+    },
+    "R": {
+     "kind": "category",
+     "of": "payment method classification",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "payment_instruments.brand": {
+    "kind": "name",
+    "of": "payment instrument brand",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "name",
+     "of": "payment instrument brand",
+     "unit": ""
+    },
+    "R": {
+     "kind": "name",
+     "of": "payment network or card issuer",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "payment_instruments.last4": {
+    "kind": "identifier",
+    "of": "payment instrument number last 4",
+    "units": [],
+    "how": "갈림 F=identifier R=code → 둘 다 무제약, F",
+    "F": {
+     "kind": "identifier",
+     "of": "payment instrument number last 4",
+     "unit": ""
+    },
+    "R": {
+     "kind": "code",
+     "of": "final four digits of card number",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "payment_instruments.currency": {
+    "kind": "code",
+    "of": "denomination for balance and transactions",
+    "units": [],
+    "how": "갈림 F=currency R=code → 넓은 쪽 R",
+    "F": {
+     "kind": "currency",
+     "of": "payment instrument balance",
+     "unit": ""
+    },
+    "R": {
+     "kind": "code",
+     "of": "denomination for balance and transactions",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "payment_instruments.balance": {
+    "kind": "money",
+    "of": "available funds",
+    "units": [
+     "usd"
+    ],
+    "how": "일치",
+    "F": {
+     "kind": "money",
+     "of": "available funds",
+     "unit": "USD"
+    },
+    "R": {
+     "kind": "money",
+     "of": "available credit or account balance",
+     "unit": "USD"
+    },
+    "returned": true
+   },
+   "payment_instruments.is_default": {
+    "kind": "boolean",
+    "of": "default status of a payment instrument",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "boolean",
+     "of": "default status of a payment instrument",
+     "unit": ""
+    },
+    "R": {
+     "kind": "boolean",
+     "of": "status indicating primary payment method",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "airports.airport_code": {
+    "kind": "code",
+    "of": "airport",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "code",
+     "of": "airport",
+     "unit": ""
+    },
+    "R": {
+     "kind": "code",
+     "of": "airport identifier",
+     "unit": ""
+    },
+    "returned": false
+   },
+   "airports.name": {
+    "kind": "name",
+    "of": "airport",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "name",
+     "of": "airport",
+     "unit": ""
+    },
+    "R": {
+     "kind": "name",
+     "of": "airport",
+     "unit": ""
+    },
+    "returned": false
+   },
+   "airports.city": {
+    "kind": "name",
+    "of": "city",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "name",
+     "of": "city",
+     "unit": ""
+    },
+    "R": {
+     "kind": "name",
+     "of": "city",
+     "unit": ""
+    },
+    "returned": false
+   },
+   "airports.country": {
+    "kind": "code",
+    "of": "country",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "code",
+     "of": "country",
+     "unit": ""
+    },
+    "R": {
+     "kind": "code",
+     "of": "country",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "airports.is_international": {
+    "kind": "boolean",
+    "of": "international status",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "boolean",
+     "of": "international status",
+     "unit": ""
+    },
+    "R": {
+     "kind": "boolean",
+     "of": "international airport status",
+     "unit": ""
+    },
+    "returned": false
+   },
+   "airports.is_accessible": {
+    "kind": "boolean",
+    "of": "airport accessibility",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "boolean",
+     "of": "airport accessibility",
+     "unit": ""
+    },
+    "R": {
+     "kind": "boolean",
+     "of": "airport accessibility status",
+     "unit": ""
+    },
+    "returned": false
+   },
+   "airports.distance_rank_by_city.*": {
+    "kind": "rank",
+    "of": "airports by distance to city",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "rank",
+     "of": "airports by distance to city",
+     "unit": ""
+    },
+    "R": {
+     "kind": "rank",
+     "of": "airport proximity to city",
+     "unit": ""
+    },
+    "returned": false
+   },
+   "flights.flight_id": {
+    "kind": "identifier",
+    "of": "flight",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "identifier",
+     "of": "flight",
+     "unit": ""
+    },
+    "R": {
+     "kind": "identifier",
+     "of": "flight record",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "flights.flight_number": {
+    "kind": "identifier",
+    "of": "flight",
+    "units": [],
+    "how": "갈림 F=identifier R=code → 둘 다 무제약, F",
+    "F": {
+     "kind": "identifier",
+     "of": "flight",
+     "unit": ""
+    },
+    "R": {
+     "kind": "code",
+     "of": "flight",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "flights.origin": {
+    "kind": "code",
+    "of": "origin airport",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "code",
+     "of": "origin airport",
+     "unit": ""
+    },
+    "R": {
+     "kind": "code",
+     "of": "origin airport",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "flights.destination": {
+    "kind": "code",
+    "of": "destination airport",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "code",
+     "of": "destination airport",
+     "unit": ""
+    },
+    "R": {
+     "kind": "code",
+     "of": "destination airport",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "flights.date": {
+    "kind": "date",
+    "of": "travel date",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "date",
+     "of": "travel date",
+     "unit": ""
+    },
+    "R": {
+     "kind": "date",
+     "of": "travel date",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "flights.departure_time": {
+    "kind": "datetime",
+    "of": "flight departure",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "datetime",
+     "of": "flight departure",
+     "unit": ""
+    },
+    "R": {
+     "kind": "datetime",
+     "of": "flight departure",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "flights.arrival_time": {
+    "kind": "datetime",
+    "of": "arrival time",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "datetime",
+     "of": "arrival time",
+     "unit": ""
+    },
+    "R": {
+     "kind": "datetime",
+     "of": "flight arrival",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "flights.stops": {
+    "kind": "count",
+    "of": "flight stops",
+    "units": [
+     "stops"
+    ],
+    "how": "일치",
+    "F": {
+     "kind": "count",
+     "of": "flight stops",
+     "unit": "stops"
+    },
+    "R": {
+     "kind": "count",
+     "of": "flight stops",
+     "unit": "stops"
+    },
+    "returned": true
+   },
+   "flights.cabins[].cabin_class": {
+    "kind": "category",
+    "of": "cabin class",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "category",
+     "of": "cabin class",
+     "unit": ""
+    },
+    "R": {
+     "kind": "category",
+     "of": "cabin type",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "flights.cabins[].fare": {
+    "kind": "money",
+    "of": "cabin fare",
+    "units": [
+     "usd"
+    ],
+    "how": "일치",
+    "F": {
+     "kind": "money",
+     "of": "cabin fare",
+     "unit": "USD"
+    },
+    "R": {
+     "kind": "money",
+     "of": "ticket price",
+     "unit": "USD"
+    },
+    "returned": true
+   },
+   "flights.cabins[].currency": {
+    "kind": "currency",
+    "of": "cabin fare",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "currency",
+     "of": "cabin fare",
+     "unit": ""
+    },
+    "R": {
+     "kind": "currency",
+     "of": "fare currency",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "flights.cabins[].available_seats": {
+    "kind": "count",
+    "of": "available seats",
+    "units": [
+     "seats"
+    ],
+    "how": "일치",
+    "F": {
+     "kind": "count",
+     "of": "available seats",
+     "unit": "seats"
+    },
+    "R": {
+     "kind": "count",
+     "of": "available seats",
+     "unit": "seats"
+    },
+    "returned": true
+   },
+   "flights.cabins[].fare_class": {
+    "kind": "code",
+    "of": "fare class",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "code",
+     "of": "fare class",
+     "unit": ""
+    },
+    "R": {
+     "kind": "code",
+     "of": "booking class",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "flights.status": {
+    "kind": "category",
+    "of": "flight operational status",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "category",
+     "of": "flight operational status",
+     "unit": ""
+    },
+    "R": {
+     "kind": "category",
+     "of": "flight status",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "flights.disruption_reason": {
+    "kind": "category",
+    "of": "flight disruption reason",
+    "units": [],
+    "how": "갈림 F=category R=free_text → 둘 다 무제약, F",
+    "F": {
+     "kind": "category",
+     "of": "flight disruption reason",
+     "unit": ""
+    },
+    "R": {
+     "kind": "free_text",
+     "of": "disruption cause",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "flights.operational_notices": {
+    "kind": "free_text",
+    "of": "operational notices",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "free_text",
+     "of": "operational notices",
+     "unit": ""
+    },
+    "R": {
+     "kind": "free_text",
+     "of": "operational messages",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "saved_itineraries.itinerary_id": {
+    "kind": "identifier",
+    "of": "itinerary",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "identifier",
+     "of": "itinerary",
+     "unit": ""
+    },
+    "R": {
+     "kind": "identifier",
+     "of": "itinerary",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "saved_itineraries.user_id": {
+    "kind": "identifier",
+    "of": "user",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "identifier",
+     "of": "user",
+     "unit": ""
+    },
+    "R": {
+     "kind": "identifier",
+     "of": "user",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "saved_itineraries.label": {
+    "kind": "name",
+    "of": "itinerary",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "name",
+     "of": "itinerary",
+     "unit": ""
+    },
+    "R": {
+     "kind": "name",
+     "of": "itinerary",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "saved_itineraries.flight_ids": {
+    "kind": "identifier",
+    "of": "flights",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "identifier",
+     "of": "flights",
+     "unit": ""
+    },
+    "R": {
+     "kind": "identifier",
+     "of": "flights",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "saved_itineraries.airfare_total": {
+    "kind": "money",
+    "of": "airfare total",
+    "units": [
+     "usd"
+    ],
+    "how": "일치",
+    "F": {
+     "kind": "money",
+     "of": "airfare total",
+     "unit": "USD"
+    },
+    "R": {
+     "kind": "money",
+     "of": "airfare",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "saved_itineraries.currency": {
+    "kind": "code",
+    "of": "currency",
+    "units": [],
+    "how": "갈림 F=currency R=code → 넓은 쪽 R",
+    "F": {
+     "kind": "currency",
+     "of": "airfare total",
+     "unit": ""
+    },
+    "R": {
+     "kind": "code",
+     "of": "currency",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "saved_itineraries.attached_traveler_ids": {
+    "kind": "identifier",
+    "of": "travelers",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "identifier",
+     "of": "travelers",
+     "unit": ""
+    },
+    "R": {
+     "kind": "identifier",
+     "of": "travelers",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "reservations.reservation_id": {
+    "kind": "identifier",
+    "of": "reservation",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "identifier",
+     "of": "reservation",
+     "unit": ""
+    },
+    "R": {
+     "kind": "identifier",
+     "of": "reservation",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "reservations.user_id": {
+    "kind": "identifier",
+    "of": "user",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "identifier",
+     "of": "user",
+     "unit": ""
+    },
+    "R": {
+     "kind": "identifier",
+     "of": "user",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "reservations.status": {
+    "kind": "category",
+    "of": "reservation status",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "category",
+     "of": "reservation status",
+     "unit": ""
+    },
+    "R": {
+     "kind": "category",
+     "of": "reservation status",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "reservations.booking_reference": {
+    "kind": "identifier",
+    "of": "booking",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "identifier",
+     "of": "booking",
+     "unit": ""
+    },
+    "R": {
+     "kind": "identifier",
+     "of": "booking",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "reservations.traveler_ids": {
+    "kind": "identifier",
+    "of": "travelers",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "identifier",
+     "of": "travelers",
+     "unit": ""
+    },
+    "R": {
+     "kind": "identifier",
+     "of": "travelers",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "reservations.flight_ids": {
+    "kind": "identifier",
+    "of": "flights",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "identifier",
+     "of": "flights",
+     "unit": ""
+    },
+    "R": {
+     "kind": "identifier",
+     "of": "flights",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "reservations.fare_class": {
+    "kind": "code",
+    "of": "fare class",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "code",
+     "of": "fare class",
+     "unit": ""
+    },
+    "R": {
+     "kind": "code",
+     "of": "fare class",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "reservations.cabin_class": {
+    "kind": "category",
+    "of": "cabin class",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "category",
+     "of": "cabin class",
+     "unit": ""
+    },
+    "R": {
+     "kind": "category",
+     "of": "cabin class",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "reservations.seat_assignments[].traveler_id": {
+    "kind": "identifier",
+    "of": "traveler",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "identifier",
+     "of": "traveler",
+     "unit": ""
+    },
+    "R": {
+     "kind": "identifier",
+     "of": "traveler",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "reservations.seat_assignments[].flight_id": {
+    "kind": "identifier",
+    "of": "flight",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "identifier",
+     "of": "flight",
+     "unit": ""
+    },
+    "R": {
+     "kind": "identifier",
+     "of": "flight",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "reservations.seat_assignments[].seat": {
+    "kind": "identifier",
+    "of": "seat",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "identifier",
+     "of": "seat",
+     "unit": ""
+    },
+    "R": {
+     "kind": "identifier",
+     "of": "seat",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "reservations.add_ons": {
+    "kind": "category",
+    "of": "ancillary services",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "category",
+     "of": "ancillary services",
+     "unit": ""
+    },
+    "R": {
+     "kind": "category",
+     "of": "ancillary services",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "reservations.checked_baggage_allowance": {
+    "kind": "count",
+    "of": "checked bags",
+    "units": [
+     "bags"
+    ],
+    "how": "일치",
+    "F": {
+     "kind": "count",
+     "of": "checked bags",
+     "unit": "bags"
+    },
+    "R": {
+     "kind": "count",
+     "of": "checked bags",
+     "unit": "bags"
+    },
+    "returned": true
+   },
+   "reservations.price_total": {
+    "kind": "money",
+    "of": "reservation cost",
+    "units": [
+     "usd"
+    ],
+    "how": "일치",
+    "F": {
+     "kind": "money",
+     "of": "reservation cost",
+     "unit": "USD"
+    },
+    "R": {
+     "kind": "money",
+     "of": "total price",
+     "unit": "USD"
+    },
+    "returned": true
+   },
+   "reservations.currency": {
+    "kind": "code",
+    "of": "currency",
+    "units": [],
+    "how": "갈림 F=currency R=code → 넓은 쪽 R",
+    "F": {
+     "kind": "currency",
+     "of": "price total",
+     "unit": ""
+    },
+    "R": {
+     "kind": "code",
+     "of": "currency",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "reservations.payment_instrument_id": {
+    "kind": "identifier",
+    "of": "payment instrument",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "identifier",
+     "of": "payment instrument",
+     "unit": ""
+    },
+    "R": {
+     "kind": "identifier",
+     "of": "payment instrument",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "reservations.invoice_id": {
+    "kind": "identifier",
+    "of": "invoice",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "identifier",
+     "of": "invoice",
+     "unit": ""
+    },
+    "R": {
+     "kind": "identifier",
+     "of": "invoice",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "reservations.insurance_policy_id": {
+    "kind": "identifier",
+    "of": "insurance policy",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "identifier",
+     "of": "insurance policy",
+     "unit": ""
+    },
+    "R": {
+     "kind": "identifier",
+     "of": "insurance policy",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "reservations.messages[].message_id": {
+    "kind": "identifier",
+    "of": "message",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "identifier",
+     "of": "message",
+     "unit": ""
+    },
+    "R": {
+     "kind": "identifier",
+     "of": "message",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "reservations.messages[].timestamp": {
+    "kind": "datetime",
+    "of": "message",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "datetime",
+     "of": "message",
+     "unit": ""
+    },
+    "R": {
+     "kind": "datetime",
+     "of": "message timestamp",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "reservations.messages[].sender": {
+    "kind": "category",
+    "of": "message sender",
+    "units": [],
+    "how": "갈림 F=category R=name → 둘 다 무제약, F",
+    "F": {
+     "kind": "category",
+     "of": "message sender",
+     "unit": ""
+    },
+    "R": {
+     "kind": "name",
+     "of": "message sender",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "reservations.messages[].text": {
+    "kind": "free_text",
+    "of": "reservation messages",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "free_text",
+     "of": "reservation messages",
+     "unit": ""
+    },
+    "R": {
+     "kind": "free_text",
+     "of": "message content",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "reservations.disruption_type": {
+    "kind": "category",
+    "of": "reservation disruption",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "category",
+     "of": "reservation disruption",
+     "unit": ""
+    },
+    "R": {
+     "kind": "category",
+     "of": "travel disruption",
+     "unit": ""
+    },
+    "returned": false
+   },
+   "invoices.invoice_id": {
+    "kind": "identifier",
+    "of": "invoice",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "identifier",
+     "of": "invoice",
+     "unit": ""
+    },
+    "R": {
+     "kind": "identifier",
+     "of": "invoice",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "invoices.reservation_id": {
+    "kind": "identifier",
+    "of": "reservation",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "identifier",
+     "of": "reservation",
+     "unit": ""
+    },
+    "R": {
+     "kind": "identifier",
+     "of": "reservation",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "invoices.issued_at": {
+    "kind": "datetime",
+    "of": "invoice issuance",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "datetime",
+     "of": "invoice issuance",
+     "unit": ""
+    },
+    "R": {
+     "kind": "datetime",
+     "of": "invoice issue timestamp",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "invoices.line_items[].description": {
+    "kind": "free_text",
+    "of": "invoice line item description",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "free_text",
+     "of": "invoice line item description",
+     "unit": ""
+    },
+    "R": {
+     "kind": "free_text",
+     "of": "line item service",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "invoices.line_items[].amount": {
+    "kind": "money",
+    "of": "line item charge",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "money",
+     "of": "line item charge",
+     "unit": ""
+    },
+    "R": {
+     "kind": "money",
+     "of": "line item charge",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "invoices.total": {
+    "kind": "money",
+    "of": "invoice total",
+    "units": [
+     "usd"
+    ],
+    "how": "일치",
+    "F": {
+     "kind": "money",
+     "of": "invoice total",
+     "unit": "USD"
+    },
+    "R": {
+     "kind": "money",
+     "of": "invoice total",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "invoices.currency": {
+    "kind": "currency",
+    "of": "invoice total",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "currency",
+     "of": "invoice total",
+     "unit": ""
+    },
+    "R": {
+     "kind": "currency",
+     "of": "currency type",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "visa_applications.visa_application_id": {
+    "kind": "identifier",
+    "of": "visa application",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "identifier",
+     "of": "visa application",
+     "unit": ""
+    },
+    "R": {
+     "kind": "identifier",
+     "of": "visa application record",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "visa_applications.traveler_id": {
+    "kind": "identifier",
+    "of": "traveler",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "identifier",
+     "of": "traveler",
+     "unit": ""
+    },
+    "R": {
+     "kind": "identifier",
+     "of": "traveler account",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "visa_applications.country": {
+    "kind": "code",
+    "of": "destination country",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "code",
+     "of": "destination country",
+     "unit": ""
+    },
+    "R": {
+     "kind": "code",
+     "of": "destination country",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "visa_applications.status": {
+    "kind": "category",
+    "of": "visa application status",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "category",
+     "of": "visa application status",
+     "unit": ""
+    },
+    "R": {
+     "kind": "category",
+     "of": "application processing state",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "visa_applications.submitted_at": {
+    "kind": "datetime",
+    "of": "visa application submission",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "datetime",
+     "of": "visa application submission",
+     "unit": ""
+    },
+    "R": {
+     "kind": "datetime",
+     "of": "application submission event",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "visa_applications.details": {
+    "kind": "free_text",
+    "of": "visa application details",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "free_text",
+     "of": "visa application details",
+     "unit": ""
+    },
+    "R": {
+     "kind": "free_text",
+     "of": "visa application notes",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "travel_checklists.checklist_id": {
+    "kind": "identifier",
+    "of": "checklist",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "identifier",
+     "of": "checklist",
+     "unit": ""
+    },
+    "R": {
+     "kind": "identifier",
+     "of": "travel checklist",
+     "unit": ""
+    },
+    "returned": false
+   },
+   "travel_checklists.user_id": {
+    "kind": "identifier",
+    "of": "user",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "identifier",
+     "of": "user",
+     "unit": ""
+    },
+    "R": {
+     "kind": "identifier",
+     "of": "user",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "travel_checklists.trip_id": {
+    "kind": "identifier",
+    "of": "trip",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "identifier",
+     "of": "trip",
+     "unit": ""
+    },
+    "R": {
+     "kind": "identifier",
+     "of": "trip",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "travel_checklists.items[].item_id": {
+    "kind": "identifier",
+    "of": "checklist item",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "identifier",
+     "of": "checklist item",
+     "unit": ""
+    },
+    "R": {
+     "kind": "identifier",
+     "of": "checklist item",
+     "unit": ""
+    },
+    "returned": false
+   },
+   "travel_checklists.items[].label": {
+    "kind": "name",
+    "of": "checklist item",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "name",
+     "of": "checklist item",
+     "unit": ""
+    },
+    "R": {
+     "kind": "name",
+     "of": "checklist item",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "travel_checklists.items[].status": {
+    "kind": "category",
+    "of": "item status",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "category",
+     "of": "item status",
+     "unit": ""
+    },
+    "R": {
+     "kind": "category",
+     "of": "item completion status",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "travel_checklists.items[].notes": {
+    "kind": "free_text",
+    "of": "checklist item notes",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "free_text",
+     "of": "checklist item notes",
+     "unit": ""
+    },
+    "R": {
+     "kind": "free_text",
+     "of": "item verification details",
+     "unit": ""
+    },
+    "returned": false
+   },
+   "compensation_policies.policy_id": {
+    "kind": "identifier",
+    "of": "compensation policy",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "identifier",
+     "of": "compensation policy",
+     "unit": ""
+    },
+    "R": {
+     "kind": "identifier",
+     "of": "compensation policy",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "compensation_policies.carrier": {
+    "kind": "code",
+    "of": "airline",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "code",
+     "of": "airline",
+     "unit": ""
+    },
+    "R": {
+     "kind": "code",
+     "of": "airline carrier",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "compensation_policies.trigger": {
+    "kind": "category",
+    "of": "compensation trigger event",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "category",
+     "of": "compensation trigger event",
+     "unit": ""
+    },
+    "R": {
+     "kind": "category",
+     "of": "trigger event",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "compensation_policies.eligibility_rules": {
+    "kind": "free_text",
+    "of": "eligibility rules",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "free_text",
+     "of": "eligibility rules",
+     "unit": ""
+    },
+    "R": {
+     "kind": "free_text",
+     "of": "eligibility conditions",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "compensation_policies.remediation_options": {
+    "kind": "category",
+    "of": "remediation options",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "category",
+     "of": "remediation options",
+     "unit": ""
+    },
+    "R": {
+     "kind": "category",
+     "of": "remedy type",
+     "unit": ""
+    },
+    "returned": true
+   },
+   "exchange_rates.base_currency": {
+    "kind": "code",
+    "of": "currency",
+    "units": [],
+    "how": "갈림 F=code R=currency → 넓은 쪽 F",
+    "F": {
+     "kind": "code",
+     "of": "currency",
+     "unit": ""
+    },
+    "R": {
+     "kind": "currency",
+     "of": "base currency",
+     "unit": ""
+    },
+    "returned": false
+   },
+   "exchange_rates.target_currency": {
+    "kind": "code",
+    "of": "target currency",
+    "units": [],
+    "how": "갈림 F=code R=currency → 넓은 쪽 F",
+    "F": {
+     "kind": "code",
+     "of": "target currency",
+     "unit": ""
+    },
+    "R": {
+     "kind": "currency",
+     "of": "target currency",
+     "unit": ""
+    },
+    "returned": false
+   },
+   "exchange_rates.rate": {
+    "kind": "rate",
+    "of": "currency exchange",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "rate",
+     "of": "currency exchange",
+     "unit": ""
+    },
+    "R": {
+     "kind": "rate",
+     "of": "currency exchange",
+     "unit": ""
+    },
+    "returned": false
+   },
+   "exchange_rates.as_of": {
+    "kind": "date",
+    "of": "effective date",
+    "units": [],
+    "how": "일치",
+    "F": {
+     "kind": "date",
+     "of": "effective date",
+     "unit": ""
+    },
+    "R": {
+     "kind": "date",
+     "of": "exchange rate",
+     "unit": ""
+    },
+    "returned": false
+   }
+  },
+  "qconst": {
+   "kind": "count",
+   "of": "checked bags",
+   "unit": "bags"
+  }
+ }
+}
