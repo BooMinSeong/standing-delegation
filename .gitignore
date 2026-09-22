@@ -9,3 +9,5 @@ slurm_logs/
 .pytest_cache/
 *.swp
 /runs/
+*.stderr
+*.stdout
