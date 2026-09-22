@@ -5,7 +5,7 @@
 
 호출 경로는 Plan.md §2 어댑터(OpenAI 호환 chat completions) 하나. 서버는 vLLM (scripts/vllm_serve.sbatch).
 샘플링 파라미터는 보내지 않는다 → 서버가 모델 generation_config 기본값을 쓴다(D-035 5 "제공자 기본값").
-로그는 호출 하나가 JSONL 한 줄: 요청 전문, 응답 content, 추론 길이, 파싱 결과, usage, finish_reason.
+로그는 호출 하나가 JSONL 한 줄: 요청 전문, 응답 content, 파싱 결과, usage, finish_reason. 추론은 서버의 reasoning parser가 분리하고 읽지 않는다.
 
 사용:
   .venv/bin/python scripts/b2_d01.py --model-key qwen3.8-27B-FP8 --arm b2a --k 5
@@ -83,7 +83,6 @@ def call(client: openai.OpenAI, model_key: str, prompt: str, max_tokens: int) ->
         "response_id": d.get("id"),
         "served_model": d.get("model"),
         "content": msg.get("content") or "",
-        "reasoning_chars": len(msg.get("reasoning_content") or msg.get("reasoning") or ""),  # 추론 구간은 길이만 (D-043)
         "finish_reason": d["choices"][0].get("finish_reason"),
         "usage": d.get("usage"),
         "t_start": t0.isoformat(), "t_end": t1.isoformat(), "latency_s": (t1 - t0).total_seconds(),

@@ -183,9 +183,9 @@ def call(key: str, text: str, kind: str) -> dict:
     try:
         r = aa.ask(text, system=HEAD, max_tokens=24000)
     except Exception as e:  # noqa: BLE001
-        r = {"content": "", "reasoning": "", "finish": f"error: {type(e).__name__}: {e}", "usage": None}
+        r = {"content": "", "finish": f"error: {type(e).__name__}: {e}", "usage": None}
     rec = {"key": key, "kind": kind, "prompt_sha": hashlib.sha256(text.encode()).hexdigest()[:12],
-           "content": r["content"], "reasoning_chars": len(r["reasoning"]), "finish": r["finish"],
+           "content": r["content"], "finish": r["finish"],
            "usage": r["usage"], "seconds": round(time.time() - t0, 1)}
     with _lock:
         _cache[key] = rec

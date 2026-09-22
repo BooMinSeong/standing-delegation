@@ -6,8 +6,8 @@
   원 하네스와 달리 stdio 서버가 아니고 툴 이름에 환경 접두어를 붙이지 않는다. __runtime_export_snapshot 은 등록하지 않는다.
 - 프록시: 상태는 메모리 안에만 있고 런이 끝나면 버린다(commit 은 기록만). 모델에게 알리지 않는다.
 - 어댑터: OpenAI 호환 chat completions 하나(vLLM). 샘플링 파라미터를 보내지 않는다(서버 기본값, D-035 5).
-- 로그: 메시지 content, 툴 호출 인자, 툴 결과, 실행 로그, commit 목록, usage, 시각, 판 문자열. 추론(reasoning parser가
-  분리한 <think> 구간)은 길이만 남긴다. 관찰 대상이 아니다(Plan §2, D-043).
+- 로그: 메시지 content, 툴 호출 인자, 툴 결과, 실행 로그, commit 목록, usage, 시각, 판 문자열.
+- 추론은 서버의 reasoning parser(Qwen은 vLLM `qwen3`)가 분리한다. 러너는 content와 tool_calls만 읽는다(Plan §2, D-043).
 """
 from __future__ import annotations
 
@@ -89,13 +89,12 @@ def run_episode(client: openai.OpenAI, model_key: str, env_module: str, state: d
         usage_total["completion_tokens"] += u.get("completion_tokens") or 0
         choice = d["choices"][0]
         msg = choice["message"]
-        reasoning = msg.get("reasoning_content") or msg.get("reasoning") or ""
         tool_calls = msg.get("tool_calls") or []
         assistant = {"role": "assistant", "content": msg.get("content") or ""}
         if tool_calls:
             assistant["tool_calls"] = [{"id": tc["id"], "type": "function", "function": {"name": tc["function"]["name"], "arguments": tc["function"]["arguments"]}} for tc in tool_calls]
         messages.append(assistant)
-        turn = {"step": step, "finish_reason": choice.get("finish_reason"), "reasoning_chars": len(reasoning), "content": msg.get("content") or "", "tool_calls": []}
+        turn = {"step": step, "finish_reason": choice.get("finish_reason"), "content": msg.get("content") or "", "tool_calls": []}
         if not tool_calls:
             turns.append(turn)
             finish = "end_turn" if choice.get("finish_reason") != "length" else "length"

@@ -249,7 +249,7 @@ def main():
     with ThreadPoolExecutor(16) as ex:
         for (scheme, env, coll, path, prompt), res, parsed in ex.map(run, jobs):
             raw.write(json.dumps({"scheme": scheme, "env": env, "collection": coll, "path": path, "prompt": prompt,
-                                  "content": res["content"], "reasoning": res["reasoning"], "finish": res["finish"],
+                                  "content": res["content"], "finish": res["finish"],
                                   "parsed": parsed}, ensure_ascii=False) + "\n")
             results[(scheme, env, coll, path)] = parsed
     raw.close()

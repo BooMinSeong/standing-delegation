@@ -85,12 +85,12 @@ M1은 clarification의 배제가 아니라 상태에 근거한 clarification이�
 
 ## 2. 하네스
 
-에이전트 프레임워크 없이 MCP 툴 호출 루프 하나. 모델 간 차이는 엔드포인트와 reasoning 필드 이름뿐이다.
+에이전트 프레임워크 없이 MCP 툴 호출 루프 하나. 모델 간 차이는 엔드포인트뿐이다. 추론은 서버의 reasoning parser(Qwen은 vLLM `qwen3`)가 분리하고 러너는 content와 tool_calls만 읽는다.
 
 - 러너: Python 스크립트 하나. 입력 = 환경(MCP 서버 실행 명령), q, C, 상태 파일 s, 모델 설정. 흐름 = system(C + q) → user("예약 실행 시각이다") → 모델 툴 호출 → MCP 실행 → 결과 첨부 → 반복 → 최종 메시지(보고) 또는 max_steps.
 - 고정 항목: system 문구, MCP 스키마 → function calling 변환 규칙, 툴 결과 직렬화 형식, max_steps(30), max_tokens, 재시도(전송 오류만, 동일 요청 재전송). **추론은 다음 턴에 돌려보내지 않는다** — vLLM reasoning parser가 추론을 분리하고 러너는 content와 tool_calls만 되돌린다. 추론을 이력에 되먹이면 토큰이 과다해진다(저자 결정, D-042). 모든 모델에 같은 고정 항목이다. 계획·반성·메모리 등 스캐폴드 없음. 계약 P1/P2는 system 문구의 차이일 뿐 루프는 같다.
-- 로그: 전체 메시지, 툴 호출 인자, 툴 결과, 토큰 사용량, 시각, 모델 판 문자열, seed. 추론은 길이만 남긴다(절단 진단용). 추론은 관찰 대상이 아니다(D-043).
-- 어댑터: OpenAI 호환 chat completions 하나. 로컬은 클러스터의 vLLM/SGLang 서버, 상업은 각사 호환 엔드포인트를 직접 호출. 어댑터당 설정 3개(base_url, 키, reasoning 필드 이름). 게이트웨이 소프트웨어 없음.
+- 로그: 메시지 content, 툴 호출 인자, 툴 결과, 토큰 사용량, finish_reason, 시각, 모델 판 문자열, seed. 추론은 읽지도 남기지도 않는다(D-043).
+- 어댑터: OpenAI 호환 chat completions 하나. 로컬은 클러스터의 vLLM/SGLang 서버, 상업은 각사 호환 엔드포인트를 직접 호출. 어댑터당 설정 2개(base_url, 키). 게이트웨이 소프트웨어 없음.
 - 샘플링: 기본 온도(제공자 기본값). 셀당 k는 §4.3(편집 10, 기준 10√m)이고 자리를 세지 않는 arm(P2, held-out, 국소화 탐침)은 5. 온도와 seed를 로그에 남긴다. T=0 기본을 버린다. 표면 변형 둘(레코드 순서, ID 재명명)과 동률 상태의 균형 배치는 상태 파일 수준에서 러너 밖 프로그램이 만든다.
 - 프록시 모드: 같은 러너, 샌드박스 플래그 하나(commit은 기록만, 상태 폐기). 모델에게 알리지 않는다.
 - 툴 결과: structured_content가 없으면 텍스트 content를 읽는다. 반환 타입을 맨 `-> list`로 선언한 AgentAbstain 툴 48개(환경 19/42)는 원본 `call_tool`이 `None`을 돌려준다(D-043, `docs/PAPER-CHECKS.md` §4).

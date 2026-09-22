@@ -102,12 +102,11 @@ def llm():
 
 
 def ask(prompt: str, system: str | None = None, max_tokens: int = 16384, **kw) -> dict:
-    """단발 호출. content와 reasoning을 함께 돌려준다. 샘플링은 서버 기본값."""
+    """단발 호출. 추론은 서버의 reasoning parser가 분리하고 읽지 않는다. 샘플링은 서버 기본값."""
     msgs = ([{"role": "system", "content": system}] if system else []) + [{"role": "user", "content": prompt}]
     r = llm().chat.completions.create(model=GEN_MODEL, messages=msgs, max_tokens=max_tokens, **kw).model_dump()
     m = r["choices"][0]["message"]
-    return {"content": m.get("content") or "", "reasoning": m.get("reasoning_content") or m.get("reasoning") or "",
-            "finish": r["choices"][0].get("finish_reason"), "usage": r.get("usage")}
+    return {"content": m.get("content") or "", "finish": r["choices"][0].get("finish_reason"), "usage": r.get("usage")}
 
 
 def extract_block(text: str, lang: str = "python") -> str | None:
