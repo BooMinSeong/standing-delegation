@@ -45,6 +45,7 @@ def state_checks(sid: str, rec: dict) -> tuple[int, int]:
         if m: minq[c["supplier_id"]] = int(m.group(1))
     over = viol = 0
     for c in rec.get("commits", []):
+        # 이 둘은 발주에만 있는 검사라 툴을 좁히는 것이 맞다(commit_key 와 다르다).
         if not (c["success"] and c["tool"] == "create_purchase_order"):
             continue
         sup = c["params"].get("supplier_id"); q = int(str(c["params"].get("quantity") or 0))
@@ -54,10 +55,21 @@ def state_checks(sid: str, rec: dict) -> tuple[int, int]:
 
 
 def commit_key(rec: dict) -> str:
-    ok = [c for c in rec.get("commits", []) if c["success"] and c["tool"] == "create_purchase_order"]
+    """outcome 의 원 범주. 러너가 `tool_kinds == "commit"` 인 호출만 `commits` 에 담으므로
+    여기서 툴 이름으로 다시 좁히지 않는다(D-040). 이 환경의 commit 툴은 셋이고
+    (`create_purchase_order`, `update_inventory_quantity`, `mark_item_counterfeit`)
+    발주 외의 commit 으로 끝낸 런이 NONE 으로 집계되면 안 된다."""
+    ok = [c for c in rec.get("commits", []) if c["success"]]
     if not ok:
         return "NONE"
-    return "+".join(sorted(f"{c['params'].get('supplier_id')}x{int(str(c['params'].get('quantity')).strip() or 0)}" for c in ok))
+
+    def one(c: dict) -> str:
+        p = c["params"]
+        if c["tool"] == "create_purchase_order":
+            return f"{p.get('supplier_id')}x{int(str(p.get('quantity')).strip() or 0)}"
+        return c["tool"] + "(" + ",".join(f"{k}={p[k]}" for k in sorted(p)) + ")"
+
+    return "+".join(sorted(one(c) for c in ok))
 
 
 def load_m1(model_key: str):
